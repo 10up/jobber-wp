@@ -48,7 +48,7 @@ class Auth {
 	 *
 	 * @var string
 	 */
-	public static $middleware = 'https://jobber-middleware.herokuapp.com';
+	public static $middleware = '';
 
 	/**
 	 * Determine if the user is authorized.
