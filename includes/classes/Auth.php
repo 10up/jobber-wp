@@ -9,27 +9,14 @@ namespace Jobber;
 
 /**
  * Base class for Jobber Authorization Flow
+ *
+ * @todo Finish implementing the Jobber Authoriziation Flow.
  */
 class Auth {
 	/**
-	 * Jobber API Token Key
-	 * This is the key used to store the Jobber API token in the options table.
-	 *
-	 * @var string
-	 */
-	const TOKEN_KEY = 'jobber_token';
-
-	/**
-	 * Jobber API Refresh Token Key
-	 * This is the key used to store the Jobber API refresh token in the options table.
-	 *
-	 * @var string
-	 */
-	const REFRESH_KEY = 'jobber_refresh_token';
-
-	/**
 	 * Jobber Auth Middleware URL
 	 *
+	 * @todo Replace this with the actual middleware URL when available.
 	 * @var string
 	 */
 	public static $url = '<middleware_url>/wp/auth';
@@ -40,24 +27,24 @@ class Auth {
 	 * @return boolean
 	 */
 	public static function is_authorized() {
-		return ! empty( self::get_token() ) && ! empty( self::get_refresh_token() );
+		return ! empty( self::get_token() );
 	}
 
 	/**
-	 * Get the Jobber API Token
+	 * Get the Jobber API Token(s)
 	 *
-	 * @return string
+	 * @param string $token The token to get. access or refresh.
+	 * @return string Decrypted token.
 	 */
-	public static function get_token() {
-		return get_option( self::TOKEN_KEY );
-	}
+	public static function get_token( $token = 'access' ) {
+		$settings = \Jobber\Admin\Settings::get_settings();
+		$token    = false !== strpos( $token, '_token' ) ? $token : "{$token}_token";
+		if ( empty( $settings[ $token ] ) ) {
+			return '';
+		}
 
-	/**
-	 * Get the Jobber API Refresh Token
-	 *
-	 * @return string
-	 */
-	public static function get_refresh_token() {
-		return get_option( self::REFRESH_KEY );
+		// Decrypt token.
+		$encryption = new Encryption();
+		return $encryption->decrypt( $settings[ $token ] );
 	}
 }

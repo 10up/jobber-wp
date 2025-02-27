@@ -65,14 +65,34 @@ class Settings {
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Jobber Settings', 'jobber-plugin' ); ?></h2>
+			<p><?php esc_html_e( 'Connect to Jobber to sync your data.', 'jobber-plugin' ); ?></p>
 			<div style="margin-top: 2rem;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
-					<a href="<?php echo esc_url( Auth::middleware_url( 'authorize' ) ); ?>" class="button button-primary">
+					<a href="<?php echo esc_url( Auth::$url ); ?>" class="button button-primary">
 						<?php esc_html_e( 'Connect to Jobber', 'jobber-plugin' ); ?>
 					</a>
 				<?php endif; ?>
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Update the settings.
+	 *
+	 * @param array $settings Settings to update.
+	 * @return bool
+	 */
+	public static function update_settings( $settings = [] ) {
+		return update_option( self::SETTINGS_KEY, $settings );
+	}
+
+	/**
+	 * Get the settings.
+	 *
+	 * @return array
+	 */
+	public static function get_settings() {
+		return get_option( self::SETTINGS_KEY, [] );
 	}
 }

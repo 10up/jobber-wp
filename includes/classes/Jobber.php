@@ -41,8 +41,8 @@ class Jobber {
 	 * Module Constructor
 	 */
 	public function __construct() {
-		$this->access_token  = Auth::get_token();
-		$this->refresh_token = Auth::get_refresh_token();
+		$this->access_token  = Auth::get_token( 'access' );
+		$this->refresh_token = Auth::get_token( 'refresh' );
 	}
 
 	/**
@@ -95,11 +95,13 @@ class Jobber {
 			'Content-Type'  => 'application/json',
 		];
 
-		$request  = wp_remote_post( "{$this->api_url}/graphql", $data, $headers );
-		$response = json_decode( wp_remote_retrieve_body( $request ), true );
+		$request = wp_remote_post( "{$this->api_url}/graphql", $data, $headers );
 		if ( is_wp_error( $request ) ) {
 			return $request;
-		} elseif ( isset( $response['errors'] ) ) {
+		}
+
+		$response = json_decode( wp_remote_retrieve_body( $request ), true );
+		if ( isset( $response['errors'] ) ) {
 			return new WP_Error( 'jobber_graphql_error', $response['errors'][0]['message'] );
 		}
 
