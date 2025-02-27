@@ -62,19 +62,37 @@ class Settings {
 	 * @return void
 	 */
 	public function render_page() {
+		$auth_url = add_query_arg(
+			[
+				'clientUrl' => get_site_url(),
+				'returnUrl' => self::settings_url(),
+			],
+			Auth::$url
+		);
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Jobber Settings', 'jobber-plugin' ); ?></h2>
 			<p><?php esc_html_e( 'Connect to Jobber to sync your data.', 'jobber-plugin' ); ?></p>
 			<div style="margin-top: 2rem;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
-					<a href="<?php echo esc_url( Auth::$url ); ?>" class="button button-primary">
+					<a href="<?php echo esc_url( $auth_url ); ?>" class="button button-primary">
 						<?php esc_html_e( 'Connect to Jobber', 'jobber-plugin' ); ?>
 					</a>
+				<?php else : ?>
+					<p><?php esc_html_e( 'You are connected to Jobber.', 'jobber-plugin' ); ?></p>
 				<?php endif; ?>
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Get the settings URL.
+	 *
+	 * @return string
+	 */
+	public static function settings_url() {
+		return admin_url( 'options-general.php?page=' . self::SETTINGS_KEY );
 	}
 
 	/**
@@ -84,7 +102,7 @@ class Settings {
 	 * @return bool
 	 */
 	public static function update_settings( $settings = [] ) {
-		return update_option( self::SETTINGS_KEY, $settings );
+		return update_option( self::SETTINGS_KEY, wp_json_encode( $settings ) );
 	}
 
 	/**
@@ -93,6 +111,7 @@ class Settings {
 	 * @return array
 	 */
 	public static function get_settings() {
-		return get_option( self::SETTINGS_KEY, [] );
+		$settings = get_option( self::SETTINGS_KEY, '' );
+		return json_decode( $settings, true );
 	}
 }

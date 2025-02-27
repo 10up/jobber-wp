@@ -19,7 +19,7 @@ class Auth {
 	 * @todo Replace this with the actual middleware URL when available.
 	 * @var string
 	 */
-	public static $url = '<middleware_url>/wp/auth';
+	public static $url = 'http://localhost:8000/wp/auth';
 
 	/**
 	 * Determine if the user is authorized.
@@ -39,12 +39,14 @@ class Auth {
 	public static function get_token( $token = 'access' ) {
 		$settings = \Jobber\Admin\Settings::get_settings();
 		$token    = false !== strpos( $token, '_token' ) ? $token : "{$token}_token";
+
 		if ( empty( $settings[ $token ] ) ) {
 			return '';
 		}
 
 		// Decrypt token.
-		$encryption = new Encryption();
-		return $encryption->decrypt( $settings[ $token ] );
+		// $encryption = new Encryption();
+		// return $encryption->decrypt( $settings[ $token ] );
+		return $settings[ $token ];
 	}
 }

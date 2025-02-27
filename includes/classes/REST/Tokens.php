@@ -74,10 +74,14 @@ class Tokens extends API {
 			return new WP_Error( 'missing_tokens', 'Token and Refresh Token are required.', [ 'status' => 400 ] );
 		}
 
-		$encryption = new \Jobber\Encyprtion();
-		$tokens     = [
-			'access_token'  => $encryption->encrypt( $token ),
-			'refresh_token' => $encryption->encrypt( $refresh_token ),
+		/**
+		 * Access Token and Refresh Token.
+		 *
+		 * @todo encrypt tokens before saving.
+		 */
+		$tokens = [
+			'access_token'  => $token,
+			'refresh_token' => $refresh_token,
 		];
 
 		$status = \Jobber\Admin\Settings::update_settings( $tokens );

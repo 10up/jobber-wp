@@ -56,12 +56,11 @@ final class Encryption {
 	 * @return string
 	 */
 	public function encrypt( $string ) {
-		$iv_len = openssl_cipher_iv_length( $this->cipher );
-		$iv     = openssl_random_pseudo_bytes( $iv_len );
+		$iv     = openssl_random_pseudo_bytes( openssl_cipher_iv_length( $this->cipher ) );
+		$cipher = openssl_encrypt( $string, $this->cipher, AUTH_KEY, $this->options, $iv );
+		$hmac   = hash_hmac( $this->algorithm, $cipher, AUTH_SALT, true );
 
-		$cipher_text = openssl_encrypt( $string, $this->cipher, AUTH_KEY, $this->options, $iv );
-		$hmac        = hash_hmac( $this->algorithm, $cipher_text, AUTH_SALT, true );
-		return "{$hmac}{$iv}{$cipher_text}";
+		return $iv . $hmac . $cipher;
 	}
 
 	/**
@@ -71,15 +70,19 @@ final class Encryption {
 	 * @return string|false
 	 */
 	public function decrypt( $string ) {
-		$sha2_len = 32;
-		$iv_len   = openssl_cipher_iv_length( $this->cipher );
-		$iv       = substr( $string, 0, $iv_len );
-		$hmac     = substr( $string, $iv_len, $sha2_len );
-		$cipher   = substr( $string, $iv_len + $sha2_len );
-		$original = openssl_decrypt( $cipher, $this->cipher, AUTH_KEY, $this->options, $iv );
-		$calcmac  = hash_hmac( $this->algorithm, $cipher, AUTH_SALT, true );
+		$iv_length = openssl_cipher_iv_length( $this->cipher );
+		$iv        = substr( $string, 0, $iv_length );
+		$hmac      = substr( $string, $iv_length, 32 );
+		$cipher    = substr( $string, $iv_length + 32 );
 
-		return hash_equals( $hmac, $calcmac ) ? $original : false;
+		$decrypted       = openssl_decrypt( $cipher, $this->cipher, AUTH_KEY, $this->options, $iv );
+		$calculated_hmac = hash_hmac( $this->algorithm, $cipher, AUTH_SALT, true );
+
+		if ( hash_equals( $hmac, $calculated_hmac ) ) {
+			return $decrypted;
+		}
+
+		return false;
 	}
 }
 
