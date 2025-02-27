@@ -7,8 +7,6 @@
 
 namespace Jobber;
 
-use WP_Error;
-
 /**
  * Base class for Jobber Authorization Flow
  */
@@ -30,25 +28,11 @@ class Auth {
 	const REFRESH_KEY = 'jobber_refresh_token';
 
 	/**
-	 * Jobber API Access Token
+	 * Jobber Auth Middleware URL
 	 *
 	 * @var string
 	 */
-	public $access_token;
-
-	/**
-	 * Jobber API Refresh Token
-	 *
-	 * @var string
-	 */
-	public $refresh_token;
-
-	/**
-	 * Jobber Middleware URL
-	 *
-	 * @var string
-	 */
-	public static $middleware = '';
+	public static $url = '<middleware_url>/wp/auth';
 
 	/**
 	 * Determine if the user is authorized.
@@ -57,16 +41,6 @@ class Auth {
 	 */
 	public static function is_authorized() {
 		return ! empty( self::get_token() ) && ! empty( self::get_refresh_token() );
-	}
-
-	/**
-	 * Get the Middleware URL.
-	 *
-	 * @param string $path Path to append to the middleware URL.
-	 * @return string
-	 */
-	public static function middleware_url( $path = '' ) {
-		return trailingslashit( self::$middleware ) . ltrim( $path, '/' );
 	}
 
 	/**

@@ -64,40 +64,14 @@ class Jobber {
 	}
 
 	/**
-	 * Allow Jobber Redirect
+	 * Add the middleware URL to the allowed redirect hosts.
 	 *
 	 * @param array $hosts Allowed Redirect Hosts.
 	 * @return array
 	 */
 	public function allow_jobber_redirect( $hosts ) {
-		$hosts[] = wp_parse_url( $this->api_url, PHP_URL_HOST );
+		$hosts[] = wp_parse_url( Auth::$url, PHP_URL_HOST );
 		return $hosts;
-	}
-
-	/**
-	 * Query for the RequestForm object.
-	 *
-	 * @return string|\WP_Error
-	 */
-	public function query_request_form() {
-		// Form graphql query
-		$query = '
-		query RequestForm {
-			requestSettings {
-				requestUrl
-				id
-			}
-		}';
-
-		$form = $this->graphql_query( $query );
-		if ( ! is_wp_error( $form ) && ! empty( $form['data']['requestSettings'] ) ) {
-			$form = [
-				'url' => $form['data']['requestSettings']['requestUrl'],
-				'id'  => $form['data']['requestSettings']['id'],
-			];
-		}
-
-		return $form;
 	}
 
 	/**
@@ -107,7 +81,7 @@ class Jobber {
 	 * @param string $query GraphQL Query.
 	 * @return array|WP_Error
 	 */
-	protected function graphql_query( $query ) {
+	protected function query( $query ) {
 		if ( empty( $this->access_token ) ) {
 			return new WP_Error( 'jobber_no_access_token', 'No access token found.' );
 		}
@@ -121,20 +95,11 @@ class Jobber {
 			'Content-Type'  => 'application/json',
 		];
 
-		// phpcs:disable
-		$ch = curl_init();
-		curl_setopt( $ch, CURLOPT_URL, "{$this->api_url}/graphql" );
-		curl_setopt( $ch, CURLOPT_POST, 1 );
-		curl_setopt( $ch, CURLOPT_POSTFIELDS, $data );
-		curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers );
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 0 );
-
-		$response = curl_exec( $ch );
-		curl_close( $ch );
-		// phpcs:enable
-
-		$response = json_decode( $response, true );
-		if ( isset( $response['errors'] ) ) {
+		$request  = wp_remote_post( "{$this->api_url}/graphql", $data, $headers );
+		$response = json_decode( wp_remote_retrieve_body( $request ), true );
+		if ( is_wp_error( $request ) ) {
+			return $request;
+		} elseif ( isset( $response['errors'] ) ) {
 			return new WP_Error( 'jobber_graphql_error', $response['errors'][0]['message'] );
 		}
 
