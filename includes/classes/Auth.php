@@ -45,8 +45,7 @@ class Auth {
 		}
 
 		// Decrypt token.
-		// $encryption = new Encryption();
-		// return $encryption->decrypt( $settings[ $token ] );
-		return $settings[ $token ];
+		$encryption = new Encryption();
+		return $encryption->decrypt( $settings[ $token ] );
 	}
 }
