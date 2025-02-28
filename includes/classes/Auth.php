@@ -9,8 +9,6 @@ namespace Jobber;
 
 /**
  * Base class for Jobber Authorization Flow
- *
- * @todo Finish implementing the Jobber Authoriziation Flow.
  */
 class Auth {
 	/**

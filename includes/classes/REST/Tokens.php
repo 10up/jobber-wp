@@ -76,8 +76,6 @@ class Tokens extends API {
 
 		/**
 		 * Access Token and Refresh Token.
-		 *
-		 * @todo encrypt tokens before saving.
 		 */
 		$encryption    = new \Jobber\Encryption();
 		$token         = $encryption->encrypt( $token );
