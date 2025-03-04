@@ -9,6 +9,7 @@ namespace Jobber\Admin;
 
 use TenupFramework\Module;
 use Jobber\Auth;
+use Jobber\REST\Token;
 
 /**
  * Base class for Jobber Configuration settings
@@ -62,13 +63,16 @@ class Settings {
 	 * @return void
 	 */
 	public function render_page() {
-		$auth_url = add_query_arg(
-			[
-				'clientUrl' => get_site_url(),
-				'returnUrl' => self::settings_url(),
-			],
-			Auth::$url
-		);
+		$token    = $this->set_auth_token();
+		$url_args = [
+			'clientUrl' => get_site_url(),
+			'returnUrl' => self::settings_url(),
+		];
+		if ( ! empty( $token ) ) {
+			$url_args[ Token::$key ] = $token;
+		}
+
+		$auth_url = add_query_arg( $url_args, Auth::$url );
 		?>
 		<div class="wrap">
 			<h2><?php esc_html_e( 'Jobber Settings', 'jobber-plugin' ); ?></h2>
@@ -84,6 +88,23 @@ class Settings {
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Set the auth token for WP and the Middleware.
+	 *
+	 * @return string|bool
+	 */
+	protected function set_auth_token() {
+		if ( Auth::is_authorized() ) {
+			return false;
+		}
+
+		$tokens = new Token();
+		$token  = $tokens->generate();
+		$tokens->save( $token );
+
+		return $token;
 	}
 
 	/**

@@ -20,7 +20,7 @@ class Token extends API {
 	 *
 	 * @var string
 	 */
-	protected $key = 'jobber_token';
+	public static $key = 'jobber_token';
 
 	/**
 	 * API Route
@@ -51,7 +51,7 @@ class Token extends API {
 				'methods'  => WP_REST_Server::CREATABLE,
 				'callback' => [ $this, 'validate_token' ],
 				'args'     => [
-					$this->key => [
+					self::$key => [
 						'type'     => 'string',
 						'required' => true,
 					],
@@ -67,7 +67,7 @@ class Token extends API {
 	 * @return mixed
 	 */
 	public function validate_token( WP_REST_Request $request ) {
-		$token = $request->get_param( $this->key );
+		$token = $request->get_param( self::$key );
 		if ( $this->validate( $token ) ) {
 			wp_send_json_success();
 		}
@@ -86,7 +86,7 @@ class Token extends API {
 			return false;
 		}
 
-		$saved = get_transient( $this->key );
+		$saved = get_transient( self::$key );
 		if ( empty( $saved ) || $token !== $saved ) {
 			return false;
 		}
@@ -101,5 +101,15 @@ class Token extends API {
 	 */
 	public function generate() {
 		return bin2hex( openssl_random_pseudo_bytes( 16 ) );
+	}
+
+	/**
+	 * Save the token for 5 minutes.
+	 *
+	 * @param string $token The token to save.
+	 * @return void
+	 */
+	public function save( $token ) {
+		set_transient( self::$key, $token, 5 * MINUTE_IN_SECONDS );
 	}
 }
