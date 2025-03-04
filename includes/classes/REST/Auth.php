@@ -7,22 +7,20 @@
 
 namespace Jobber\REST;
 
-use WP_Error;
 use WP_REST_Server;
 use WP_REST_Request;
-use WP_REST_Response;
 
 /**
  * Jobber API Token Management
  */
-class Tokens extends API {
+class Auth extends API {
 
 	/**
 	 * API Route
 	 *
 	 * @var string
 	 */
-	protected static $route = '/token';
+	protected static $route = '/auth';
 
 	/**
 	 * Hook module into WP.
@@ -64,14 +62,14 @@ class Tokens extends API {
 	 * Sends success or error response to middleware.
 	 *
 	 * @param WP_REST_Request $request The REST API request object.
-	 * @return WP_REST_Response|WP_Error
+	 * @return mixed
 	 */
 	public function save_tokens( WP_REST_Request $request ) {
 		$token         = $request->get_param( 'access_token' );
 		$refresh_token = $request->get_param( 'refresh_token' );
 
 		if ( empty( $token ) || empty( $refresh_token ) ) {
-			return new WP_Error( 'missing_tokens', 'Token and Refresh Token are required.', [ 'status' => 400 ] );
+			wp_send_json_error( [ 'message' => 'Token and Refresh Token are required.' ], 400 );
 		}
 
 		/**
@@ -86,6 +84,10 @@ class Tokens extends API {
 		];
 
 		$status = \Jobber\Admin\Settings::update_settings( $tokens );
-		return new WP_REST_Response( [ 'success' => $status ? 'true' : 'false' ] );
+		if ( $status ) {
+			wp_send_json_success();
+		} else {
+			wp_send_json_error( [ 'message' => 'Failed to save tokens.' ], 500 );
+		}
 	}
 }
