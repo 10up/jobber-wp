@@ -48,9 +48,10 @@ class Token extends API {
 			self::$namespace,
 			self::$route,
 			[
-				'methods'  => WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'validate_token' ],
-				'args'     => [
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'validate_token' ],
+				'permission_callback' => '__return_true',
+				'args'                => [
 					self::$key => [
 						'type'     => 'string',
 						'required' => true,
@@ -64,14 +65,22 @@ class Token extends API {
 	 * Validate the token generated for the middleware.
 	 *
 	 * @param WP_REST_Request $request The REST request object.
+	 * @param boolean         $return  Whether to return the result or not.
 	 * @return mixed
 	 */
-	public function validate_token( WP_REST_Request $request ) {
+	public function validate_token( WP_REST_Request $request, $return = false ) {
 		$token = $request->get_param( self::$key );
 		if ( $this->validate( $token ) ) {
+			if ( $return ) {
+				return true;
+			}
+
 			wp_send_json_success();
 		}
 
+		if ( $return ) {
+			return false;
+		}
 		wp_send_json_error( [ 'message' => 'Invalid token' ], 401 );
 	}
 

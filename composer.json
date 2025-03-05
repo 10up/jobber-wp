@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": ">=8.3",
+    "php": ">=7.4",
     "10up/wp-framework": "~1.0.0"
   },
   "autoload": {

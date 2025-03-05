@@ -41,9 +41,10 @@ class Auth extends API {
 			self::$namespace,
 			self::$route,
 			[
-				'methods'  => WP_REST_Server::CREATABLE,
-				'callback' => [ $this, 'save_tokens' ],
-				'args'     => [
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'save_tokens' ],
+				'permission_callback' => [ $this, 'validate_token' ],
+				'args'                => [
 					'access_token'  => [
 						'type'     => 'string',
 						'required' => true,
@@ -52,9 +53,24 @@ class Auth extends API {
 						'type'     => 'string',
 						'required' => true,
 					],
+					'jobber_token'  => [
+						'type'     => 'string',
+						'required' => true,
+					],
 				],
 			]
 		);
+	}
+
+	/**
+	 * Validate Jobber Token when saving the access tokens.
+	 *
+	 * @param WP_REST_Request $request The REST API request object.
+	 * @return bool
+	 */
+	public function validate_token( WP_REST_Request $request ) {
+		$token = new Token();
+		return $token->validate_token( $request, true );
 	}
 
 	/**
