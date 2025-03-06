@@ -83,19 +83,28 @@ class Jobber {
 	 */
 	protected function query( $query ) {
 		if ( empty( $this->access_token ) ) {
-			return new WP_Error( 'jobber_no_access_token', 'No access token found.' );
+			return new WP_Error( 'jobber_no_access_token', __( 'No access token found.', 'jobber-plugin' ) );
 		}
 
+		// GraphQL Query
 		$data = [
 			'query' => $query,
 		];
 
+		// Request Headers
 		$headers = [
 			'Authorization' => "Bearer {$this->access_token}",
 			'Content-Type'  => 'application/json',
 		];
 
-		$request = wp_remote_post( "{$this->api_url}/graphql", $data, $headers );
+		// Request Arguments
+		$args = [
+			'headers' => $headers,
+			'body'    => wp_json_encode( $data ),
+		];
+
+		// Execute the request
+		$request = wp_remote_post( "{$this->api_url}/graphql", $args );
 		if ( is_wp_error( $request ) ) {
 			return $request;
 		}

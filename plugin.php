@@ -3,8 +3,8 @@
  * Plugin Name:       Jobber
  * Description:       Jobber WordPress Plugin
  * Version:           0.1.0
- * Requires at least: 4.9
- * Requires PHP:      8.0
+ * Requires at least: 6.5
+ * Requires PHP:      7.4
  * Author:            10up
  * Author URI:        https://10up.com
  * License:           GPL v2 or later
