@@ -17,8 +17,8 @@ use Jobber\Utility;
  * @return void
  */
 function setup() {
-	add_action( 'init', 'Jobber\Core\i18n' );
-	add_action( 'init', 'Jobber\Core\init', apply_filters( 'jobber_plugin_init_priority', 8 ) );
+	add_action( 'init', __NAMESPACE__ . '\\i18n' );
+	add_action( 'init', __NAMESPACE__ . '\\init', (int) apply_filters( 'jobber_plugin_init_priority', 8 ) );
 	add_action( 'admin_enqueue_scripts', 'Jobber\Core\admin_scripts' );
 	add_action( 'admin_enqueue_scripts', 'Jobber\Core\admin_styles' );
 
