@@ -111,7 +111,8 @@ class Jobber {
 
 		$response = json_decode( wp_remote_retrieve_body( $request ), true );
 		if ( isset( $response['errors'] ) ) {
-			return new WP_Error( 'jobber_graphql_error', $response['errors'][0]['message'] );
+			$errors = wp_list_pluck( $response['errors'], 'message' );
+			return new WP_Error( 'jobber_graphql_error', implode( ' | ', $errors ) );
 		}
 
 		return $response;
