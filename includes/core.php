@@ -19,11 +19,11 @@ use Jobber\Utility;
 function setup() {
 	add_action( 'init', __NAMESPACE__ . '\\i18n' );
 	add_action( 'init', __NAMESPACE__ . '\\init', (int) apply_filters( 'jobber_plugin_init_priority', 8 ) );
-	add_action( 'admin_enqueue_scripts', 'Jobber\Core\admin_scripts' );
-	add_action( 'admin_enqueue_scripts', 'Jobber\Core\admin_styles' );
+	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\admin_scripts' );
+	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\admin_styles' );
 
 	// Hook to allow async or defer on asset loading.
-	add_filter( 'script_loader_tag', 'Jobber\Core\script_loader_tag', 10, 2 );
+	add_filter( 'script_loader_tag', __NAMESPACE__ . '\\script_loader_tag', 10, 2 );
 
 	do_action( 'jobber_plugin_loaded' );
 }
@@ -90,7 +90,7 @@ function deactivate() {
 
 
 /**
- * The list of knows contexts for enqueuing scripts/styles.
+ * The list of known contexts for enqueuing scripts/styles.
  *
  * @return array<string>
  */
