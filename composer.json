@@ -1,0 +1,24 @@
+{
+  "name": "10up/jobber",
+  "description": "Jobber WordPress Plugin.",
+  "license": "MIT",
+  "type": "wordpress-plugin",
+  "authors": [
+    {
+      "name": "10up",
+      "email": "info@10up.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "10up/wp-framework": "~1.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jobber\\": "includes/classes/"
+    },
+    "files": [
+      "includes/helpers/helpers.php"
+    ]
+  }
+}
