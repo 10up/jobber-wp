@@ -12,7 +12,7 @@ use TenupFramework\Module;
 /**
  * Jobber API Base
  */
-abstract class API {
+class API {
 
 	use Module;
 
@@ -37,5 +37,58 @@ abstract class API {
 	 *
 	 * @return void
 	 */
-	abstract public function register();
+	public function register() {
+		add_action( 'rest_api_init', [ $this, 'register_routes' ] );
+	}
+
+	/**
+	 * Register the REST API routes.
+	 *
+	 * @return void
+	 */
+	public function register_routes() {
+		// Register the routes here.
+
+		// Get clients
+		register_rest_route(
+			self::$namespace,
+			'/clients',
+			[
+				'methods'             => 'GET',
+				'callback'            => [ $this, 'get_clients' ],
+				'permission_callback' => [ $this, 'validate_token' ],
+				'args'                => [
+					'param1'  => [
+						'type'     => 'string',
+						'required' => true,
+					],
+				],
+			]
+		);
+	}
+
+	/**
+	 * Validate the Jobber Token.
+	 *
+	 * @param WP_REST_Request $request The REST Request.
+	 * @return boolean
+	 */
+	public function validate_token( \WP_REST_Request $request ) {
+		$token = new Token();
+		return $token->validate_token( $request, true );
+	}
+
+	/**
+	 * Get the clients from Jobber.
+	 *
+	 * @param WP_REST_Request $request The REST Request.
+	 * @return WP_REST_Response
+	 */
+	public function get_clients( $request ) {
+		$jobber = new \Jobber\Jobber();
+		$clients = $jobber->get_clients();
+
+		return rest_ensure_response( $clients );
+	}
+
 }
