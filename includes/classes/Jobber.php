@@ -118,4 +118,32 @@ class Jobber {
 
 		return $response;
 	}
+
+	/**
+	 * Get the clients from Jobber.
+	 *
+	 * @return array|WP_Error
+	 */
+	public function get_clients() {
+		$query = '
+			query {
+				clients {
+					edges {
+						node {
+							id
+							name
+							emails {
+								address
+							}
+							phones {
+								number
+							}
+						}
+					}
+				}
+			}
+		';
+
+		return $this->query( $query );
+	}
 }
