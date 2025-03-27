@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "jobber/scheduler",
+	"version": "0.1.0",
+	"title": "Jobber Scheduling",
+	"category": "widgets",
+	"icon": "calendar",
+	"description": "Display available Bookings and Requests forms.",
+	"example": {},
+	"supports": {
+		"html": false
+	},
+	"attributes": {
+			"embedCode": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "jobber",
+	"editorScript": "file:../../dist/blocks/jobber-scheduler.js",
+	"editorStyle": "file:./editor.css",
+	"style": "file:./style.css",
+	"viewScript": "file:./view.js"
+}
