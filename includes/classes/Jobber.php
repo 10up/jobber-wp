@@ -93,8 +93,9 @@ class Jobber {
 
 		// Request Headers
 		$headers = [
-			'Authorization' => "Bearer {$this->access_token}",
-			'Content-Type'  => 'application/json',
+			'Authorization'            => "Bearer {$this->access_token}",
+			'Content-Type'             => 'application/json',
+			'X-JOBBER-GRAPHQL-VERSION' => '2023-08-18',
 		];
 
 		// Request Arguments
