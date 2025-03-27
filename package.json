@@ -23,7 +23,8 @@
   },
   "10up-toolkit": {
     "entry": {
-      "admin": "./assets/js/admin/admin.js"
+      "admin": "./assets/js/admin/admin.js",
+      "jobber-scheduler": "./blocks/jobber"
     }
   }
 }
