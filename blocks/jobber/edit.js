@@ -1,59 +1,77 @@
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { TextareaControl, PanelBody } from '@wordpress/components';
-import './editor.scss';
+import { PanelBody, SelectControl } from '@wordpress/components';
 
 export default function Edit({ attributes, setAttributes }) {
-	const { embedCode } = attributes;
-	const [data, setData] = useState(null);
-	const [loading, setLoading] = useState(true);
+	const { formType } = attributes;
+	const [iframeUrl, setIframeUrl] = useState('');
+	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		fetch('/wp-json/jobber/v1/clients/?param1=test')
+		if (!formType) {
+			setIframeUrl('');
+			return;
+		}
+
+		setLoading(true);
+		setError(null);
+
+		fetch(`/wp-json/jobber/v1/get_form?form_type=${formType}`)
 			.then((response) => {
+				console.log( 'error-response', response );
 				if (!response.ok) {
-					throw new Error(__('Failed to fetch data', 'jobber'));
+					throw new Error(__('Failed to fetch form URL', 'jobber'));
 				}
 				return response.json();
 			})
 			.then((json) => {
-				setData(json);
+				console.log( 'result-final', json );
+				const url = json?.form?.iframeUrl;
+				if (!url) {
+					throw new Error(__('Form URL not found in API response', 'jobber'));
+				}
+				setIframeUrl(url);
 				setLoading(false);
 			})
 			.catch((err) => {
-				console.log(err.message);
+				console.error(err.message);
 				setError(err.message);
 				setLoading(false);
 			});
-	}, []);
+	}, [formType]);
 
 	return (
 		<div {...useBlockProps()}>
-			<h3>{__('Jobber Data here:', 'jobber')}</h3>
+			{loading && <h3>{__('Jobber Form', 'jobber')}</h3>}
 
 			<InspectorControls>
-				<PanelBody title={__('Embed Code', 'jobber')}>
-					<TextareaControl
-						label={__('Paste Jobber Embed Code', 'jobber')}
-						value={embedCode}
-						onChange={(value) => setAttributes({ embedCode: value })}
+				<PanelBody title={__('Form Settings', 'jobber')}>
+					<SelectControl
+						label={__('Form Type', 'jobber')}
+						value={formType}
+						options={[
+							{ label: __('Booking', 'jobber'), value: 'booking' },
+							{ label: __('Request', 'jobber'), value: 'request' },
+						]}
+						onChange={(value) => setAttributes({ formType: value })}
 					/>
 				</PanelBody>
 			</InspectorControls>
 
-			<div {...useBlockProps()}>
-				{embedCode ? (
-					<div dangerouslySetInnerHTML={{ __html: embedCode }} />
-				) : (
-					<p>{__('Paste your Jobber embed code in the sidebar.', 'jobber')}</p>
-				)}
-			</div>
-
 			{loading && <p>{__('Loading...', 'jobber')}</p>}
 			{error && <p style={{ color: 'red' }}>{error}</p>}
-			{data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+
+			{!loading && iframeUrl && (
+				<iframe
+					src={iframeUrl}
+					width="100%"
+					height="600"
+					style={{ border: 'none' }}
+					title={__('Jobber Form', 'jobber')}
+				/>
+			)}
 		</div>
 	);
 }
