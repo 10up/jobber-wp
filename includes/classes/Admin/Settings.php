@@ -96,8 +96,9 @@ class Settings {
 	 * @return string|bool
 	 */
 	protected function set_auth_token() {
-		if ( Auth::is_authorized() ) {
-			return false;
+		$token = Token::get_token();
+		if ( ! empty( $token ) ) {
+			return $token;
 		}
 
 		$tokens = new Token();
