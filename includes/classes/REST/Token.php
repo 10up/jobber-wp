@@ -121,4 +121,11 @@ class Token extends API {
 	public function save( $token ) {
 		set_transient( self::$key, $token, 5 * MINUTE_IN_SECONDS );
 	}
+	
+	/**
+	 * Get the token.
+	 */
+	public static function get_token() {
+		return get_transient( self::$key );
+	}
 }
