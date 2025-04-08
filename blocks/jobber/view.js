@@ -21,5 +21,5 @@
  */
  
 /* eslint-disable no-console */
-console.log("Hello World! (from Jobber Scheduling block)");
+console.log("Hello World! (from Jobber block)");
 /* eslint-enable no-console */
