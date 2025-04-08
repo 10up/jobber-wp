@@ -51,13 +51,32 @@ class Blocks {
 	 * @return string
 	 */
 	public function render_block( $attributes ) {
-		if ( empty( $attributes['embedCode'] ) ) {
-			return '<p>Please enter the Jobber embed code in the block settings.</p>';
+		$form_type = ! empty( $attributes['formType'] ) ? sanitize_text_field( $attributes['formType'] ) : 'request';
+	
+		$jobber = new \Jobber\Jobber();
+		$response = $jobber->get_form( $form_type );
+	
+		if ( is_wp_error( $response ) ) {
+			return sprintf(
+				'<p class="jobber-error">%s</p>',
+				esc_html( $response->get_error_message() )
+			);
+		}
+	
+		$iframe_url = '';
+		if ( 'request' === $form_type && isset( $response['data']['requestSettings']['requestUrl'] ) ) {
+			$iframe_url = $response['data']['requestSettings']['requestUrl'];
+		} elseif ( 'booking' === $form_type && isset( $response['data']['onlineBookingConfiguration']['bookingUrl'] ) ) {
+			$iframe_url = $response['data']['onlineBookingConfiguration']['bookingUrl'];
+		}		
+	
+		if ( empty( $iframe_url ) ) {
+			return '<p class="jobber-error">Form iframe URL not found.</p>';
 		}
 	
 		return sprintf(
-			'<div class="jobber-embed-block">%s</div>',
-			$attributes['embedCode']
+			'<div class="jobber-embed-block"><iframe src="%s" width="100%%" height="600" style="border:none;" title="Jobber Form"></iframe></div>',
+			esc_url( $iframe_url )
 		);
 	}
 }
