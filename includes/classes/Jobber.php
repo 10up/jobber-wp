@@ -120,6 +120,39 @@ class Jobber {
 	}
 
 	/**
+	 * Get the form from Jobber.
+	 *
+	 * @param string $form_type The type of form to get. Default is 'request'.
+	 *
+	 * @return array|WP_Error
+	 */
+	public function get_form( $form_type = 'request' ) {
+		if ( 'booking' === $form_type ) {
+			$query = '
+				query booking {
+					onlineBookingConfiguration {
+						bookingEmbedScript
+						bookingUrl
+					}
+				}
+			';
+		} elseif ( 'request' === $form_type ) {
+			$query = '
+				query request {
+					requestSettings {
+						requestEmbedScript
+						requestUrl
+					}
+				}
+			';
+		} else {
+			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber-plugin' ) );
+		}
+
+		return $this->query( $query );
+	}
+
+	/**
 	 * Get the clients from Jobber.
 	 *
 	 * @return array|WP_Error
