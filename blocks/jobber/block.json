@@ -12,9 +12,9 @@
 		"html": false
 	},
 	"attributes": {
-			"embedCode": {
+		"formType": {
 			"type": "string",
-			"default": ""
+			"default": "request"
 		}
 	},
 	"textdomain": "jobber",
