@@ -114,7 +114,7 @@ class API {
 		if ( 'request' === $form_type && isset( $form['data']['requestSettings']['requestUrl'] ) ) {
 			$url = $form['data']['requestSettings']['requestUrl'];
 		} elseif ( 'booking' === $form_type && isset( $form['data']['onlineBookingConfiguration']['bookingUrl'] ) ) {
-			$url = $form['data']['onlineBookingConfiguration']['bookingUrl'];
+			$url = $form['data']['onlineBookingConfiguration']['bookingUrl'] . '/embedded';
 		}
 	
 		if ( empty( $url ) ) {

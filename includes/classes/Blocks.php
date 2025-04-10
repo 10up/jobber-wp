@@ -67,13 +67,13 @@ class Blocks {
 		if ( 'request' === $form_type && isset( $response['data']['requestSettings']['requestUrl'] ) ) {
 			$iframe_url = $response['data']['requestSettings']['requestUrl'];
 		} elseif ( 'booking' === $form_type && isset( $response['data']['onlineBookingConfiguration']['bookingUrl'] ) ) {
-			$iframe_url = $response['data']['onlineBookingConfiguration']['bookingUrl'];
+			$iframe_url = $response['data']['onlineBookingConfiguration']['bookingUrl']  . '/embedded';
 		}		
 	
 		if ( empty( $iframe_url ) ) {
 			return '<p class="jobber-error">Form iframe URL not found.</p>';
 		}
-	
+
 		return sprintf(
 			'<div class="jobber-embed-block"><iframe src="%s" width="100%%" height="600" style="border:none;" title="Jobber Form"></iframe></div>',
 			esc_url( $iframe_url )
