@@ -123,10 +123,9 @@ class Jobber {
 	 * Get the form from Jobber.
 	 *
 	 * @param string $form_type The type of form to get. Default is 'request'.
-	 *
 	 * @return array|WP_Error
 	 */
-	public function get_form( $form_type = 'request' ) {
+	public function get_form( string $form_type = 'request' ) {
 		if ( 'booking' === $form_type ) {
 			$query = '
 				query booking {

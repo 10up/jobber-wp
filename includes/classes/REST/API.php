@@ -26,16 +26,14 @@ class API {
 	/**
 	 * Can we register this module?
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function can_register() {
+	public function can_register(): bool {
 		return true;
 	}
 
 	/**
 	 * Hook the module into WP.
-	 *
-	 * @return void
 	 */
 	public function register() {
 		add_action( 'rest_api_init', [ $this, 'register_routes' ] );
@@ -43,12 +41,8 @@ class API {
 
 	/**
 	 * Register the REST API routes.
-	 *
-	 * @return void
 	 */
 	public function register_routes() {
-		// Register the routes here.
-
 		// Get Form.
 		register_rest_route(
 			self::$namespace,
@@ -57,7 +51,6 @@ class API {
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'get_form' ],
 				'permission_callback' => [ $this, 'has_permission' ],
-				// 'permission_callback' => '__return_true',
 				'args'                => [
 					'form_type'  => [
 						'type'     => 'string',
@@ -84,43 +77,55 @@ class API {
 	 *
 	 * @return bool
 	 */
-	public function has_permission( \WP_REST_Request $request ) {
+	public function has_permission( \WP_REST_Request $request ): bool {
 		return true;
 	}
 
 	/**
 	 * Get the form from Jobber.
 	 *
-	 * @param WP_REST_Request $request The REST Request.
-	 * @return WP_REST_Response
+	 * @param \WP_REST_Request $request The REST Request.
+	 * @return \WP_REST_Response
 	 */
-	public function get_form( $request ) {
+	public function get_form( \WP_REST_Request $request ): \WP_REST_Response {
 		$form_type = $request->get_param( 'form_type' );
-	
+
 		if ( empty( $form_type ) ) {
 			$form_type = 'request';
 		}
-	
+
 		$jobber = new \Jobber\Jobber();
 		$form   = $jobber->get_form( $form_type );
-	
+
 		if ( is_wp_error( $form ) ) {
 			return rest_ensure_response( $form );
 		}
-	
-		// Pull just the iframe/embed URL
+
+		// Pull just the iframe/embed URL.
 		$url = '';
 
-		if ( 'request' === $form_type && isset( $form['data']['requestSettings']['requestUrl'] ) ) {
+		if (
+			'request' === $form_type &&
+			isset( $form['data']['requestSettings']['requestUrl'] )
+		) {
 			$url = $form['data']['requestSettings']['requestUrl'];
-		} elseif ( 'booking' === $form_type && isset( $form['data']['onlineBookingConfiguration']['bookingUrl'] ) ) {
+		} elseif (
+			'booking' === $form_type &&
+			isset( $form['data']['onlineBookingConfiguration']['bookingUrl'] )
+		) {
 			$url = $form['data']['onlineBookingConfiguration']['bookingUrl'] . '/embedded';
 		}
-	
+
 		if ( empty( $url ) ) {
-			return new \WP_Error( 'no_url_found', __( 'No valid form URL found.', 'jobber' ), [ 'status' => 500 ] );
+			return rest_ensure_response(
+				new \WP_Error(
+					'no_url_found',
+					__( 'No valid form URL found.', 'jobber' ),
+					[ 'status' => 500 ]
+				)
+			);
 		}
-	
+
 		return rest_ensure_response(
 			[
 				'form' => [
@@ -133,14 +138,12 @@ class API {
 	/**
 	 * Get the clients from Jobber.
 	 *
-	 * @param WP_REST_Request $request The REST Request.
-	 * @return WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
-	public function get_clients( $request ) {
-		$jobber = new \Jobber\Jobber();
+	public function get_clients(): \WP_REST_Response {
+		$jobber  = new \Jobber\Jobber();
 		$clients = $jobber->get_clients();
 
 		return rest_ensure_response( $clients );
 	}
-
 }
