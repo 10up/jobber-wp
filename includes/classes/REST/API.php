@@ -52,7 +52,7 @@ class API {
 				'callback'            => [ $this, 'get_form' ],
 				'permission_callback' => [ $this, 'has_permission' ],
 				'args'                => [
-					'form_type'  => [
+					'form_type' => [
 						'type'     => 'string',
 						'required' => true,
 					],
@@ -85,9 +85,9 @@ class API {
 	 * Get the form from Jobber.
 	 *
 	 * @param \WP_REST_Request $request The REST Request.
-	 * @return \WP_REST_Response
+	 * @return \WP_REST_Response|\WP_Error
 	 */
-	public function get_form( \WP_REST_Request $request ): \WP_REST_Response {
+	public function get_form( \WP_REST_Request $request ) {
 		$form_type = $request->get_param( 'form_type' );
 
 		if ( empty( $form_type ) ) {
@@ -117,12 +117,10 @@ class API {
 		}
 
 		if ( empty( $url ) ) {
-			return rest_ensure_response(
-				new \WP_Error(
-					'no_url_found',
-					__( 'No valid form URL found.', 'jobber' ),
-					[ 'status' => 500 ]
-				)
+			return new \WP_Error(
+				'no_url_found',
+				__( 'No valid form URL found.', 'jobber' ),
+				[ 'status' => 500 ]
 			);
 		}
 

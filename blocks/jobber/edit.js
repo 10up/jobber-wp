@@ -1,7 +1,11 @@
+/**
+ * WordPress dependencies
+ */
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, SelectControl } from '@wordpress/components';
+import apiFetch from '@wordpress/api-fetch';
 
 export default function Edit({ attributes, setAttributes }) {
 	const { formType } = attributes;
@@ -18,16 +22,16 @@ export default function Edit({ attributes, setAttributes }) {
 		setLoading(true);
 		setError(null);
 
-		fetch(`/wp-json/jobber/v1/get_form?form_type=${formType}`)
-			.then((response) => {
-				console.log( 'error-response', response );
+		apiFetch( {
+			path: `jobber/v1/get_form?form_type=${formType}`,
+			method: 'GET',
+		} ).then((response) => {
 				if (!response.ok) {
 					throw new Error(__('Failed to fetch form URL', 'jobber'));
 				}
 				return response.json();
 			})
 			.then((json) => {
-				console.log( 'result-final', json );
 				const url = json?.form?.iframeUrl;
 				if (!url) {
 					throw new Error(__('Form URL not found in API response', 'jobber'));
@@ -36,7 +40,6 @@ export default function Edit({ attributes, setAttributes }) {
 				setLoading(false);
 			})
 			.catch((err) => {
-				console.error(err.message);
 				setError(err.message);
 				setLoading(false);
 			});
