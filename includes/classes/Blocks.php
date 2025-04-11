@@ -36,7 +36,7 @@ class Blocks {
 	 */
 	public function register_block_types() {
 		register_block_type(
-			JOBBER_PLUGIN_PATH . 'blocks/jobber',
+			JOBBER_PLUGIN_PATH . 'blocks/forms',
 			[
 				'render_callback' => [ $this, 'render_block' ],
 			]

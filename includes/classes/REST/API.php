@@ -77,8 +77,8 @@ class API {
 	 *
 	 * @return bool
 	 */
-	public function has_permission( \WP_REST_Request $request ): bool {
-		return true;
+	public function has_permission(): bool {
+		return is_user_logged_in();
 	}
 
 	/**
