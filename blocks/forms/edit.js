@@ -26,13 +26,7 @@ export default function Edit({ attributes, setAttributes }) {
 			path: `jobber/v1/get_form?form_type=${formType}`,
 			method: 'GET',
 		} ).then((response) => {
-				if (!response.ok) {
-					throw new Error(__('Failed to fetch form URL', 'jobber'));
-				}
-				return response.json();
-			})
-			.then((json) => {
-				const url = json?.form?.iframeUrl;
+				const url = response?.form?.iframeUrl;
 				if (!url) {
 					throw new Error(__('Form URL not found in API response', 'jobber'));
 				}
