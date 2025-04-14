@@ -49,8 +49,8 @@ class Settings {
 	 */
 	public function register_menu() {
 		add_options_page(
-			__( 'Jobber Settings', 'jobber-plugin' ),
-			__( 'Jobber Settings', 'jobber-plugin' ),
+			__( 'Jobber Settings', 'jobber-wp' ),
+			__( 'Jobber Settings', 'jobber-wp' ),
 			'manage_options',
 			'jobber_settings',
 			[ $this, 'render_page' ]
@@ -75,15 +75,15 @@ class Settings {
 		$auth_url = add_query_arg( $url_args, Auth::$url );
 		?>
 		<div class="wrap">
-			<h2><?php esc_html_e( 'Jobber Settings', 'jobber-plugin' ); ?></h2>
-			<p><?php esc_html_e( 'Connect to Jobber to sync your data.', 'jobber-plugin' ); ?></p>
+			<h2><?php esc_html_e( 'Jobber Settings', 'jobber-wp' ); ?></h2>
+			<p><?php esc_html_e( 'Connect to Jobber to sync your data.', 'jobber-wp' ); ?></p>
 			<div style="margin-top: 2rem;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
 					<a href="<?php echo esc_url( $auth_url ); ?>" class="button button-primary">
-						<?php esc_html_e( 'Connect to Jobber', 'jobber-plugin' ); ?>
+						<?php esc_html_e( 'Connect to Jobber', 'jobber-wp' ); ?>
 					</a>
 				<?php else : ?>
-					<p><?php esc_html_e( 'You are connected to Jobber.', 'jobber-plugin' ); ?></p>
+					<p><?php esc_html_e( 'You are connected to Jobber.', 'jobber-wp' ); ?></p>
 				<?php endif; ?>
 			</div>
 		</div>

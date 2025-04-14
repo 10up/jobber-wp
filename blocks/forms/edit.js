@@ -28,7 +28,7 @@ export default function Edit({ attributes, setAttributes }) {
 		} ).then((response) => {
 				const url = response?.form?.iframeUrl;
 				if (!url) {
-					throw new Error(__('Form URL not found in API response', 'jobber'));
+					throw new Error(__('Form URL not found in API response', 'jobber-wp'));
 				}
 				setIframeUrl(url);
 				setLoading(false);
@@ -41,23 +41,23 @@ export default function Edit({ attributes, setAttributes }) {
 
 	return (
 		<div {...useBlockProps()}>
-			{loading && <h3>{__('Jobber Form', 'jobber')}</h3>}
+			{loading && <h3>{__('Jobber Form', 'jobber-wp')}</h3>}
 
 			<InspectorControls>
-				<PanelBody title={__('Form Settings', 'jobber')}>
+				<PanelBody title={__('Form Settings', 'jobber-wp')}>
 					<SelectControl
-						label={__('Form Type', 'jobber')}
+						label={__('Form Type', 'jobber-wp')}
 						value={formType}
 						options={[
-							{ label: __('Booking', 'jobber'), value: 'booking' },
-							{ label: __('Request', 'jobber'), value: 'request' },
+							{ label: __('Booking', 'jobber-wp'), value: 'booking' },
+							{ label: __('Request', 'jobber-wp'), value: 'request' },
 						]}
 						onChange={(value) => setAttributes({ formType: value })}
 					/>
 				</PanelBody>
 			</InspectorControls>
 
-			{loading && <p>{__('Loading...', 'jobber')}</p>}
+			{loading && <p>{__('Loading...', 'jobber-wp')}</p>}
 			{error && <p style={{ color: 'red' }}>{error}</p>}
 
 			{!loading && iframeUrl && (
@@ -66,7 +66,7 @@ export default function Edit({ attributes, setAttributes }) {
 					width="100%"
 					height="600"
 					style={{ border: 'none' }}
-					title={__('Jobber Form', 'jobber')}
+					title={__('Jobber Form', 'jobber-wp')}
 				/>
 			)}
 		</div>

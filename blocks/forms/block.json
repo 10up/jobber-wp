@@ -18,6 +18,6 @@
 			"default": "request"
 		}
 	},
-	"textdomain": "jobber-plugin",
+	"textdomain": "jobber-wp",
 	"editorScript": "file:../../dist/blocks/jobber-forms.js"
 }

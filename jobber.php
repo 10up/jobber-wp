@@ -9,7 +9,7 @@
  * Author URI:        https://10up.com
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       jobber-plugin
+ * Text Domain:       jobber-wp
  * Domain Path:       /languages
  * Update URI:        https://github.com/10up/jobber-wp
  *
