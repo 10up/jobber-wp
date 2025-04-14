@@ -58,7 +58,7 @@ export default function Edit({ attributes, setAttributes }) {
 			</InspectorControls>
 
 			{loading && <p>{__('Loading...', 'jobber')}</p>}
-			{error && <p style={{ color: 'red' }}>{error}</p>}
+			{error && <p style={{ color: '#cc1818', border: '1px solid #e0e0e0', padding: '1rem' }}>{__('Error:', 'jobber')} {error}</p>}
 
 			{!loading && iframeUrl && (
 				<iframe
