@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    uses: 10up/jobber-wp/.github/workflows/build-release-zip.yml@develop
+    uses: 10up/jobber-wp/.github/workflows/build-release-zip.yml@add/12 # TODO: update this to develop when merged.
 
   test:
     needs: build
