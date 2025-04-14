@@ -18,4 +18,5 @@
 /package.json
 /phpcs-compat.xml
 /phpcs.xml
+/phpstan.neon.dist
 /README.md

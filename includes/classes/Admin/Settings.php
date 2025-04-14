@@ -102,7 +102,7 @@ class Settings {
 		}
 
 		// Delete the option if it exists.
-		delete_option( self::SETTINGS_KEY, '' );
+		delete_option( self::SETTINGS_KEY );
 
 		$tokens = new Token();
 		$token  = $tokens->generate();
