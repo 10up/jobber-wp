@@ -13,12 +13,31 @@
     "php": ">=7.4",
     "10up/wp-framework": "~1.0.0"
   },
+  "require-dev": {
+    "szepeviktor/phpstan-wordpress": "^2.0.1",
+    "phpstan/extension-installer": "1.4.x-dev",
+    "php-stubs/wp-cli-stubs": "dev-master",
+    "johnbillion/wp-compat": "^1.1.0",
+    "phpstan/phpstan-deprecation-rules": "^2.0.1",
+    "sirbrillig/phpcs-changed": "^2.11",
+    "phpcompatibility/php-compatibility": "dev-develop as 9.99.99"
+  },
   "autoload": {
     "psr-4": {
       "Jobber\\": "includes/classes/"
     },
     "files": [
       "includes/helpers/helpers.php"
+    ]
+  },
+  "scripts": {
+    "lint": "phpcs -s . --runtime-set testVersion 7.4-",
+    "lint-fix": "phpcbf .",
+    "phpstan": "phpstan analyse --memory-limit=2048M -v"
+  },
+  "archive": {
+    "exclude": [
+      "!/vendor/"
     ]
   }
 }
