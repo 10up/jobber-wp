@@ -49,8 +49,8 @@ class Settings {
 	 */
 	public function register_menu() {
 		add_options_page(
-			__( 'Jobber Settings', 'jobber-plugin' ),
-			__( 'Jobber Settings', 'jobber-plugin' ),
+			__( 'Jobber Forms', 'jobber-plugin' ),
+			__( 'Jobber Forms', 'jobber-plugin' ),
 			'manage_options',
 			'jobber_settings',
 			[ $this, 'render_page' ]
