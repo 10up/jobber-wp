@@ -7,7 +7,7 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, SelectControl } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 
-export default function Edit({ attributes, setAttributes }) {
+const Edit = ({ attributes, setAttributes }) => {
 	const { formType } = attributes;
 	const [iframeUrl, setIframeUrl] = useState('');
 	const [loading, setLoading] = useState(false);
@@ -22,10 +22,11 @@ export default function Edit({ attributes, setAttributes }) {
 		setLoading(true);
 		setError(null);
 
-		apiFetch( {
+		apiFetch({
 			path: `jobber/v1/get_form?form_type=${formType}`,
 			method: 'GET',
-		} ).then((response) => {
+		})
+			.then((response) => {
 				const url = response?.form?.iframeUrl;
 				if (!url) {
 					throw new Error(__('Form URL not found in API response', 'jobber-wp'));
@@ -71,4 +72,6 @@ export default function Edit({ attributes, setAttributes }) {
 			)}
 		</div>
 	);
-}
+};
+
+export default Edit;
