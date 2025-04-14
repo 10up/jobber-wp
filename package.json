@@ -15,8 +15,8 @@
     "node": ">=20.0.0"
   },
   "devDependencies": {
-    "10up-toolkit": "^6.3.0",
     "@10up/babel-preset-default": "^2.1.2",
+    "10up-toolkit": "^6.4.0",
     "jest-environment-jsdom": "^29.7.0"
   },
   "dependencies": {
