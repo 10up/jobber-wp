@@ -19,8 +19,5 @@
 		}
 	},
 	"textdomain": "jobber-plugin",
-	"editorScript": "file:../../dist/blocks/jobber-forms.js",
-	"editorStyle": "file:./editor.css",
-	"style": "file:./style.css",
-	"viewScript": "file:./view.js"
+	"editorScript": "file:../../dist/blocks/jobber-forms.js"
 }
