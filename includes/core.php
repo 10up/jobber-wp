@@ -25,6 +25,8 @@ function setup() {
 	// Hook to allow async or defer on asset loading.
 	add_filter( 'script_loader_tag', __NAMESPACE__ . '\\script_loader_tag', 10, 2 );
 
+	add_filter( 'plugin_action_links_' . JOBBER_PLUGIN_BASENAME, __NAMESPACE__ . '\\filter_plugin_action_links' );
+
 	do_action( 'jobber_plugin_loaded' );
 }
 
@@ -198,4 +200,27 @@ function script_loader_tag( $tag, $handle ) {
 	}
 
 	return $tag;
+}
+
+/**
+ * Add a settings link to the plugin action row.
+ *
+ * @param array $links The plugin action links.
+ * @return array
+ */
+function filter_plugin_action_links( $links ) {
+	if ( ! is_array( $links ) ) {
+		return $links;
+	}
+
+	return array_merge(
+		[
+			'settings' => sprintf(
+				'<a href="%s"> %s </a>',
+				esc_url( admin_url( 'options-general.php?page=jobber_settings' ) ),
+				esc_html__( 'Settings', 'jobber-wp' )
+			),
+		],
+		$links
+	);
 }

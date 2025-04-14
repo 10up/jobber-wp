@@ -23,6 +23,7 @@ define( 'JOBBER_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'JOBBER_PLUGIN_INC', JOBBER_PLUGIN_PATH . 'includes/' );
 define( 'JOBBER_PLUGIN_DIST_URL', JOBBER_PLUGIN_URL . 'dist/' );
 define( 'JOBBER_PLUGIN_DIST_PATH', JOBBER_PLUGIN_PATH . 'dist/' );
+define( 'JOBBER_PLUGIN_BASENAME', plugin_basename( __DIR__ . '/plugin.php' ) );
 
 $is_local_env = in_array( wp_get_environment_type(), [ 'local', 'development' ], true );
 $is_local_url = strpos( home_url(), '.test' ) || strpos( home_url(), '.local' );
