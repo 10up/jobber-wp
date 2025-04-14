@@ -41,7 +41,7 @@ jobs:
 
       - name: Install Node dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --no-optional
+        run: npm ci --omit=optional
 
       - name: Build plugin
         run: npm run build
