@@ -93,8 +93,9 @@ class Jobber {
 
 		// Request Headers
 		$headers = [
-			'Authorization' => "Bearer {$this->access_token}",
-			'Content-Type'  => 'application/json',
+			'Authorization'            => "Bearer {$this->access_token}",
+			'Content-Type'             => 'application/json',
+			'X-JOBBER-GRAPHQL-VERSION' => '2023-08-18',
 		];
 
 		// Request Arguments
@@ -116,5 +117,65 @@ class Jobber {
 		}
 
 		return $response;
+	}
+
+	/**
+	 * Get the form from Jobber.
+	 *
+	 * @param string $form_type The type of form to get. Default is 'request'.
+	 * @return array|WP_Error
+	 */
+	public function get_form( string $form_type = 'request' ) {
+		if ( 'booking' === $form_type ) {
+			$query = '
+				query booking {
+					onlineBookingConfiguration {
+						bookingEmbedScript
+						bookingUrl
+					}
+				}
+			';
+		} elseif ( 'request' === $form_type ) {
+			$query = '
+				query request {
+					requestSettings {
+						requestEmbedScript
+						requestUrl
+					}
+				}
+			';
+		} else {
+			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber-plugin' ) );
+		}
+
+		return $this->query( $query );
+	}
+
+	/**
+	 * Get the clients from Jobber.
+	 *
+	 * @return array|WP_Error
+	 */
+	public function get_clients() {
+		$query = '
+			query {
+				clients {
+					edges {
+						node {
+							id
+							name
+							emails {
+								address
+							}
+							phones {
+								number
+							}
+						}
+					}
+				}
+			}
+		';
+
+		return $this->query( $query );
 	}
 }

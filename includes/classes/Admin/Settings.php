@@ -96,9 +96,13 @@ class Settings {
 	 * @return string|bool
 	 */
 	protected function set_auth_token() {
-		if ( Auth::is_authorized() ) {
-			return false;
+		$token = Token::get_token();
+		if ( ! empty( $token ) ) {
+			return $token;
 		}
+
+		// Delete the option if it exists.
+		delete_option( self::SETTINGS_KEY, '' );
 
 		$tokens = new Token();
 		$token  = $tokens->generate();
