@@ -45,7 +45,7 @@ final class Encryption {
 		try {
 			$key   = sodium_crypto_generichash( $this->key, '', SODIUM_CRYPTO_SECRETBOX_KEYBYTES );
 			$nonce = random_bytes( SODIUM_CRYPTO_SECRETBOX_NONCEBYTES );
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			error_log( 'Jobber encryption failed.' );
 			error_log( 'Exception: ' . $e->getMessage() );
 			error_log( 'Trace: ' . $e->getTraceAsString() );
@@ -57,7 +57,7 @@ final class Encryption {
 		try {
 			$encrypted = sodium_crypto_secretbox( $value . $this->salt, $nonce, $key );
 			return sodium_bin2base64( $nonce . $encrypted, SODIUM_BASE64_VARIANT_ORIGINAL );
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			error_log( 'Jobber encryption failed.' );
 			error_log( 'Exception: ' . $e->getMessage() );
 			error_log( 'Trace: ' . $e->getTraceAsString() );
@@ -80,7 +80,7 @@ final class Encryption {
 
 			$nonce            = mb_substr( $decoded, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit' );
 			$encrypted_result = mb_substr( $decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit' );
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			error_log( 'Jobber decryption failed.' );
 			error_log( 'Exception: ' . $e->getMessage() );
 			error_log( 'Trace: ' . $e->getTraceAsString() );
@@ -96,7 +96,7 @@ final class Encryption {
 				return false;
 			}
 			return substr( $value, 0, - strlen( $this->salt ) );
-		} catch ( Exception $e ) {
+		} catch ( \Exception $e ) {
 			error_log( 'Jobber decryption failed.' );
 			error_log( 'Exception: ' . $e->getMessage() );
 			error_log( 'Trace: ' . $e->getTraceAsString() );

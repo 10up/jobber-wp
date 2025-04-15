@@ -1,5 +1,5 @@
 {
-  "name": "jobber-plugin",
+  "name": "jobber-wp",
   "version": "1.0.0",
   "scripts": {
     "start": "npm run watch",
@@ -9,7 +9,9 @@
     "lint-js": "10up-toolkit lint-js",
     "lint-style": "10up-toolkit lint-style",
     "test": "10up-toolkit test-unit-jest --passWithNoTests",
-    "clean-dist": "rm -rf ./dist"
+    "clean-dist": "rm -rf ./dist",
+    "archive": "composer archive --file=$npm_package_name --format=zip",
+    "postarchive": "rm -rf ./release && unzip $npm_package_name.zip -d ./release"
   },
   "engines": {
     "node": ">=20.0.0"

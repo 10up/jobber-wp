@@ -77,13 +77,13 @@ class Blocks {
 		}
 
 		if ( empty( $iframe_url ) ) {
-			return '<p class="jobber-error">' . esc_html__( 'Form iframe URL not found.', 'jobber-plugin' ) . '</p>';
+			return '<p class="jobber-error">' . esc_html__( 'Form iframe URL not found.', 'jobber-wp' ) . '</p>';
 		}
 
 		return sprintf(
 			'<div class="jobber-embed-block"><iframe src="%s" width="100%%" height="600" style="border:none;" title="%s"></iframe></div>',
 			esc_url( $iframe_url ),
-			esc_attr__( 'Jobber Form', 'jobber-plugin' )
+			esc_attr__( 'Jobber Form', 'jobber-wp' )
 		);
 	}
 }

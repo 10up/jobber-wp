@@ -36,9 +36,9 @@ function setup() {
  * @return void
  */
 function i18n() {
-	$locale = apply_filters( 'plugin_locale', get_locale(), 'jobber-plugin' );
-	load_textdomain( 'jobber-plugin', WP_LANG_DIR . '/jobber-plugin/jobber-plugin-' . $locale . '.mo' );
-	load_plugin_textdomain( 'jobber-plugin', false, plugin_basename( JOBBER_PLUGIN_PATH ) . '/languages/' );
+	$locale = apply_filters( 'plugin_locale', get_locale(), 'jobber-wp' );
+	load_textdomain( 'jobber-wp', WP_LANG_DIR . '/jobber-wp/jobber-wp-' . $locale . '.mo' );
+	load_plugin_textdomain( 'jobber-wp', false, plugin_basename( JOBBER_PLUGIN_PATH ) . '/languages/' );
 }
 
 /**
@@ -58,7 +58,7 @@ function init() {
 				printf(
 					'<div class="%1$s"><p>%2$s</p></div>',
 					esc_attr( $class ),
-					wp_kses_post( __( 'Please ensure the <a href="https://github.com/10up/wp-framework"><code>10up/wp-framework</code></a> composer package is installed.', 'jobber-plugin' ) )
+					wp_kses_post( __( 'Please ensure the <a href="https://github.com/10up/wp-framework"><code>10up/wp-framework</code></a> composer package is installed.', 'jobber-wp' ) )
 				);
 			}
 		);

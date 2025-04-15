@@ -83,7 +83,7 @@ class Jobber {
 	 */
 	protected function query( $query ) {
 		if ( empty( $this->access_token ) ) {
-			return new WP_Error( 'jobber_no_access_token', __( 'No access token found.', 'jobber-plugin' ) );
+			return new WP_Error( 'jobber_no_access_token', __( 'No access token found.', 'jobber-wp' ) );
 		}
 
 		// GraphQL Query
@@ -145,7 +145,7 @@ class Jobber {
 				}
 			';
 		} else {
-			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber-plugin' ) );
+			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber-wp' ) );
 		}
 
 		return $this->query( $query );
