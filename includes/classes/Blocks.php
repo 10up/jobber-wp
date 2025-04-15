@@ -56,9 +56,9 @@ class Blocks {
 		$response = $jobber->get_form( $form_type );
 
 		if ( is_wp_error( $response ) ) {
-			// If we encounter an error when rendering on the front-end,
-			// do not render anything instead of showing an error message,
-			// as the error message just confuses the actual user.
+			// If we encounter an error return nothing
+			// instead of returning an error message since the
+			// end user can't do anything about the error.
 			// see https://github.com/10up/jobber-wp/issues/10#issue-2993579619.
 			return '';
 		}
@@ -78,9 +78,9 @@ class Blocks {
 		}
 
 		if ( empty( $iframe_url ) ) {
-			// If no iframe URL is returned on the front-end,
-			// do not render anything instead of showing an error message,
-			// as the error message just confuses the actual user.
+			// If no iframe URL is returned, return nothing
+			// instead of returning an error message since the
+			// end user can't do anything about the error.
 			// see https://github.com/10up/jobber-wp/issues/10#issue-2993579619.
 			return '';
 		}
