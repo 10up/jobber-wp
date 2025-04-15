@@ -59,7 +59,7 @@ const Edit = ({ attributes, setAttributes }) => {
 			</InspectorControls>
 
 			{loading && <p>{__('Loading...', 'jobber-wp')}</p>}
-			{error && <p style={{ color: 'red' }}>{error}</p>}
+			{error && <p style={{ color: '#cc1818', border: '1px solid #e0e0e0', padding: '1rem' }}>{__('Error:', 'jobber-wp')} {error}</p>}
 
 			{!loading && iframeUrl && (
 				<iframe

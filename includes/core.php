@@ -21,6 +21,7 @@ function setup() {
 	add_action( 'init', __NAMESPACE__ . '\\init', (int) apply_filters( 'jobber_plugin_init_priority', 8 ) );
 	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\admin_scripts' );
 	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\admin_styles' );
+	add_action( 'admin_notices', __NAMESPACE__ . '\\maybe_render_notices', 0 );
 
 	// Hook to allow async or defer on asset loading.
 	add_filter( 'script_loader_tag', __NAMESPACE__ . '\\script_loader_tag', 10, 2 );
@@ -78,6 +79,9 @@ function activate() {
 	// First load the init scripts in case any rewrite functionality is being loaded
 	init();
 	flush_rewrite_rules();
+
+	// Set a transient to show the activation notice.
+	set_transient( 'jobber_activation_notice', 'jobber', HOUR_IN_SECONDS );
 }
 
 /**
@@ -166,6 +170,49 @@ function admin_styles() {
 		[],
 		Utility\get_asset_info( 'admin', 'version' ),
 	);
+}
+
+/**
+ * Decide if an admin notice needs to render.
+ */
+function maybe_render_notices() {
+	// Only show these notices to admins.
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
+	render_activation_notice();
+}
+
+/**
+ * Render an activation notice, if needed.
+ */
+function render_activation_notice() {
+	if ( ! get_transient( 'jobber_activation_notice' ) ) {
+		return;
+	}
+
+	// Prevent showing the default WordPress "Plugin Activated" notice.
+	unset( $_GET['activate'] ); // phpcs:ignore WordPress.Security.NonceVerification
+	?>
+
+	<div data-notice="plugin-activation" class="notice notice-success is-dismissible">
+		<div id="jobber-activation-notice" style="padding: 15px 5px;">
+			<div class="jobber-logo">
+				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber', 'jobber-wp' ); ?>" style="max-width: 200px" />
+			</div>
+			<div class="jobber-activation-message" style="margin: 10px 0;">
+				<p><?php esc_html_e( 'Thanks for downloading the Jobber Forms plugin.', 'jobber-wp' ); ?></p>
+				<p><?php esc_html_e( 'Connect your site to Jobber to get started.', 'jobber-wp' ); ?></p>
+			</div>
+			<a class="components-button is-primary" href="<?php echo esc_url( admin_url( 'options-general.php?page=jobber_settings' ) ); ?>">
+				<?php esc_html_e( 'Connect now', 'jobber-wp' ); ?>
+			</a>
+		</div>
+	</div>
+
+	<?php
+	delete_transient( 'jobber_activation_notice' );
 }
 
 /**
