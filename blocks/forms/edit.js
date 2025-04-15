@@ -40,10 +40,11 @@ const Edit = ({ attributes, setAttributes }) => {
 			});
 	}, [formType]);
 
-	return (
-		<div {...useBlockProps()}>
-			{loading && <h3>{__('Jobber Form', 'jobber-wp')}</h3>}
+	const blockProps = useBlockProps();
+	const settingsUrl = `${window.location.origin}/wp-admin/options-general.php?page=jobber_settings`;
 
+	return (
+		<div {...blockProps}>
 			<InspectorControls>
 				<PanelBody title={__('Form Settings', 'jobber-wp')}>
 					<SelectControl
@@ -59,7 +60,27 @@ const Edit = ({ attributes, setAttributes }) => {
 			</InspectorControls>
 
 			{loading && <p>{__('Loading...', 'jobber-wp')}</p>}
-			{error && <p style={{ color: '#cc1818', border: '1px solid #e0e0e0', padding: '1rem' }}>{__('Error:', 'jobber-wp')} {error}</p>}
+
+			{error && (
+				<div
+					style={{
+						background: '#fef2f2',
+						color: '#b91c1c',
+						border: '1px solid #fca5a5',
+						padding: '1rem',
+						borderRadius: '6px',
+						marginTop: '1rem',
+					}}
+				>
+					<p><strong>{__('Error:', 'jobber-wp')}</strong> {error}</p>
+					<p>
+						{__('Please make sure your Jobber account is connected.', 'jobber-wp')}{' '}
+						<a href={settingsUrl} target="_blank" rel="noopener noreferrer">
+							{__('Go to Jobber Settings', 'jobber-wp')}
+						</a>
+					</p>
+				</div>
+			)}
 
 			{!loading && iframeUrl && (
 				<iframe
