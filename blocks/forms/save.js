@@ -1,8 +1,8 @@
 /**
  * Don't save anything as we render things dynamically.
  *
- * @return {Element} Element to render.
+ * @returns {null} Dynamic blocks do not save the HTML.
  */
-export default function save() {
-	return null;
-}
+const Save = () => null;
+
+export default Save;

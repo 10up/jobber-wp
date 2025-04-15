@@ -26,6 +26,8 @@ function setup() {
 	// Hook to allow async or defer on asset loading.
 	add_filter( 'script_loader_tag', __NAMESPACE__ . '\\script_loader_tag', 10, 2 );
 
+	add_filter( 'plugin_action_links_' . JOBBER_PLUGIN_BASENAME, __NAMESPACE__ . '\\filter_plugin_action_links' );
+
 	do_action( 'jobber_plugin_loaded' );
 }
 
@@ -35,9 +37,9 @@ function setup() {
  * @return void
  */
 function i18n() {
-	$locale = apply_filters( 'plugin_locale', get_locale(), 'jobber-plugin' );
-	load_textdomain( 'jobber-plugin', WP_LANG_DIR . '/jobber-plugin/jobber-plugin-' . $locale . '.mo' );
-	load_plugin_textdomain( 'jobber-plugin', false, plugin_basename( JOBBER_PLUGIN_PATH ) . '/languages/' );
+	$locale = apply_filters( 'plugin_locale', get_locale(), 'jobber-wp' );
+	load_textdomain( 'jobber-wp', WP_LANG_DIR . '/jobber-wp/jobber-wp-' . $locale . '.mo' );
+	load_plugin_textdomain( 'jobber-wp', false, plugin_basename( JOBBER_PLUGIN_PATH ) . '/languages/' );
 }
 
 /**
@@ -57,7 +59,7 @@ function init() {
 				printf(
 					'<div class="%1$s"><p>%2$s</p></div>',
 					esc_attr( $class ),
-					wp_kses_post( __( 'Please ensure the <a href="https://github.com/10up/wp-framework"><code>10up/wp-framework</code></a> composer package is installed.', 'jobber-plugin' ) )
+					wp_kses_post( __( 'Please ensure the <a href="https://github.com/10up/wp-framework"><code>10up/wp-framework</code></a> composer package is installed.', 'jobber-wp' ) )
 				);
 			}
 		);
@@ -245,4 +247,27 @@ function script_loader_tag( $tag, $handle ) {
 	}
 
 	return $tag;
+}
+
+/**
+ * Add a settings link to the plugin action row.
+ *
+ * @param array $links The plugin action links.
+ * @return array
+ */
+function filter_plugin_action_links( $links ) {
+	if ( ! is_array( $links ) ) {
+		return $links;
+	}
+
+	return array_merge(
+		[
+			'settings' => sprintf(
+				'<a href="%s"> %s </a>',
+				esc_url( admin_url( 'options-general.php?page=jobber_settings' ) ),
+				esc_html__( 'Settings', 'jobber-wp' )
+			),
+		],
+		$links
+	);
 }

@@ -49,8 +49,8 @@ class Settings {
 	 */
 	public function register_menu() {
 		add_options_page(
-			__( 'Jobber Forms', 'jobber-plugin' ),
-			__( 'Jobber Forms', 'jobber-plugin' ),
+			__( 'Jobber Forms', 'jobber-wp' ),
+			__( 'Jobber Forms', 'jobber-wp' ),
 			'manage_options',
 			'jobber_settings',
 			[ $this, 'render_page' ]
@@ -78,15 +78,15 @@ class Settings {
 			<div class="jobber-logo" style="margin: 2rem 0;">
 				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber', 'jobber-wp' ); ?>" style="max-width: 200px" />
 			</div>
-			<h2><?php esc_html_e( 'Settings', 'jobber-plugin' ); ?></h2>
-			<p><?php esc_html_e( 'Connect to your Jobber account to access your forms.', 'jobber-plugin' ); ?></p>
+			<h2><?php esc_html_e( 'Settings', 'jobber-wp' ); ?></h2>
+			<p><?php esc_html_e( 'Connect to your Jobber account to access your forms.', 'jobber-wp' ); ?></p>
 			<div style="margin-top: 2rem;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
 					<a href="<?php echo esc_url( $auth_url ); ?>" class="button button-primary">
-						<?php esc_html_e( 'Connect to Jobber', 'jobber-plugin' ); ?>
+						<?php esc_html_e( 'Connect to Jobber', 'jobber-wp' ); ?>
 					</a>
 				<?php else : ?>
-					<p><?php esc_html_e( 'You are connected to Jobber.', 'jobber-plugin' ); ?></p>
+					<p><?php esc_html_e( 'You are connected to Jobber.', 'jobber-wp' ); ?></p>
 				<?php endif; ?>
 			</div>
 		</div>
@@ -105,7 +105,7 @@ class Settings {
 		}
 
 		// Delete the option if it exists.
-		delete_option( self::SETTINGS_KEY, '' );
+		delete_option( self::SETTINGS_KEY );
 
 		$tokens = new Token();
 		$token  = $tokens->generate();

@@ -1,0 +1,24 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "\/wp-admin\/options-general.php?page=jobber_settings",
+	"preferredVersions": {
+		"php": "7.4",
+		"wp": "latest"
+	},
+	"steps": [
+		{
+			"step": "login",
+			"username": "admin"
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org\/plugins",
+				"slug": "jobber"
+			},
+			"options": {
+				"activate": true
+			}
+		}
+	]
+}
