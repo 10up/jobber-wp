@@ -56,10 +56,11 @@ class Blocks {
 		$response = $jobber->get_form( $form_type );
 
 		if ( is_wp_error( $response ) ) {
-			return sprintf(
-				'<p class="jobber-error">%s</p>',
-				esc_html( $response->get_error_message() )
-			);
+			// If we encounter an error return nothing
+			// instead of returning an error message since the
+			// end user can't do anything about the error.
+			// see https://github.com/10up/jobber-wp/issues/10#issue-2993579619.
+			return '';
 		}
 
 		$iframe_url = '';
@@ -77,7 +78,11 @@ class Blocks {
 		}
 
 		if ( empty( $iframe_url ) ) {
-			return '<p class="jobber-error">' . esc_html__( 'Form iframe URL not found.', 'jobber-wp' ) . '</p>';
+			// If no iframe URL is returned, return nothing
+			// instead of returning an error message since the
+			// end user can't do anything about the error.
+			// see https://github.com/10up/jobber-wp/issues/10#issue-2993579619.
+			return '';
 		}
 
 		return sprintf(
