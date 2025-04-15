@@ -72,7 +72,9 @@ const Edit = ({ attributes, setAttributes }) => {
 						marginTop: '1rem',
 					}}
 				>
-					<p><strong>{__('Error:', 'jobber-wp')}</strong> {error}</p>
+					<p>
+						<strong>{__('Error:', 'jobber-wp')}</strong> {error}
+					</p>
 					<p>
 						{__('Please make sure your Jobber account is connected.', 'jobber-wp')}{' '}
 						<a href={settingsUrl} target="_blank" rel="noopener noreferrer">
