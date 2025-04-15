@@ -7,7 +7,7 @@
 
 namespace Jobber\Admin;
 
-use TenupFramework\Module;
+use Jobber\Module;
 use Jobber\Auth;
 use Jobber\REST\Token;
 
