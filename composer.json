@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": ">=7.4",
-    "10up/wp-framework": "~1.0.0"
+    "haydenpierce/class-finder": "^0.5.3"
   },
   "require-dev": {
     "10up/phpcs-composer": "^3.0",

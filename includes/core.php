@@ -7,9 +7,8 @@
 
 namespace Jobber\Core;
 
-use TenupFramework\ModuleInitialization;
+use Jobber\ModuleInitialization;
 use Jobber\Utility;
-
 
 /**
  * Default setup routine
@@ -50,23 +49,8 @@ function i18n() {
 function init() {
 	do_action( 'jobber_plugin_before_init' );
 
-	if ( ! class_exists( '\TenupFramework\ModuleInitialization' ) ) {
-		add_action(
-			'admin_notices',
-			function () {
-				$class = 'notice notice-error';
-
-				printf(
-					'<div class="%1$s"><p>%2$s</p></div>',
-					esc_attr( $class ),
-					wp_kses_post( __( 'Please ensure the <a href="https://github.com/10up/wp-framework"><code>10up/wp-framework</code></a> composer package is installed.', 'jobber-wp' ) )
-				);
-			}
-		);
-		return;
-	}
-
 	ModuleInitialization::instance()->init_classes( JOBBER_PLUGIN_INC );
+
 	do_action( 'jobber_plugin_init' );
 }
 
