@@ -4,7 +4,8 @@
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, SelectControl } from '@wordpress/components';
+import { Button, PanelBody, Placeholder, SelectControl, Spinner } from '@wordpress/components';
+import { calendar } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 
 const Edit = ({ attributes, setAttributes }) => {
@@ -40,10 +41,11 @@ const Edit = ({ attributes, setAttributes }) => {
 			});
 	}, [formType]);
 
-	return (
-		<div {...useBlockProps()}>
-			{loading && <h3>{__('Jobber Form', 'jobber-wp')}</h3>}
+	const blockProps = useBlockProps();
+	const settingsUrl = `${window.location.origin}/wp-admin/options-general.php?page=jobber_settings`;
 
+	return (
+		<div {...blockProps}>
 			<InspectorControls>
 				<PanelBody title={__('Form Settings', 'jobber-wp')}>
 					<SelectControl
@@ -58,8 +60,31 @@ const Edit = ({ attributes, setAttributes }) => {
 				</PanelBody>
 			</InspectorControls>
 
-			{loading && <p>{__('Loading...', 'jobber-wp')}</p>}
-			{error && <p style={{ color: '#cc1818', border: '1px solid #e0e0e0', padding: '1rem' }}>{__('Error:', 'jobber-wp')} {error}</p>}
+			{loading && <Spinner />}
+
+			{error && (
+				<Placeholder icon={calendar} label={__('Jobber Forms', 'jobber-wp')} isColumnLayout>
+					<p style={{ marginBottom: '0' }}>
+						{__('The following error was encountered:', 'jobber-wp')}{' '}
+						<span style={{ color: '#b91c1c' }}>
+							<strong>{__('Error:', 'jobber-wp')}</strong> {error}
+						</span>
+					</p>
+					<p style={{ marginTop: '0', marginBottom: '0' }}>
+						{__(
+							'Double check the Jobber settings to ensure your account is properly connected.',
+							'jobber-wp',
+						)}{' '}
+					</p>
+					<Button
+						variant="secondary"
+						onClick={() => window.open(settingsUrl, '_blank')}
+						style={{ width: 'fit-content' }}
+					>
+						{__('Go to Jobber Settings', 'jobber-wp')}
+					</Button>
+				</Placeholder>
+			)}
 
 			{!loading && iframeUrl && (
 				<iframe
