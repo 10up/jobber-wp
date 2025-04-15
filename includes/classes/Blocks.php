@@ -56,10 +56,11 @@ class Blocks {
 		$response = $jobber->get_form( $form_type );
 
 		if ( is_wp_error( $response ) ) {
-			return sprintf(
-				'<p class="jobber-error">%s</p>',
-				esc_html( $response->get_error_message() )
-			);
+			// if we encounter an error when rendering on the front-end,
+			// do not render anything instead of showing an error message,
+			// as the error message just confuses the actual user.
+			// see https://github.com/10up/jobber-wp/issues/10#issue-2993579619.
+			return '';
 		}
 
 		$iframe_url = '';
