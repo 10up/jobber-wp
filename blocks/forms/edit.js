@@ -4,7 +4,8 @@
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { PanelBody, SelectControl } from '@wordpress/components';
+import { Button, PanelBody, Placeholder, SelectControl, Spinner } from '@wordpress/components';
+import { calendar } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 
 const Edit = ({ attributes, setAttributes }) => {
@@ -59,29 +60,30 @@ const Edit = ({ attributes, setAttributes }) => {
 				</PanelBody>
 			</InspectorControls>
 
-			{loading && <p>{__('Loading...', 'jobber-wp')}</p>}
+			{loading && <Spinner />}
 
 			{error && (
-				<div
-					style={{
-						background: '#fef2f2',
-						color: '#b91c1c',
-						border: '1px solid #fca5a5',
-						padding: '1rem',
-						borderRadius: '6px',
-						marginTop: '1rem',
-					}}
-				>
-					<p>
-						<strong>{__('Error:', 'jobber-wp')}</strong> {error}
+				<Placeholder icon={calendar} label={__('Jobber Forms', 'jobber-wp')} isColumnLayout>
+					<p style={{ marginBottom: '0' }}>
+						{__('The following error was encountered:', 'jobber-wp')}{' '}
+						<span style={{ color: '#b91c1c' }}>
+							<strong>{__('Error:', 'jobber-wp')}</strong> {error}
+						</span>
 					</p>
-					<p>
-						{__('Please make sure your Jobber account is connected.', 'jobber-wp')}{' '}
-						<a href={settingsUrl} target="_blank" rel="noopener noreferrer">
-							{__('Go to Jobber Settings', 'jobber-wp')}
-						</a>
+					<p style={{ marginTop: '0', marginBottom: '0' }}>
+						{__(
+							'Double check the Jobber settings to ensure your account is properly connected.',
+							'jobber-wp',
+						)}{' '}
 					</p>
-				</div>
+					<Button
+						variant="secondary"
+						onClick={() => window.open(settingsUrl, '_blank')}
+						style={{ width: 'fit-content' }}
+					>
+						{__('Go to Jobber Settings', 'jobber-wp')}
+					</Button>
+				</Placeholder>
 			)}
 
 			{!loading && iframeUrl && (
