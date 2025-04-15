@@ -13,6 +13,7 @@ use Jobber\Module;
  * Base class for Jobber Blocks
  */
 class Blocks {
+
 	use Module;
 
 	/**

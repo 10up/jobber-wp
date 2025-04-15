@@ -49,7 +49,7 @@ function i18n() {
 function init() {
 	do_action( 'jobber_plugin_before_init' );
 
-	ModuleInitialization::instance()->init_classes( JOBBER_PLUGIN_INC );
+	ModuleInitialization::instance()->init_classes();
 
 	do_action( 'jobber_plugin_init' );
 }

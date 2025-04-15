@@ -14,6 +14,7 @@ use WP_Error;
  * Base class for Jobber API Connection
  */
 class Jobber {
+
 	use Module;
 
 	/**
