@@ -1,13 +1,15 @@
 # Jobber WordPress Plugin
 
-> [!IMPORTANT]  
+> [!IMPORTANT]
 > This repository is a work in progress.
 
 ## Overview
-This WordPress plugin connects a users Jobber account to WordPress through the Jobber API.  
+
+This WordPress plugin connects a users Jobber account to WordPress through the Jobber API.
 Middleware is used to handle oauth2 authentication.
 
 ## Usage
+
 1. Download the plugin
 2. Activate in WordPress
 3. Visit the plugin Settings page.
