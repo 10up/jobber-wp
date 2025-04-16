@@ -7,13 +7,14 @@
 
 namespace Jobber;
 
+use Jobber\Module;
 use WP_Error;
-use TenupFramework\Module;
 
 /**
  * Base class for Jobber API Connection
  */
 class Jobber {
+
 	use Module;
 
 	/**

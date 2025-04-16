@@ -7,12 +7,13 @@
 
 namespace Jobber;
 
-use TenupFramework\Module;
+use Jobber\Module;
 
 /**
  * Base class for Jobber Blocks
  */
 class Blocks {
+
 	use Module;
 
 	/**

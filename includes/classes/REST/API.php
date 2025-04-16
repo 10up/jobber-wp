@@ -7,7 +7,7 @@
 
 namespace Jobber\REST;
 
-use TenupFramework\Module;
+use Jobber\Module;
 
 /**
  * Jobber API Base

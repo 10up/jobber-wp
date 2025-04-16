@@ -12,6 +12,10 @@ Add a Jobber form block to your WordPress site.
 
 The Jobber plugin allows you to add a Jobber form block to your WordPress site. This block can render either a bookings or request form.
 
+== Installation ==
+
+Install through the WordPress directory or download, unzip and upload the files to your `/wp-content/plugins/` directory
+
 == Changelog ==
 
 = 1.0.0 - YYYY-MM-DD =
