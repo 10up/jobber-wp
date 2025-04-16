@@ -33,7 +33,7 @@ class API {
 	}
 
 	/**
-	 * Hook the module into WP.
+	 * Register needed hooks.
 	 */
 	public function register() {
 		add_action( 'rest_api_init', [ $this, 'register_routes' ] );
@@ -43,7 +43,7 @@ class API {
 	 * Register the REST API routes.
 	 */
 	public function register_routes() {
-		// Get Form.
+		// Get form.
 		register_rest_route(
 			self::$namespace,
 			'/get_form',
@@ -136,9 +136,9 @@ class API {
 	/**
 	 * Get the clients from Jobber.
 	 *
-	 * @return \WP_REST_Response
+	 * @return \WP_REST_Response|\WP_Error
 	 */
-	public function get_clients(): \WP_REST_Response {
+	public function get_clients() {
 		$jobber  = new \Jobber\Jobber();
 		$clients = $jobber->get_clients();
 

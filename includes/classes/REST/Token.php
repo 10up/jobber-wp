@@ -30,9 +30,7 @@ class Token extends API {
 	protected static $route = '/token';
 
 	/**
-	 * Hook module into WP.
-	 *
-	 * @return void
+	 * Register needed hooks.
 	 */
 	public function register() {
 		add_action( 'rest_api_init', [ $this, 'register_routes' ] );
@@ -40,8 +38,6 @@ class Token extends API {
 
 	/**
 	 * Register the REST API routes.
-	 *
-	 * @return void
 	 */
 	public function register_routes() {
 		register_rest_route(
@@ -65,22 +61,24 @@ class Token extends API {
 	 * Validate the token generated for the middleware.
 	 *
 	 * @param WP_REST_Request $request The REST request object.
-	 * @param boolean         $return  Whether to return the result or not.
+	 * @param bool            $rtn     Whether to return the result or not.
 	 * @return mixed
 	 */
-	public function validate_token( WP_REST_Request $request, $return = false ) {
+	public function validate_token( WP_REST_Request $request, bool $rtn = false ) {
 		$token = $request->get_param( self::$key );
+
 		if ( $this->validate( $token ) ) {
-			if ( $return ) {
+			if ( $rtn ) {
 				return true;
 			}
 
 			wp_send_json_success();
 		}
 
-		if ( $return ) {
+		if ( $rtn ) {
 			return false;
 		}
+
 		wp_send_json_error( [ 'message' => 'Invalid token' ], 401 );
 	}
 
@@ -88,14 +86,15 @@ class Token extends API {
 	 * Validate the token generated for the middleware.
 	 *
 	 * @param string $token The token to validate
-	 * @return boolean
+	 * @return bool
 	 */
-	protected function validate( $token ) {
+	protected function validate( string $token ): bool {
 		if ( empty( $token ) ) {
 			return false;
 		}
 
 		$saved = get_transient( self::$key );
+
 		if ( empty( $saved ) || $token !== $saved ) {
 			return false;
 		}
@@ -108,7 +107,7 @@ class Token extends API {
 	 *
 	 * @return string
 	 */
-	public function generate() {
+	public function generate(): string {
 		return bin2hex( openssl_random_pseudo_bytes( 16 ) );
 	}
 
@@ -116,7 +115,6 @@ class Token extends API {
 	 * Save the token for 5 minutes.
 	 *
 	 * @param string $token The token to save.
-	 * @return void
 	 */
 	public function save( $token ) {
 		set_transient( self::$key, $token, 5 * MINUTE_IN_SECONDS );
@@ -125,9 +123,9 @@ class Token extends API {
 	/**
 	 * Get the token.
 	 *
-	 * @return string
+	 * @return string|bool
 	 */
-	public static function get_token(): string {
+	public static function get_token() {
 		return get_transient( self::$key );
 	}
 }

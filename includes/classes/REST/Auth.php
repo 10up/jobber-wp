@@ -23,9 +23,7 @@ class Auth extends API {
 	protected static $route = '/auth';
 
 	/**
-	 * Hook module into WP.
-	 *
-	 * @return void
+	 * Register needed hooks
 	 */
 	public function register() {
 		add_action( 'rest_api_init', [ $this, 'register_routes' ] );
@@ -33,8 +31,6 @@ class Auth extends API {
 
 	/**
 	 * Register the REST API routes.
-	 *
-	 * @return void
 	 */
 	public function register_routes() {
 		register_rest_route(
@@ -75,6 +71,7 @@ class Auth extends API {
 
 	/**
 	 * Save the Jobber API Token.
+	 *
 	 * Sends success or error response to middleware.
 	 *
 	 * @param WP_REST_Request $request The REST API request object.
@@ -100,6 +97,7 @@ class Auth extends API {
 		];
 
 		$status = \Jobber\Admin\Settings::update_settings( $tokens );
+
 		if ( $status ) {
 			wp_send_json_success();
 		} else {

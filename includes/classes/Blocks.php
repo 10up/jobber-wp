@@ -26,7 +26,7 @@ class Blocks {
 	}
 
 	/**
-	 * Hook the module into WP.
+	 * Register needed hooks.
 	 */
 	public function register() {
 		add_action( 'init', [ $this, 'register_block_types' ] );

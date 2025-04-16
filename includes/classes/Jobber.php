@@ -49,16 +49,14 @@ class Jobber {
 	/**
 	 * Can we register this module?
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function can_register() {
+	public function can_register(): bool {
 		return true;
 	}
 
 	/**
-	 * Hook module into WP.
-	 *
-	 * @return void
+	 * Register needed hooks.
 	 */
 	public function register() {
 		add_filter( 'allowed_redirect_hosts', [ $this, 'allow_jobber_redirect' ] );
@@ -82,7 +80,7 @@ class Jobber {
 	 * @param string $query GraphQL Query.
 	 * @return array|WP_Error
 	 */
-	protected function query( $query ) {
+	protected function query( string $query ) {
 		if ( empty( $this->access_token ) ) {
 			return new WP_Error( 'jobber_no_access_token', __( 'No access token found.', 'jobber-wp' ) );
 		}

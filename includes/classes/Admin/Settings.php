@@ -20,6 +20,7 @@ class Settings {
 
 	/**
 	 * Settings Key.
+	 *
 	 * All Jobber settings are stored under this meta key.
 	 *
 	 * @var string
@@ -31,21 +32,19 @@ class Settings {
 	 *
 	 * @return bool
 	 */
-	public function can_register() {
+	public function can_register(): bool {
 		return current_user_can( 'manage_options' );
 	}
 
 	/**
-	 * Registers the settings page.
-	 *
-	 * @return void
+	 * Register needed hooks.
 	 */
 	public function register() {
 		add_action( 'admin_menu', [ $this, 'register_menu' ] );
 	}
 
 	/**
-	 * Create the Settings Page.
+	 * Register the settings page.
 	 */
 	public function register_menu() {
 		add_options_page(
@@ -59,8 +58,6 @@ class Settings {
 
 	/**
 	 * Render the settings page.
-	 *
-	 * @return void
 	 */
 	public function render_page() {
 		$token    = $this->set_auth_token();
@@ -68,18 +65,23 @@ class Settings {
 			'clientUrl' => get_site_url(),
 			'returnUrl' => self::settings_url(),
 		];
+
 		if ( ! empty( $token ) ) {
 			$url_args[ Token::$key ] = $token;
 		}
 
 		$auth_url = add_query_arg( $url_args, Auth::$url );
 		?>
+
 		<div class="wrap">
 			<div class="jobber-logo" style="margin: 2rem 0;">
 				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber', 'jobber-wp' ); ?>" style="max-width: 200px" />
 			</div>
+
 			<h2><?php esc_html_e( 'Settings', 'jobber-wp' ); ?></h2>
+
 			<p><?php esc_html_e( 'Connect to your Jobber account to access your forms.', 'jobber-wp' ); ?></p>
+
 			<div style="margin-top: 2rem;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
 					<a href="<?php echo esc_url( $auth_url ); ?>" class="button button-primary">
@@ -90,6 +92,7 @@ class Settings {
 				<?php endif; ?>
 			</div>
 		</div>
+
 		<?php
 	}
 
@@ -119,7 +122,7 @@ class Settings {
 	 *
 	 * @return string
 	 */
-	public static function settings_url() {
+	public static function settings_url(): string {
 		return admin_url( 'options-general.php?page=' . self::SETTINGS_KEY );
 	}
 
@@ -129,7 +132,7 @@ class Settings {
 	 * @param array $settings Settings to update.
 	 * @return bool
 	 */
-	public static function update_settings( $settings = [] ) {
+	public static function update_settings( array $settings = [] ): bool {
 		return update_option( self::SETTINGS_KEY, wp_json_encode( $settings ) );
 	}
 

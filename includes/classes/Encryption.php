@@ -13,6 +13,7 @@ namespace Jobber;
  * Class Enryption
  */
 final class Encryption {
+
 	/**
 	 * Key to use for encryption.
 	 *
@@ -36,7 +37,7 @@ final class Encryption {
 	}
 
 	/**
-	 * The encryption method.
+	 * Encrypt a string.
 	 *
 	 * @param string $value Value to encryption.
 	 * @return string|bool Encrypted value. If encryption fails, returns the original value or false under certain conditions.
@@ -68,7 +69,7 @@ final class Encryption {
 	}
 
 	/**
-	 * The decryption method.
+	 * Decrypt a string.
 	 *
 	 * @param string $encrypted Encrypted value for decryption.
 	 * @return string|false Decrypted value. If decryption fails, returns the original value or false under certain conditions.

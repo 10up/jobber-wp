@@ -8,32 +8,40 @@
 namespace Jobber\Core;
 
 use Jobber\ModuleInitialization;
-use Jobber\Utility;
 
 /**
  * Default setup routine
- *
- * @return void
  */
 function setup() {
-	add_action( 'init', __NAMESPACE__ . '\\i18n' );
+	/**
+	 * Filters the plugin initialization hook priority.
+	 *
+	 * @since 1.0.0
+	 * @hook jobber_plugin_init_priority
+	 *
+	 * @param int $priority Hook priority. Default 8.
+	 *
+	 * @return int Filtered hook priority.
+	 */
 	add_action( 'init', __NAMESPACE__ . '\\init', (int) apply_filters( 'jobber_plugin_init_priority', 8 ) );
-	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\admin_scripts' );
-	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\admin_styles' );
+
+	add_action( 'init', __NAMESPACE__ . '\\i18n' );
 	add_action( 'admin_notices', __NAMESPACE__ . '\\maybe_render_notices', 0 );
 
-	// Hook to allow async or defer on asset loading.
 	add_filter( 'script_loader_tag', __NAMESPACE__ . '\\script_loader_tag', 10, 2 );
-
 	add_filter( 'plugin_action_links_' . JOBBER_PLUGIN_BASENAME, __NAMESPACE__ . '\\filter_plugin_action_links' );
 
+	/**
+	 * Allows running custom functionality after the plugin is loaded.
+	 *
+	 * @since 1.0.0
+	 * @hook jobber_plugin_loaded
+	 */
 	do_action( 'jobber_plugin_loaded' );
 }
 
 /**
  * Registers the default textdomain.
- *
- * @return void
  */
 function i18n() {
 	$locale = apply_filters( 'plugin_locale', get_locale(), 'jobber-wp' );
@@ -43,26 +51,33 @@ function i18n() {
 
 /**
  * Initializes the plugin and fires an action other plugins can hook into.
- *
- * @return void
  */
 function init() {
+	/**
+	 * Allows running custom functionality before the plugin is initialized.
+	 *
+	 * @since 1.0.0
+	 * @hook jobber_plugin_before_init
+	 */
 	do_action( 'jobber_plugin_before_init' );
 
 	ModuleInitialization::instance()->init_classes();
 
+	/**
+	 * Allows running custom functionality after the plugin is initialized.
+	 *
+	 * @since 1.0.0
+	 * @hook jobber_plugin_init
+	 */
 	do_action( 'jobber_plugin_init' );
 }
 
 /**
  * Activate the plugin
- *
- * @return void
  */
 function activate() {
-	// First load the init scripts in case any rewrite functionality is being loaded
+	// First load the init scripts.
 	init();
-	flush_rewrite_rules();
 
 	// Set a transient to show the activation notice.
 	set_transient( 'jobber_activation_notice', 'jobber', HOUR_IN_SECONDS );
@@ -70,90 +85,8 @@ function activate() {
 
 /**
  * Deactivate the plugin
- *
- * Uninstall routines should be in uninstall.php
- *
- * @return void
  */
 function deactivate() {
-}
-
-
-/**
- * The list of known contexts for enqueuing scripts/styles.
- *
- * @return array<string>
- */
-function get_enqueue_contexts() {
-	return [ 'admin', 'frontend', 'shared' ];
-}
-
-/**
- * Generate an URL to a script, taking into account whether SCRIPT_DEBUG is enabled.
- *
- * @param string $script Script file name (no .js extension)
- * @param string $context Context for the script ('admin', 'frontend', or 'shared')
- *
- * @throws \RuntimeException If an invalid $context is specified.
- *
- * @return string URL
- */
-function script_url( $script, $context ) {
-
-	if ( ! in_array( $context, get_enqueue_contexts(), true ) ) {
-		throw new \RuntimeException( 'Invalid $context specified in Jobber script loader.' );
-	}
-
-	return JOBBER_PLUGIN_URL . "dist/js/{$script}.js";
-}
-
-/**
- * Generate an URL to a stylesheet, taking into account whether SCRIPT_DEBUG is enabled.
- *
- * @param string $stylesheet Stylesheet file name (no .css extension)
- * @param string $context Context for the script ('admin', 'frontend', or 'shared')
- *
- * @throws \RuntimeException If an invalid $context is specified.
- *
- * @return string URL
- */
-function style_url( $stylesheet, $context ) {
-
-	if ( ! in_array( $context, get_enqueue_contexts(), true ) ) {
-		throw new \RuntimeException( 'Invalid $context specified in Jobber stylesheet loader.' );
-	}
-
-	return JOBBER_PLUGIN_URL . "dist/css/{$stylesheet}.css";
-}
-
-/**
- * Enqueue scripts for admin.
- *
- * @return void
- */
-function admin_scripts() {
-	wp_enqueue_script(
-		'jobber_plugin_admin',
-		script_url( 'admin', 'admin' ),
-		Utility\get_asset_info( 'admin', 'dependencies' ),
-		Utility\get_asset_info( 'admin', 'version' ),
-		true
-	);
-}
-
-
-/**
- * Enqueue styles for admin.
- *
- * @return void
- */
-function admin_styles() {
-	wp_enqueue_style(
-		'jobber_plugin_admin',
-		style_url( 'admin', 'admin' ),
-		[],
-		Utility\get_asset_info( 'admin', 'version' ),
-	);
 }
 
 /**
