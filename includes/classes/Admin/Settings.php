@@ -52,7 +52,7 @@ class Settings {
 			__( 'Jobber Forms', 'jobber-wp' ),
 			__( 'Jobber Forms', 'jobber-wp' ),
 			'manage_options',
-			'jobber_settings',
+			self::SETTINGS_KEY,
 			[ $this, 'render_page' ]
 		);
 	}
@@ -65,11 +65,11 @@ class Settings {
 	public function render_page() {
 		$token    = $this->set_auth_token();
 		$url_args = [
-			'clientUrl' => get_site_url(),
+			'clientUrl' => site_url( Token::get_endpoint() ),
 			'returnUrl' => self::settings_url(),
 		];
 		if ( ! empty( $token ) ) {
-			$url_args[ Token::$key ] = $token;
+			$url_args['clientToken'] = $token;
 		}
 
 		$auth_url = add_query_arg( $url_args, Auth::$url );

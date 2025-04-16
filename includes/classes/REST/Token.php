@@ -36,6 +36,29 @@ class Token extends API {
 	 */
 	public function register() {
 		add_action( 'rest_api_init', [ $this, 'register_routes' ] );
+		add_action( 'init', [ $this, 'check_token' ] );
+	}
+
+	/**
+	 * Check for a valid authentication.
+	 *
+	 * @return void
+	 */
+	public function check_token() {
+		/* phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized */
+		if ( ! isset( $_GET[ self::$key ] ) ) {
+			return;
+		}
+
+		// Make sure we have a valid token before saving.
+		$token = sanitize_text_field( wp_unslash( $_GET[ self::$key ] ) );
+		if (
+			$this->validate( $token ) &&
+			! empty( $_GET['tokens'] )
+		) {
+			\Jobber\Admin\Settings::update_settings( [ 'authenticated' => true ] );
+		}
+		/* phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized */
 	}
 
 	/**
@@ -59,6 +82,16 @@ class Token extends API {
 				],
 			]
 		);
+	}
+
+	/**
+	 * Get the endpoint for the token.
+	 *
+	 * @return string
+	 */
+	public static function get_endpoint() {
+		$namespace = self::$namespace;
+		return "wp-json/{$namespace}/" . ltrim( self::$route, '/' );
 	}
 
 	/**
@@ -95,7 +128,7 @@ class Token extends API {
 			return false;
 		}
 
-		$saved = get_transient( self::$key );
+		$saved = self::get_token();
 		if ( empty( $saved ) || $token !== $saved ) {
 			return false;
 		}
@@ -119,7 +152,7 @@ class Token extends API {
 	 * @return void
 	 */
 	public function save( $token ) {
-		set_transient( self::$key, $token, 5 * MINUTE_IN_SECONDS );
+		\Jobber\Admin\Settings::update_settings( [ self::$key => $token ] );
 	}
 
 	/**
@@ -128,6 +161,11 @@ class Token extends API {
 	 * @return string
 	 */
 	public static function get_token(): string {
-		return get_transient( self::$key );
+		$settings = \Jobber\Admin\Settings::get_settings();
+		if ( empty( $settings[ self::$key ] ) ) {
+			return '';
+		}
+
+		return $settings[ self::$key ];
 	}
 }

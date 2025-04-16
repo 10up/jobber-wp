@@ -21,7 +21,7 @@ class Jobber {
 	 *
 	 * @var string
 	 */
-	protected $api_url = 'https://api.getjobber.com/api';
+	protected $api_url = 'http://localhost:8000/jobber';
 
 	/**
 	 * API Access Token
@@ -31,18 +31,10 @@ class Jobber {
 	private $access_token;
 
 	/**
-	 * Refresh Token
-	 *
-	 * @var string
-	 */
-	private $refresh_token;
-
-	/**
 	 * Module Constructor
 	 */
 	public function __construct() {
-		$this->access_token  = Auth::get_token( 'access' );
-		$this->refresh_token = Auth::get_token( 'refresh' );
+		$this->access_token = Auth::get_token( 'jobber' );
 	}
 
 	/**
@@ -93,9 +85,9 @@ class Jobber {
 
 		// Request Headers
 		$headers = [
-			'Authorization'            => "Bearer {$this->access_token}",
 			'Content-Type'             => 'application/json',
 			'X-JOBBER-GRAPHQL-VERSION' => '2023-08-18',
+			'X-JOBBER-TOKEN'           => $this->access_token,
 		];
 
 		// Request Arguments

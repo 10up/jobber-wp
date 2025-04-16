@@ -17,7 +17,7 @@ class Auth {
 	 * @todo Replace this with the actual middleware URL when available.
 	 * @var string
 	 */
-	public static $url = 'http://localhost:8000/wp/auth';
+	public static $url = 'http://localhost:8000/auth';
 
 	/**
 	 * Determine if the user is authorized.
@@ -25,7 +25,12 @@ class Auth {
 	 * @return boolean
 	 */
 	public static function is_authorized() {
-		return ! empty( self::get_token() );
+		$settings = \Jobber\Admin\Settings::get_settings();
+		if ( empty( $settings['authenticated'] ) ) {
+			return false;
+		}
+
+		return $settings['authenticated'];
 	}
 
 	/**
@@ -43,7 +48,6 @@ class Auth {
 		}
 
 		// Decrypt token.
-		$encryption = new Encryption();
-		return $encryption->decrypt( $settings[ $token ] );
+		return $settings[ $token ];
 	}
 }
