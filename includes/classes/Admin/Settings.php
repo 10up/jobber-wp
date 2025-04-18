@@ -74,21 +74,58 @@ class Settings {
 		?>
 
 		<div class="wrap">
-			<div class="jobber-logo" style="margin: 2rem 0;">
-				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber', 'jobber-wp' ); ?>" style="max-width: 200px" />
+			<div class="jobber-settings__logo" style="margin: 2rem 0;">
+				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber logo', 'jobber-wp' ); ?>" style="max-width: 200px" />
 			</div>
 
-			<h2><?php esc_html_e( 'Settings', 'jobber-wp' ); ?></h2>
+			<h2 class="screen-reader-text"><?php esc_html_e( 'Settings', 'jobber-wp' ); ?></h2>
 
-			<p><?php esc_html_e( 'Connect to your Jobber account to access your forms.', 'jobber-wp' ); ?></p>
-
-			<div style="margin-top: 2rem;">
+			<div class="jobber-settings__container" style="max-width: 600px; font-size: 14px; line-height: 1.5;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
-					<a href="<?php echo esc_url( $auth_url ); ?>" class="button button-primary">
+					<p style="font-size: 14px; line-height: 1.7;">
+						<?php esc_html_e( 'The Jobber Forms plugin allows you to easily embed your Booking and Request forms using a new Jobber Forms block. To get started, follow the steps below:', 'jobber-wp' ); ?>
+					</p>
+					<ul style="list-style: decimal;">
+						<li style="margin-left: 2rem;"><?php esc_html_e( 'Click the Connect button below and log in with your Jobber account', 'jobber-wp' ); ?></li>
+						<li style="margin-left: 2rem;"><?php esc_html_e( 'Edit the page where you want to embed your form and insert the Jobber block.', 'jobber-wp' ); ?></li>
+						<li style="margin-left: 2rem;"><?php esc_html_e( 'Within the block settings, choose the form type, either Request or Booking.', 'jobber-wp' ); ?></li>
+					</ul>
+					<p style="font-size: 14px; line-height: 1.7;">
+						<?php
+						printf(
+							/* translators: %1$s: opening link tag, %2$s: closing link tag */
+							esc_html__( 'If you don\'t have a Jobber account yet, follow %1$sthese%2$s instructions to create that first.', 'jobber-wp' ),
+							'<a href="https://help.getjobber.com/hc/en-us/articles/360042653674-First-Steps-Basic-Account-Set-Up" target="_blank" rel="noreferrer noopener">',
+							'</a>'
+						);
+						?>
+					</p>
+				<?php endif; ?>
+			</div>
+
+			<div class="jobber-settings__connection" style="margin-top: 2rem; max-width: 600px; font-size: 14px; line-height: 1.5;">
+				<?php if ( ! Auth::is_authorized() ) : ?>
+					<a href="<?php echo esc_url( $auth_url ); ?>" class="components-button is-primary">
 						<?php esc_html_e( 'Connect to Jobber', 'jobber-wp' ); ?>
 					</a>
 				<?php else : ?>
-					<p><?php esc_html_e( 'You are connected to Jobber.', 'jobber-wp' ); ?></p>
+					<p style="font-size: 14px;">
+						<span class="dashicons dashicons-yes-alt" style="color: green;"></span>
+						<?php esc_html_e( 'You\'re connected!', 'jobber-wp' ); ?>
+					</p>
+					<p style="font-size: 14px; font-weight: 600;"><?php esc_html_e( 'Next steps:', 'jobber-wp' ); ?></p>
+					<ul style="list-style: decimal;">
+						<li style="margin-left: 2rem;"><?php esc_html_e( 'Edit the page where you want to embed your form and insert the Jobber block.', 'jobber-wp' ); ?></li>
+						<li style="margin-left: 2rem;"><?php esc_html_e( 'Within the block settings, choose the form type, either Request or Booking.', 'jobber-wp' ); ?></li>
+					</ul>
+
+					<p style="font-size: 14px; line-height: 1.7;">
+						<?php esc_html_e( 'If you no longer need to have a form embedded, you can disconnect your account by clicking the button below. Note that any existing forms you have embedded will no longer show.', 'jobber-wp' ); ?>
+					</p>
+					<!-- TODO: Wire this disconnect button up -->
+					<a href="#" class="is-secondary is-destructive components-button" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to disconnect from Jobber? Any forms you have embedded will no longer work.', 'jobber-wp' ); ?>');" style="margin-top: 1rem;">
+						<?php esc_html_e( 'Disconnect', 'jobber-wp' ); ?>
+					</a>
 				<?php endif; ?>
 			</div>
 		</div>
