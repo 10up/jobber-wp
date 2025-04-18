@@ -87,7 +87,7 @@ class Blocks {
 		}
 
 		return sprintf(
-			'<div class="jobber-embed-block">HEYYY!%s</div>',
+			'<div class="jobber-embed-block">%s</div>',
 			wp_kses(
 				$embed_script,
 				[
