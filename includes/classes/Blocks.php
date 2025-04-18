@@ -91,9 +91,20 @@ class Blocks {
 			wp_kses(
 				$embed_script,
 				[
-					'script' => [ 'src' => true ],
 					'div'    => [
+						'id'    => true,
 						'class' => true,
+					],
+					'script' => [
+						'src'       => true,
+						'vendor_id' => true,
+						'form_url'  => true,
+						'clienthub_id' => true,
+					],
+					'link'   => [
+						'rel'   => true,
+						'href'  => true,
+						'media' => true,
 					],
 				]
 			)
