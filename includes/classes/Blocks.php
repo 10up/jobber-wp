@@ -96,9 +96,9 @@ class Blocks {
 						'class' => true,
 					],
 					'script' => [
-						'src'       => true,
-						'vendor_id' => true,
-						'form_url'  => true,
+						'src'          => true,
+						'vendor_id'    => true,
+						'form_url'     => true,
 						'clienthub_id' => true,
 					],
 					'link'   => [
