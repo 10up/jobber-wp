@@ -64,22 +64,22 @@ class Blocks {
 			return '';
 		}
 
-		$iframe_url = '';
+		$embed_script = '';
 
 		if (
 			'request' === $form_type &&
-			isset( $response['data']['requestSettings']['requestUrl'] )
+			isset( $response['data']['requestSettings']['requestEmbedScript'] )
 		) {
-			$iframe_url = $response['data']['requestSettings']['requestUrl'];
+			$embed_script = $response['data']['requestSettings']['requestEmbedScript'];
 		} elseif (
 			'booking' === $form_type &&
-			isset( $response['data']['onlineBookingConfiguration']['bookingUrl'] )
+			isset( $response['data']['onlineBookingConfiguration']['bookingEmbedScript'] )
 		) {
-			$iframe_url = $response['data']['onlineBookingConfiguration']['bookingUrl'] . '/embedded';
+			$embed_script = $response['data']['onlineBookingConfiguration']['bookingEmbedScript'];
 		}
 
-		if ( empty( $iframe_url ) ) {
-			// If no iframe URL is returned, return nothing
+		if ( empty( $embed_script ) ) {
+			// If no iframe embed script is returned, return nothing
 			// instead of returning an error message since the
 			// end user can't do anything about the error.
 			// see https://github.com/10up/jobber-wp/issues/10#issue-2993579619.
@@ -87,9 +87,16 @@ class Blocks {
 		}
 
 		return sprintf(
-			'<div class="jobber-embed-block"><iframe src="%s" width="100%%" height="600" style="border:none;" title="%s"></iframe></div>',
-			esc_url( $iframe_url ),
-			esc_attr__( 'Jobber Form', 'jobber-wp' )
+			'<div class="jobber-embed-block">HEYYY!%s</div>',
+			wp_kses(
+				$embed_script,
+				[
+					'script' => [ 'src' => true ],
+					'div'    => [
+						'class' => true,
+					],
+				]
+			)
 		);
 	}
 }
