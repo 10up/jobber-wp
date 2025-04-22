@@ -133,6 +133,8 @@ class Settings {
 	 * @return bool
 	 */
 	public static function update_settings( array $settings = [] ): bool {
+		$current  = self::get_settings();
+		$settings = wp_parse_args( $settings, $current );
 		return update_option( self::SETTINGS_KEY, wp_json_encode( $settings ) );
 	}
 

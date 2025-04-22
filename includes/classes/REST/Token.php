@@ -43,7 +43,7 @@ class Token extends API {
 	 * @return void
 	 */
 	public function check_token() {
-		/* phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized */
+		/* phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended */
 		if ( ! isset( $_GET[ self::$key ] ) ) {
 			return;
 		}
@@ -56,7 +56,7 @@ class Token extends API {
 		) {
 			\Jobber\Admin\Settings::update_settings( [ 'authenticated' => true ] );
 		}
-		/* phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized */
+		/* phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended */
 	}
 
 	/**
