@@ -116,7 +116,7 @@ function render_activation_notice() {
 	<div data-notice="plugin-activation" class="notice notice-success is-dismissible">
 		<div id="jobber-activation-notice" style="padding: 15px 5px;">
 			<div class="jobber-logo">
-				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber', 'jobber-wp' ); ?>" style="max-width: 200px" />
+				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber', 'jobber-wp' ); ?>" style="max-width: 220px" />
 			</div>
 			<div class="jobber-activation-message" style="margin: 10px 0;">
 				<p><?php esc_html_e( 'Thanks for downloading the Jobber Forms plugin.', 'jobber-wp' ); ?></p>

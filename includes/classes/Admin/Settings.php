@@ -74,8 +74,8 @@ class Settings {
 		?>
 
 		<div class="wrap">
-			<div class="jobber-settings__logo" style="margin: 2rem 0;">
-				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber logo', 'jobber-wp' ); ?>" style="max-width: 200px" />
+			<div class="jobber-settings__logo" style="margin: 2rem 0 1rem;">
+				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber logo', 'jobber-wp' ); ?>" style="max-width: 220px" />
 			</div>
 
 			<h2 class="screen-reader-text"><?php esc_html_e( 'Settings', 'jobber-wp' ); ?></h2>

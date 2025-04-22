@@ -5,7 +5,6 @@
 	"version": "0.1.0",
 	"title": "Jobber Forms",
 	"category": "widgets",
-	"icon": "calendar",
 	"description": "Display a Booking or Request form.",
   "keywords": [ "jobber", "form", "booking", "request" ],
 	"example": {},
