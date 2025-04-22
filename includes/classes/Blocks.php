@@ -7,12 +7,13 @@
 
 namespace Jobber;
 
-use TenupFramework\Module;
+use Jobber\Module;
 
 /**
  * Base class for Jobber Blocks
  */
 class Blocks {
+
 	use Module;
 
 	/**
@@ -25,7 +26,7 @@ class Blocks {
 	}
 
 	/**
-	 * Hook the module into WP.
+	 * Register needed hooks.
 	 */
 	public function register() {
 		add_action( 'init', [ $this, 'register_block_types' ] );

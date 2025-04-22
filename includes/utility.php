@@ -1,13 +1,7 @@
 <?php
 /**
- * Utility functions for the plugin.
+ * Utility functions.
  *
- * This file is for custom helper functions.
- * These should not be confused with WordPress template
- * tags. Template tags typically use prefixing, as opposed
- * to Namespaces.
- *
- * @link https://developer.wordpress.org/themes/basics/template-tags/
  * @package Jobber
  */
 
@@ -39,4 +33,47 @@ function get_asset_info( $slug, $attribute = null ) {
 	}
 
 	return $asset;
+}
+
+/**
+ * The list of known contexts for enqueuing scripts/styles.
+ *
+ * @return array<string>
+ */
+function get_enqueue_contexts(): array {
+	return [ 'admin', 'frontend', 'shared' ];
+}
+
+/**
+ * Generate an URL to a script, taking into account whether SCRIPT_DEBUG is enabled.
+ *
+ * @throws \RuntimeException If an invalid $context is specified.
+ *
+ * @param string $script Script file name (no .js extension)
+ * @param string $context Context for the script ('admin', 'frontend', or 'shared')
+ * @return string
+ */
+function script_url( string $script, string $context ): string {
+	if ( ! in_array( $context, get_enqueue_contexts(), true ) ) {
+		throw new \RuntimeException( 'Invalid $context specified in Jobber script loader.' );
+	}
+
+	return JOBBER_PLUGIN_URL . "dist/js/{$script}.js";
+}
+
+/**
+ * Generate an URL to a stylesheet, taking into account whether SCRIPT_DEBUG is enabled.
+ *
+ * @throws \RuntimeException If an invalid $context is specified.
+ *
+ * @param string $stylesheet Stylesheet file name (no .css extension)
+ * @param string $context Context for the script ('admin', 'frontend', or 'shared')
+ * @return string
+ */
+function style_url( string $stylesheet, string $context ): string {
+	if ( ! in_array( $context, get_enqueue_contexts(), true ) ) {
+		throw new \RuntimeException( 'Invalid $context specified in Jobber stylesheet loader.' );
+	}
+
+	return JOBBER_PLUGIN_URL . "dist/css/{$stylesheet}.css";
 }
