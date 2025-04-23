@@ -64,10 +64,9 @@ class Disconnect {
 	/**
 	 * Verify that the request came from the middleware.
 	 *
-	 * @param WP_REST_Request $request The request object.
 	 * @return bool|WP_Error
 	 */
-	public function verify_middleware_request( WP_REST_Request $request ) {
+	public function verify_middleware_request() {
 		// TODO: Verify the request came from the middleware.
 		// for now, we'll just return true.
 		return true;
@@ -92,10 +91,9 @@ class Disconnect {
 	/**
 	 * Handle disconnect request from the middleware.
 	 *
-	 * @param WP_REST_Request $request The request object.
 	 * @return WP_REST_Response|WP_Error
 	 */
-	public function handle_rest_disconnect( WP_REST_Request $request ) {
+	public function handle_rest_disconnect() {
 		$this->delete_stored_data();
 
 		return new WP_REST_Response(
