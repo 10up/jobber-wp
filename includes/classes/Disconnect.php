@@ -68,8 +68,8 @@ class Disconnect {
 	 * @return bool|WP_Error
 	 */
 	public function verify_middleware_request( WP_REST_Request $request ) {
-		// TODO: Implement proper verification once middleware is ready
-		// This could involve checking a shared secret, JWT, or other authentication method
+		// TODO: Verify the request came from the middleware.
+		// for now, we'll just return true.
 		return true;
 	}
 
