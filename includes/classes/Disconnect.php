@@ -115,4 +115,4 @@ class Disconnect {
 		// Do action to allow some action to be taken.
 		do_action( 'jobber_disconnected' );
 	}
-} 
+}
