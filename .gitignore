@@ -6,6 +6,7 @@ phpunit.xml
 .idea
 upgrade
 cache
+playwright-report
 
 # Project Files
 dist

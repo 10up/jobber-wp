@@ -1,7 +1,6 @@
 {
   "core": null,
   "plugins": [
-    "https://downloads.wordpress.org/plugin/classic-editor.zip",
     "https://downloads.wordpress.org/plugin/gutenberg.zip",
     "."
   ],
@@ -14,7 +13,6 @@
         "wp-cli.yml": "./tests/utils/wp-cli.yml"
       },
       "plugins": [
-        "https://downloads.wordpress.org/plugin/classic-editor.zip",
         "https://downloads.wordpress.org/plugin/gutenberg.zip",
         "."
       ]
