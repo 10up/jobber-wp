@@ -114,7 +114,7 @@ class Disconnect {
 		// Delete the settings which include the access token
 		delete_option( Settings::SETTINGS_KEY );
 
-		// TODO: Delete any other stored data as needed
+		// Do action to allow some action to be taken.
 		do_action( 'jobber_disconnected' );
 	}
 } 
