@@ -5,8 +5,12 @@ import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { Button, PanelBody, Placeholder, SelectControl, Spinner } from '@wordpress/components';
-import { calendar } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
+
+/**
+ * Internal dependencies
+ */
+import { BlockIcon } from './icon';
 
 const Edit = ({ attributes, setAttributes }) => {
 	const { formType } = attributes;
@@ -63,7 +67,11 @@ const Edit = ({ attributes, setAttributes }) => {
 			{loading && <Spinner />}
 
 			{error && (
-				<Placeholder icon={calendar} label={__('Jobber Forms', 'jobber-wp')} isColumnLayout>
+				<Placeholder
+					icon={BlockIcon}
+					label={__('Jobber Forms', 'jobber-wp')}
+					isColumnLayout
+				>
 					<p style={{ marginBottom: '0' }}>
 						{__('The following error was encountered:', 'jobber-wp')}{' '}
 						<span style={{ color: '#b91c1c' }}>
