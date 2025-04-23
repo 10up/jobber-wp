@@ -1,21 +1,42 @@
-# Directories to ignore
-/.git
-/.github
-/.wordpress-org
-/assets
-/node_modules
+# Development files
+.git
+.github
+.gitignore
+.distignore
+.editorconfig
+.eslintrc
+.eslintignore
+.prettierrc
+.stylelintrc
+.wp-env.json
+.husky
+.nvmrc
+.vscode
 
-# Files to ignore
-/.*
-/CHANGELOG.md
-/CODE_OF_CONDUCT.md
-/composer.lock
-/CONTRIBUTING.md
-/CREDITS.md
-/LICENSE.md
-/package-lock.json
-/package.json
-/phpcs-compat.xml
-/phpcs.xml
-/phpstan.neon.dist
-/README.md
+# Build and test files
+node_modules
+tests
+playwright.config.ts
+package.json
+package-lock.json
+composer.json
+composer.lock
+phpunit.xml
+phpcs.xml
+README.md
+CHANGELOG.md
+LICENSE.md
+
+# Source files
+src
+assets/src
+blocks/src
+
+# Build output
+coverage
+test-results
+playwright-report
+
+# Development scripts
+bin
+scripts
