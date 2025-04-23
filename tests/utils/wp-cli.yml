@@ -1,0 +1,11 @@
+path: app/public/wp
+apache_modules:
+  - mod_rewrite
+core config:
+  dbuser: root
+  dbpass: root
+  dbname: local
+  dbhost: localhost
+  extra-php: |
+    define( 'WP_DEBUG', true );
+    define( 'WP_DEBUG_LOG', true ); 
