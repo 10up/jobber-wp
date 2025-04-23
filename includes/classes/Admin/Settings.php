@@ -105,7 +105,7 @@ class Settings {
 
 			<div class="jobber-settings__connection" style="margin-top: 2rem; max-width: 600px; font-size: 14px; line-height: 1.5;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
-					<a href="<?php echo esc_url( $auth_url ); ?>" class="components-button is-primary">
+					<a href="<?php echo esc_url( $auth_url ); ?>" class="components-button is-primary button button-primary">
 						<?php esc_html_e( 'Connect to Jobber', 'jobber-wp' ); ?>
 					</a>
 				<?php else : ?>
