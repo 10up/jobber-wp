@@ -105,7 +105,7 @@ class Settings {
 
 			<div class="jobber-settings__connection" style="margin-top: 2rem; max-width: 600px; font-size: 14px; line-height: 1.5;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
-					<a href="<?php echo esc_url( $auth_url ); ?>" class="components-button is-primary">
+					<a href="<?php echo esc_url( $auth_url ); ?>" class="components-button is-primary button button-primary">
 						<?php esc_html_e( 'Connect to Jobber', 'jobber-wp' ); ?>
 					</a>
 				<?php else : ?>
@@ -123,7 +123,7 @@ class Settings {
 						<?php esc_html_e( 'If you no longer need to have a form embedded, you can disconnect your account by clicking the button below. Note that any existing forms you have embedded will no longer show.', 'jobber-wp' ); ?>
 					</p>
 					<!-- TODO: Wire this disconnect button up -->
-					<a href="#" class="is-secondary is-destructive components-button" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to disconnect from Jobber? Any forms you have embedded will no longer work.', 'jobber-wp' ); ?>');" style="margin-top: 1rem;">
+					<a href="#" class="is-secondary is-destructive components-button button" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to disconnect from Jobber? Any forms you have embedded will no longer work.', 'jobber-wp' ); ?>');" style="margin-top: 1rem;">
 						<?php esc_html_e( 'Disconnect', 'jobber-wp' ); ?>
 					</a>
 				<?php endif; ?>
