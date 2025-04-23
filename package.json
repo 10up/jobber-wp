@@ -9,6 +9,9 @@
     "lint-js": "10up-toolkit lint-js",
     "lint-style": "10up-toolkit lint-style",
     "test": "10up-toolkit test-unit-jest --passWithNoTests",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
     "clean-dist": "rm -rf ./dist",
     "archive": "composer archive --file=$npm_package_name --format=zip",
     "postarchive": "rm -rf ./release && unzip $npm_package_name.zip -d ./release"
@@ -19,7 +22,11 @@
   "devDependencies": {
     "@10up/babel-preset-default": "^2.1.2",
     "10up-toolkit": "^6.4.0",
-    "jest-environment-jsdom": "^29.7.0"
+    "@playwright/test": "^1.42.1",
+    "@types/node": "^20.11.19",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   },
   "dependencies": {
     "@wordpress/icons": "^10.22.0",
