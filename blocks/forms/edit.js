@@ -4,9 +4,20 @@
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { Button, PanelBody, Placeholder, SelectControl, Spinner } from '@wordpress/components';
-import { calendar } from '@wordpress/icons';
+import {
+	Button,
+	Disabled,
+	PanelBody,
+	Placeholder,
+	SelectControl,
+	Spinner,
+} from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
+
+/**
+ * Internal dependencies
+ */
+import { BlockIcon } from './icon';
 
 const Edit = ({ attributes, setAttributes }) => {
 	const { formType } = attributes;
@@ -63,7 +74,11 @@ const Edit = ({ attributes, setAttributes }) => {
 			{loading && <Spinner />}
 
 			{error && (
-				<Placeholder icon={calendar} label={__('Jobber Forms', 'jobber-wp')} isColumnLayout>
+				<Placeholder
+					icon={BlockIcon}
+					label={__('Jobber Forms', 'jobber-wp')}
+					isColumnLayout
+				>
 					<p style={{ marginBottom: '0' }}>
 						{__('The following error was encountered:', 'jobber-wp')}{' '}
 						<span style={{ color: '#b91c1c' }}>
@@ -87,13 +102,17 @@ const Edit = ({ attributes, setAttributes }) => {
 			)}
 
 			{!loading && iframeUrl && (
-				<iframe
-					src={iframeUrl}
-					width="100%"
-					height="600"
-					style={{ border: 'none' }}
-					title={__('Jobber Form', 'jobber-wp')}
-				/>
+				<Disabled>
+					<iframe
+						src={iframeUrl}
+						style={{
+							border: '1px dashed #E0E0E0',
+							height: '500px',
+							width: '100%',
+						}}
+						title={__('Jobber Form', 'jobber-wp')}
+					/>
+				</Disabled>
 			)}
 		</div>
 	);
