@@ -39,8 +39,6 @@ class Token extends API {
 
 	/**
 	 * Check for a valid authentication.
-	 *
-	 * @return void
 	 */
 	public function check_token() {
 		/* phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended */
@@ -50,6 +48,7 @@ class Token extends API {
 
 		// Make sure we have a valid token before saving.
 		$token = sanitize_text_field( wp_unslash( $_GET[ self::$key ] ) );
+
 		if (
 			$this->validate( $token ) &&
 			! empty( $_GET['tokens'] )
@@ -85,7 +84,7 @@ class Token extends API {
 	 *
 	 * @return string
 	 */
-	public static function get_endpoint() {
+	public static function get_endpoint(): string {
 		$namespace = self::$namespace;
 		return "wp-json/{$namespace}/" . ltrim( self::$route, '/' );
 	}
@@ -144,7 +143,7 @@ class Token extends API {
 	}
 
 	/**
-	 * Save the token for 5 minutes.
+	 * Save the token.
 	 *
 	 * @param string $token The token to save.
 	 */
@@ -155,7 +154,7 @@ class Token extends API {
 	/**
 	 * Get the token.
 	 *
-	 * @return string|bool
+	 * @return string
 	 */
 	public static function get_token(): string {
 		$settings = \Jobber\Admin\Settings::get_settings();

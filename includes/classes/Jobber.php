@@ -66,27 +66,24 @@ class Jobber {
 	}
 
 	/**
-	 * Execute a GraphQL Query.
-	 * We must use cURL because wp_remote_post does not work with GraphQL.
+	 * Send a query request to the middleware.
 	 *
-	 * @param string $query GraphQL Query.
+	 * @param string $form_type Form type we want.
 	 * @return array|WP_Error
 	 */
-	protected function query( string $query ) {
+	protected function query( string $form_type ) {
 		if ( empty( $this->access_token ) ) {
 			return new WP_Error( 'jobber_no_access_token', __( 'No access token found.', 'jobber-wp' ) );
 		}
 
-		// GraphQL Query
 		$data = [
-			'query' => $query,
+			'query' => $form_type,
 		];
 
 		// Request Headers
 		$headers = [
-			'Content-Type'             => 'application/json',
-			'X-JOBBER-GRAPHQL-VERSION' => '2023-08-18',
-			'X-JOBBER-TOKEN'           => $this->access_token,
+			'Content-Type'   => 'application/json',
+			'X-JOBBER-TOKEN' => $this->access_token,
 		];
 
 		// Request Arguments
@@ -118,55 +115,13 @@ class Jobber {
 	 */
 	public function get_form( string $form_type = 'request' ) {
 		if ( 'booking' === $form_type ) {
-			$query = '
-				query booking {
-					onlineBookingConfiguration {
-						bookingEmbedScript
-						bookingUrl
-					}
-				}
-			';
+			$form_type = 'booking';
 		} elseif ( 'request' === $form_type ) {
-			$query = '
-				query request {
-					requestSettings {
-						requestEmbedScript
-						requestUrl
-					}
-				}
-			';
+			$form_type = 'request';
 		} else {
 			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber-wp' ) );
 		}
 
-		return $this->query( $query );
-	}
-
-	/**
-	 * Get the clients from Jobber.
-	 *
-	 * @return array|WP_Error
-	 */
-	public function get_clients() {
-		$query = '
-			query {
-				clients {
-					edges {
-						node {
-							id
-							name
-							emails {
-								address
-							}
-							phones {
-								number
-							}
-						}
-					}
-				}
-			}
-		';
-
-		return $this->query( $query );
+		return $this->query( $form_type );
 	}
 }

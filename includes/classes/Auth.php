@@ -22,24 +22,24 @@ class Auth {
 	/**
 	 * Determine if the user is authorized.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public static function is_authorized() {
+	public static function is_authorized(): bool {
 		$settings = \Jobber\Admin\Settings::get_settings();
 		if ( empty( $settings['authenticated'] ) ) {
 			return false;
 		}
 
-		return $settings['authenticated'];
+		return (bool) $settings['authenticated'];
 	}
 
 	/**
 	 * Get the Jobber API Token(s)
 	 *
 	 * @param string $token The token to get. access or refresh.
-	 * @return string Decrypted token.
+	 * @return string Token.
 	 */
-	public static function get_token( $token = 'access' ) {
+	public static function get_token( string $token = 'access' ): string {
 		$settings = \Jobber\Admin\Settings::get_settings();
 		$token    = false !== strpos( $token, '_token' ) ? $token : "{$token}_token";
 
@@ -47,7 +47,6 @@ class Auth {
 			return '';
 		}
 
-		// Decrypt token.
 		return $settings[ $token ];
 	}
 }
