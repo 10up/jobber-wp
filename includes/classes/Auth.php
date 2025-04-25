@@ -34,9 +34,9 @@ class Auth {
 	}
 
 	/**
-	 * Get the Jobber API Token(s)
+	 * Get the Jobber Token(s).
 	 *
-	 * @param string $token The token to get. access or refresh.
+	 * @param string $token The token to get.
 	 * @return string Token.
 	 */
 	public static function get_token( string $token = 'access' ): string {

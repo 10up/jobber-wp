@@ -71,28 +71,33 @@ class Jobber {
 	 * @param string $form_type Form type we want.
 	 * @return array|WP_Error
 	 */
-	protected function query( string $form_type ) {
+	protected function query( string $form_type = '' ) {
 		if ( empty( $this->access_token ) ) {
-			return new WP_Error( 'jobber_no_access_token', __( 'No access token found.', 'jobber-wp' ) );
+			return new WP_Error( 'jobber_no_access_token', __( 'No token found.', 'jobber-wp' ) );
 		}
 
-		$data = [
-			'query' => $form_type,
-		];
+		$data      = [ 'query' => $form_type ];
+		$cache_key = 'jobber_query_' . md5( wp_json_encode( $data ) );
+		$response  = wp_cache_get( $cache_key, 'jobber' );
 
-		// Request Headers
+		// If we have a cached response, return it.
+		if ( false !== $response ) {
+			return $response;
+		}
+
+		// Request headers.
 		$headers = [
 			'Content-Type'   => 'application/json',
 			'X-JOBBER-TOKEN' => $this->access_token,
 		];
 
-		// Request Arguments
+		// Request arguments.
 		$args = [
 			'headers' => $headers,
 			'body'    => wp_json_encode( $data ),
 		];
 
-		// Execute the request
+		// Execute the request.
 		$request = wp_remote_post( "{$this->api_url}/graphql", $args );
 		if ( is_wp_error( $request ) ) {
 			return $request;
@@ -103,6 +108,8 @@ class Jobber {
 			$errors = wp_list_pluck( $response['errors'], 'message' );
 			return new WP_Error( 'jobber_graphql_error', implode( ' | ', $errors ) );
 		}
+
+		wp_cache_set( $cache_key, $response, 'jobber', HOUR_IN_SECONDS );
 
 		return $response;
 	}
