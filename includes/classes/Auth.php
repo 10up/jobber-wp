@@ -13,7 +13,7 @@ namespace Jobber;
 class Auth {
 
 	/**
-	 * Jobber Auth Middleware URL
+	 * Jobber Auth Middleware URL.
 	 *
 	 * @todo Replace this with the actual middleware URL when available.
 	 * @var string
@@ -21,7 +21,7 @@ class Auth {
 	public static $url = 'http://localhost:8000/auth';
 
 	/**
-	 * Jobber Refresh Middleware URL
+	 * Jobber Refresh Middleware URL.
 	 *
 	 * @todo Replace this with the actual middleware URL when available.
 	 * @var string
@@ -60,7 +60,7 @@ class Auth {
 	}
 
 	/**
-	 * Initiate the Jobber Refresh Token Flow.
+	 * Initiate the Jobber refresh token flow.
 	 *
 	 * @return bool
 	 */
