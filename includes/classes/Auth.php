@@ -81,6 +81,9 @@ class Auth {
 		}
 
 		if ( 200 !== wp_remote_retrieve_response_code( $request ) ) {
+			// If the request fails, we can assume things are disconnected.
+			\Jobber\Admin\Settings::delete_settings();
+
 			return false;
 		}
 

@@ -184,4 +184,11 @@ class Settings {
 		$settings = get_option( self::SETTINGS_KEY, '' );
 		return json_decode( $settings, true );
 	}
+
+	/**
+	 * Delete the settings.
+	 */
+	public static function delete_settings() {
+		delete_option( self::SETTINGS_KEY );
+	}
 }
