@@ -78,7 +78,7 @@ class Jobber {
 
 		$data      = [ 'query' => $form_type ];
 		$cache_key = 'jobber_query_' . md5( wp_json_encode( $data ) );
-		$response  = wp_cache_get( $cache_key, 'jobber' );
+		$response  = get_transient( $cache_key );
 
 		// If we have a cached response, return it.
 		if ( false !== $response ) {
@@ -124,7 +124,7 @@ class Jobber {
 			return new WP_Error( 'jobber_graphql_error', implode( ' | ', $errors ) );
 		}
 
-		wp_cache_set( $cache_key, $response, 'jobber', HOUR_IN_SECONDS );
+		set_transient( $cache_key, $response, HOUR_IN_SECONDS );
 
 		return $response;
 	}
