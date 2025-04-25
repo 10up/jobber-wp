@@ -103,6 +103,21 @@ class Jobber {
 			return $request;
 		}
 
+		// Check for an expired access token.
+		if ( 401 === wp_remote_retrieve_response_code( $request ) ) {
+			// Attempt to refresh the access token.
+			$refresh_response = Auth::refresh_access_token();
+
+			// If the refresh was successful, try the reqeust again.
+			if ( $refresh_response ) {
+				// Execute the request again.
+				$request = wp_remote_post( "{$this->api_url}/graphql", $args );
+				if ( is_wp_error( $request ) ) {
+					return $request;
+				}
+			}
+		}
+
 		$response = json_decode( wp_remote_retrieve_body( $request ), true );
 		if ( isset( $response['errors'] ) ) {
 			$errors = wp_list_pluck( $response['errors'], 'message' );

@@ -11,6 +11,7 @@ namespace Jobber;
  * Base class for Jobber Authorization Flow
  */
 class Auth {
+
 	/**
 	 * Jobber Auth Middleware URL
 	 *
@@ -18,6 +19,14 @@ class Auth {
 	 * @var string
 	 */
 	public static $url = 'http://localhost:8000/auth';
+
+	/**
+	 * Jobber Refresh Middleware URL
+	 *
+	 * @todo Replace this with the actual middleware URL when available.
+	 * @var string
+	 */
+	public static $refresh_url = 'http://localhost:8000/refresh';
 
 	/**
 	 * Determine if the user is authorized.
@@ -48,5 +57,33 @@ class Auth {
 		}
 
 		return $settings[ $token ];
+	}
+
+	/**
+	 * Initiate the Jobber Refresh Token Flow.
+	 *
+	 * @return bool
+	 */
+	public static function refresh_access_token(): bool {
+		$headers = [
+			'Content-Type'   => 'application/json',
+			'X-JOBBER-TOKEN' => self::get_token( 'jobber' ),
+		];
+
+		$args = [
+			'headers' => $headers,
+		];
+
+		$request = wp_remote_post( self::$refresh_url, $args );
+
+		if ( is_wp_error( $request ) ) {
+			return false;
+		}
+
+		if ( 200 !== wp_remote_retrieve_response_code( $request ) ) {
+			return false;
+		}
+
+		return true;
 	}
 }
