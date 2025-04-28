@@ -7,6 +7,8 @@
 
 namespace Jobber;
 
+use Jobber\REST\Token;
+
 /**
  * Base class for Jobber Authorization Flow
  */
@@ -70,11 +72,16 @@ class Auth {
 			'X-JOBBER-TOKEN' => self::get_token( 'jobber' ),
 		];
 
-		$args = [
-			'headers' => $headers,
+		$url_args = [
+			'clientUrl' => site_url( Token::get_endpoint( 'validate' ) ),
 		];
 
-		$request = wp_remote_post( self::$refresh_url, $args );
+		$request = wp_remote_post(
+			add_query_arg( $url_args, self::$refresh_url ),
+			[
+				'headers' => $headers,
+			]
+		);
 
 		if ( is_wp_error( $request ) ) {
 			return false;
