@@ -69,9 +69,10 @@ class Jobber {
 	 * Send a query request to the middleware.
 	 *
 	 * @param string $form_type Form type we want.
+	 * @param bool   $force     Force a new request and bypass cache.
 	 * @return array|WP_Error
 	 */
-	protected function query( string $form_type = '' ) {
+	protected function query( string $form_type = '', bool $force = false ) {
 		if ( empty( $this->access_token ) ) {
 			return new WP_Error( 'jobber_no_access_token', __( 'No token found.', 'jobber-wp' ) );
 		}
@@ -80,8 +81,8 @@ class Jobber {
 		$cache_key = 'jobber_query_' . md5( wp_json_encode( $data ) );
 		$response  = get_transient( $cache_key );
 
-		// If we have a cached response, return it.
-		if ( false !== $response ) {
+		// If we have a cached response and we want to use it, return it.
+		if ( false !== $response && ! $force ) {
 			return $response;
 		}
 
@@ -124,7 +125,7 @@ class Jobber {
 			return new WP_Error( 'jobber_graphql_error', implode( ' | ', $errors ) );
 		}
 
-		set_transient( $cache_key, $response, HOUR_IN_SECONDS );
+		set_transient( $cache_key, $response, DAY_IN_SECONDS );
 
 		return $response;
 	}
