@@ -7,18 +7,28 @@
 
 namespace Jobber;
 
+use Jobber\REST\Token;
+
 /**
- * Base class for the Jobber Authorization Flow
+ * Base class for Jobber Authorization Flow
  */
 class Auth {
 
 	/**
-	 * Jobber Auth Middleware URL
+	 * Jobber Auth Middleware URL.
 	 *
-	 * @TODO Replace this with the actual middleware URL when available.
+	 * @todo Replace this with the actual middleware URL when available.
 	 * @var string
 	 */
-	public static $url = 'http://localhost:8000/wp/auth';
+	public static $url = 'http://localhost:8000/auth';
+
+	/**
+	 * Jobber Refresh Middleware URL.
+	 *
+	 * @todo Replace this with the actual middleware URL when available.
+	 * @var string
+	 */
+	public static $refresh_url = 'http://localhost:8000/refresh';
 
 	/**
 	 * Determine if the user is authorized.
@@ -26,14 +36,19 @@ class Auth {
 	 * @return bool
 	 */
 	public static function is_authorized(): bool {
-		return ! empty( self::get_token() );
+		$settings = \Jobber\Admin\Settings::get_settings();
+		if ( empty( $settings['authenticated'] ) ) {
+			return false;
+		}
+
+		return (bool) $settings['authenticated'];
 	}
 
 	/**
-	 * Get the Jobber API Token(s)
+	 * Get the Jobber Token(s).
 	 *
-	 * @param string $token The token to get: access or refresh.
-	 * @return string Decrypted token.
+	 * @param string $token The token to get.
+	 * @return string Token.
 	 */
 	public static function get_token( string $token = 'access' ): string {
 		$settings = \Jobber\Admin\Settings::get_settings();
@@ -43,10 +58,42 @@ class Auth {
 			return '';
 		}
 
-		// Decrypt token.
-		$encryption      = new Encryption();
-		$decrypted_token = $encryption->decrypt( $settings[ $token ] );
+		return $settings[ $token ];
+	}
 
-		return false === $decrypted_token ? '' : $decrypted_token;
+	/**
+	 * Initiate the Jobber refresh token flow.
+	 *
+	 * @return bool
+	 */
+	public static function refresh_access_token(): bool {
+		$headers = [
+			'Content-Type'   => 'application/json',
+			'X-JOBBER-TOKEN' => self::get_token( 'jobber' ),
+		];
+
+		$url_args = [
+			'clientUrl' => site_url( Token::get_endpoint( 'validate' ) ),
+		];
+
+		$request = wp_remote_post(
+			add_query_arg( $url_args, self::$refresh_url ),
+			[
+				'headers' => $headers,
+			]
+		);
+
+		if ( is_wp_error( $request ) ) {
+			return false;
+		}
+
+		if ( 200 !== wp_remote_retrieve_response_code( $request ) ) {
+			// If the request fails, we can assume things are disconnected.
+			\Jobber\Admin\Settings::delete_settings();
+
+			return false;
+		}
+
+		return true;
 	}
 }
