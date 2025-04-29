@@ -60,13 +60,10 @@ class Settings {
 	 * Render the settings page.
 	 */
 	public function render_page() {
-		$nonce = wp_create_nonce( 'jobber' );
-		self::update_settings( [ 'nonce' => $nonce ] );
-
 		$url_args = [
 			'clientUrl' => site_url( Token::get_endpoint( 'generate' ) ),
 			'returnUrl' => self::settings_url(),
-			'nonce'     => $nonce,
+			'nonce'     => $this->set_auth_nonce(),
 		];
 
 		$auth_url = add_query_arg( $url_args, Auth::$url );
@@ -130,6 +127,18 @@ class Settings {
 		</div>
 
 		<?php
+	}
+
+	/**
+	 * Create and store the auth nonce.
+	 *
+	 * @return string
+	 */
+	protected function set_auth_nonce(): string {
+		$nonce = wp_create_nonce( 'jobber' );
+		self::update_settings( [ 'nonce' => $nonce ] );
+
+		return $nonce;
 	}
 
 	/**
