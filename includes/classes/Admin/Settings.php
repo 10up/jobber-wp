@@ -51,7 +51,7 @@ class Settings {
 			__( 'Jobber Forms', 'jobber-wp' ),
 			__( 'Jobber Forms', 'jobber-wp' ),
 			'manage_options',
-			'jobber_settings',
+			self::SETTINGS_KEY,
 			[ $this, 'render_page' ]
 		);
 	}
@@ -60,15 +60,11 @@ class Settings {
 	 * Render the settings page.
 	 */
 	public function render_page() {
-		$token    = $this->set_auth_token();
 		$url_args = [
-			'clientUrl' => get_site_url(),
+			'clientUrl' => site_url( Token::get_endpoint( 'generate' ) ),
 			'returnUrl' => self::settings_url(),
+			'nonce'     => $this->set_auth_nonce(),
 		];
-
-		if ( ! empty( $token ) ) {
-			$url_args[ Token::$key ] = $token;
-		}
 
 		$auth_url = add_query_arg( $url_args, Auth::$url );
 		?>
@@ -105,7 +101,7 @@ class Settings {
 
 			<div class="jobber-settings__connection" style="margin-top: 2rem; max-width: 600px; font-size: 14px; line-height: 1.5;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
-					<a href="<?php echo esc_url( $auth_url ); ?>" class="components-button is-primary button button-primary">
+					<a href="<?php echo esc_url( $auth_url ); ?>" class="is-primary button button-primary">
 						<?php esc_html_e( 'Connect to Jobber', 'jobber-wp' ); ?>
 					</a>
 				<?php else : ?>
@@ -125,7 +121,7 @@ class Settings {
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<?php wp_nonce_field( 'jobber_disconnect' ); ?>
 						<input type="hidden" name="action" value="jobber_disconnect">
-						<button type="submit" class="is-secondary is-destructive components-button" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to disconnect from Jobber? Any forms you have embedded will no longer work.', 'jobber-wp' ); ?>');" style="margin-top: 1rem;">
+						<button type="submit" class="is-secondary is-destructive button" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to disconnect from Jobber? Any forms you have embedded will no longer work.', 'jobber-wp' ); ?>');" style="margin-top: 1rem;">
 							<?php esc_html_e( 'Disconnect', 'jobber-wp' ); ?>
 						</button>
 					</form>
@@ -137,24 +133,15 @@ class Settings {
 	}
 
 	/**
-	 * Set the auth token for WP and the Middleware.
+	 * Create and store the auth nonce.
 	 *
-	 * @return string|bool
+	 * @return string
 	 */
-	protected function set_auth_token() {
-		$token = Token::get_token();
-		if ( ! empty( $token ) ) {
-			return $token;
-		}
+	protected function set_auth_nonce(): string {
+		$nonce = wp_create_nonce( 'jobber' );
+		self::update_settings( [ 'nonce' => $nonce ] );
 
-		// Delete the option if it exists.
-		delete_option( self::SETTINGS_KEY );
-
-		$tokens = new Token();
-		$token  = $tokens->generate();
-		$tokens->save( $token );
-
-		return $token;
+		return $nonce;
 	}
 
 	/**
@@ -173,6 +160,8 @@ class Settings {
 	 * @return bool
 	 */
 	public static function update_settings( array $settings = [] ): bool {
+		$current  = self::get_settings();
+		$settings = wp_parse_args( $settings, $current );
 		return update_option( self::SETTINGS_KEY, wp_json_encode( $settings ) );
 	}
 
@@ -184,5 +173,12 @@ class Settings {
 	public static function get_settings() {
 		$settings = get_option( self::SETTINGS_KEY, '' );
 		return json_decode( $settings, true );
+	}
+
+	/**
+	 * Delete the settings.
+	 */
+	public static function delete_settings() {
+		delete_option( self::SETTINGS_KEY );
 	}
 }
