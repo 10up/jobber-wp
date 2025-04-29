@@ -8,10 +8,6 @@
 namespace Jobber;
 
 use Jobber\Admin\Settings;
-use WP_REST_Server;
-use WP_REST_Request;
-use WP_REST_Response;
-use WP_Error;
 
 /**
  * Class to handle disconnection from Jobber
@@ -21,21 +17,12 @@ class Disconnect {
 	use Module;
 
 	/**
-	 * Only register if we're in an admin context.
+	 * Only register if a user has correct capability to disconnect.
 	 *
 	 * @return bool
 	 */
 	public function can_register(): bool {
-		return true;
-	}
-
-	/**
-	 * Get the load order for this module.
-	 *
-	 * @return int
-	 */
-	public function load_order(): int {
-		return 10;
+		return current_user_can( 'manage_options' );
 	}
 
 	/**
@@ -55,20 +42,9 @@ class Disconnect {
 
 		check_admin_referer( 'jobber_disconnect' );
 
-		$this->delete_stored_data();
+		Settings::delete_settings();
 
 		wp_safe_redirect( Settings::settings_url() );
 		exit;
-	}
-
-	/**
-	 * Delete all stored Jobber data.
-	 */
-	protected function delete_stored_data() {
-		// Delete the settings which include the access token
-		delete_option( Settings::SETTINGS_KEY );
-
-		// Do action to allow some action to be taken.
-		do_action( 'jobber_disconnected' );
 	}
 }
