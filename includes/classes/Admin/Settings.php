@@ -9,6 +9,7 @@ namespace Jobber\Admin;
 
 use Jobber\Module;
 use Jobber\Auth;
+use Jobber\Jobber;
 use Jobber\REST\Token;
 
 /**
@@ -69,7 +70,7 @@ class Settings {
 			'nonce'     => $nonce,
 		];
 
-		$auth_url = add_query_arg( $url_args, Auth::$url );
+		$auth_url = add_query_arg( $url_args, Jobber::get_endpoint( 'auth' ) );
 		?>
 
 		<div class="wrap">

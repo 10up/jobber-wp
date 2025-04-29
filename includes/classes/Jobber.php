@@ -22,7 +22,7 @@ class Jobber {
 	 *
 	 * @var string
 	 */
-	protected $api_url = 'http://localhost:8000/jobber';
+	protected static $api_url = 'http://localhost:8000';
 
 	/**
 	 * API Access Token
@@ -55,13 +55,23 @@ class Jobber {
 	}
 
 	/**
+	 * Get the endpoint for the Jobber API.
+	 *
+	 * @param string $path The path to the endpoint.
+	 * @return string
+	 */
+	public static function get_endpoint( string $path = 'jobber' ): string {
+		return self::$api_url . "/{$path}";
+	}
+
+	/**
 	 * Add the middleware URL to the allowed redirect hosts.
 	 *
 	 * @param array $hosts Allowed Redirect Hosts.
 	 * @return array
 	 */
 	public function allow_jobber_redirect( $hosts ) {
-		$hosts[] = wp_parse_url( Auth::$url, PHP_URL_HOST );
+		$hosts[] = wp_parse_url( self::$api_url, PHP_URL_HOST );
 		return $hosts;
 	}
 
@@ -99,7 +109,8 @@ class Jobber {
 		];
 
 		// Execute the request.
-		$request = wp_remote_post( "{$this->api_url}/graphql", $args );
+		$endpoint = self::get_endpoint( 'jobber' );
+		$request  = wp_remote_post( $endpoint, $args );
 		if ( is_wp_error( $request ) ) {
 			return $request;
 		}
@@ -112,7 +123,7 @@ class Jobber {
 			// If the refresh was successful, try the reqeust again.
 			if ( $refresh_response ) {
 				// Execute the request again.
-				$request = wp_remote_post( "{$this->api_url}/graphql", $args );
+				$request = wp_remote_post( $endpoint, $args );
 				if ( is_wp_error( $request ) ) {
 					return $request;
 				}

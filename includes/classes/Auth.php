@@ -15,22 +15,6 @@ use Jobber\REST\Token;
 class Auth {
 
 	/**
-	 * Jobber Auth Middleware URL.
-	 *
-	 * @todo Replace this with the actual middleware URL when available.
-	 * @var string
-	 */
-	public static $url = 'http://localhost:8000/auth';
-
-	/**
-	 * Jobber Refresh Middleware URL.
-	 *
-	 * @todo Replace this with the actual middleware URL when available.
-	 * @var string
-	 */
-	public static $refresh_url = 'http://localhost:8000/refresh';
-
-	/**
 	 * Determine if the user is authorized.
 	 *
 	 * @return bool
@@ -77,7 +61,7 @@ class Auth {
 		];
 
 		$request = wp_remote_post(
-			add_query_arg( $url_args, self::$refresh_url ),
+			add_query_arg( $url_args, Jobber::get_endpoint( 'refresh' ) ),
 			[
 				'headers' => $headers,
 			]
