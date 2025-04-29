@@ -42,34 +42,7 @@ class Disconnect {
 	 * Register needed hooks.
 	 */
 	public function register() {
-		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
 		add_action( 'admin_post_jobber_disconnect', [ $this, 'handle_ui_disconnect' ] );
-	}
-
-	/**
-	 * Register REST API routes.
-	 */
-	public function register_rest_routes() {
-		register_rest_route(
-			'jobber/v1',
-			'/disconnect',
-			[
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => [ $this, 'handle_rest_disconnect' ],
-				'permission_callback' => [ $this, 'verify_middleware_request' ],
-			]
-		);
-	}
-
-	/**
-	 * Verify that the request came from the middleware.
-	 *
-	 * @return bool|WP_Error
-	 */
-	public function verify_middleware_request() {
-		// TODO: Verify the request came from the middleware.
-		// for now, we'll just return true.
-		return true;
 	}
 
 	/**
@@ -86,23 +59,6 @@ class Disconnect {
 
 		wp_safe_redirect( Settings::settings_url() );
 		exit;
-	}
-
-	/**
-	 * Handle disconnect request from the middleware.
-	 *
-	 * @return WP_REST_Response|WP_Error
-	 */
-	public function handle_rest_disconnect() {
-		$this->delete_stored_data();
-
-		return new WP_REST_Response(
-			[
-				'success' => true,
-				'message' => __( 'Successfully disconnected from Jobber.', 'jobber-wp' ),
-			],
-			200
-		);
 	}
 
 	/**
