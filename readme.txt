@@ -12,11 +12,22 @@ Add a Jobber form block to your WordPress site.
 
 The Jobber plugin allows you to add a Jobber form block to your WordPress site. This block can render either a bookings or request form.
 
+== Account Setup ==
+
+To use the Jobber block, you need to have a Jobber account. If you don't have one, you can follow [these steps](https://help.getjobber.com/hc/en-us/articles/360042653674-First-Steps-Basic-Account-Set-Up) to create that.
+
 == Installation ==
 
 Install through the WordPress directory or download, unzip and upload the files to your `/wp-content/plugins/` directory
 
 == Using the Jobber Block ==
+
+= Connect your Jobber Account =
+
+1. Go to the Jobber settings page in your WordPress admin.
+2. Click on the "Connect to Jobber" button.
+3. Follow the prompts to authorize the connection between your WordPress site and your Jobber account.
+4. Once connected, you will see a confirmation message.
 
 = Adding the Block =
 
@@ -33,6 +44,33 @@ The Jobber block includes a form type selection option:
   * Choose between "Booking Form" or "Request Form". Each form type serves different purposes:
     * Booking Form: Allows customers to directly book services.
     * Request Form: Enables customers to submit service requests.
+
+== Development ==
+
+= Install Dependencies & Build =
+
+To build the assets, follow these steps:
+
+- Ensure you have the proper version of Node.js installed.
+- Run `npm install` to install the dependencies.
+- Run `npm run build` to build the asset files.
+
+You can find the source files in the `blocks` directory.
+
+We also rely on composer for autoloading. To set this up properly:
+
+- Ensure you have the latest version of Composer installed.
+- Run `composer install --no-dev -o`.
+
+== Frequently Asked Questions ==
+
+= Do I need to create a Jobber app? =
+
+To connect your Jobber account to your WordPress site, you only need to click the "Connect to Jobber" button within the Jobber settings and follow the prompts. Behind the scenes this will utilize an existing Jobber app to authenticate your account.
+
+= Does the plugin use any external services? =
+
+We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www.getjobber.com/privacy-policy/)) to get your forms. This connection is faciliated through a middleware service hosted by [10up](https://10up.com/) ([privacy policy](https://10up.com/privacy-policy/)) and located at https://jobber-prod.10upmanaged.io. Authentication is done via OAuth through this service and any Jobber API requests are also filtered through this service.
 
 == Changelog ==
 
