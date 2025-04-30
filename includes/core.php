@@ -44,9 +44,9 @@ function setup() {
  * Registers the default textdomain.
  */
 function i18n() {
-	$locale = apply_filters( 'plugin_locale', get_locale(), 'jobber-wp' );
-	load_textdomain( 'jobber-wp', WP_LANG_DIR . '/jobber-wp/jobber-wp-' . $locale . '.mo' );
-	load_plugin_textdomain( 'jobber-wp', false, plugin_basename( JOBBER_PLUGIN_PATH ) . '/languages/' );
+	$locale = apply_filters( 'plugin_locale', get_locale(), 'jobber' );
+	load_textdomain( 'jobber', WP_LANG_DIR . '/jobber/jobber-' . $locale . '.mo' );
+	load_plugin_textdomain( 'jobber', false, plugin_basename( JOBBER_PLUGIN_PATH ) . '/languages/' );
 }
 
 /**
@@ -116,14 +116,14 @@ function render_activation_notice() {
 	<div data-notice="plugin-activation" class="notice notice-success is-dismissible">
 		<div id="jobber-activation-notice" style="padding: 15px 5px;">
 			<div class="jobber-logo">
-				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber', 'jobber-wp' ); ?>" style="max-width: 220px" />
+				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber', 'jobber' ); ?>" style="max-width: 220px" />
 			</div>
 			<div class="jobber-activation-message" style="margin: 10px 0;">
-				<p><?php esc_html_e( 'Thanks for downloading the Jobber Forms plugin.', 'jobber-wp' ); ?></p>
-				<p><?php esc_html_e( 'Connect your site to Jobber to get started.', 'jobber-wp' ); ?></p>
+				<p><?php esc_html_e( 'Thanks for downloading the Jobber Forms plugin.', 'jobber' ); ?></p>
+				<p><?php esc_html_e( 'Connect your site to Jobber to get started.', 'jobber' ); ?></p>
 			</div>
 			<a class="components-button is-primary" href="<?php echo esc_url( admin_url( 'options-general.php?page=jobber_settings' ) ); ?>">
-				<?php esc_html_e( 'Connect now', 'jobber-wp' ); ?>
+				<?php esc_html_e( 'Connect now', 'jobber' ); ?>
 			</a>
 		</div>
 	</div>
@@ -182,7 +182,7 @@ function filter_plugin_action_links( $links ) {
 			'settings' => sprintf(
 				'<a href="%s"> %s </a>',
 				esc_url( admin_url( 'options-general.php?page=jobber_settings' ) ),
-				esc_html__( 'Settings', 'jobber-wp' )
+				esc_html__( 'Settings', 'jobber' )
 			),
 		],
 		$links

@@ -1,5 +1,5 @@
 {
-  "name": "jobber-wp",
+  "name": "jobber",
   "version": "1.0.0",
   "scripts": {
     "start": "npm run watch",
