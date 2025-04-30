@@ -109,7 +109,7 @@ class Jobber {
 			// Attempt to refresh the access token.
 			$refresh_response = Auth::refresh_access_token();
 
-			// If the refresh was successful, try the reqeust again.
+			// If the refresh was successful, try the request again.
 			if ( $refresh_response ) {
 				// Execute the request again.
 				$request = wp_remote_post( "{$this->api_url}/graphql", $args );
