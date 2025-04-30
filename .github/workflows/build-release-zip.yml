@@ -52,6 +52,6 @@ jobs:
       - name: Upload the ZIP file as an artifact
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
-          name: ${{ github.event.repository.name }}
+          name: jobber
           path: release
           retention-days: 2

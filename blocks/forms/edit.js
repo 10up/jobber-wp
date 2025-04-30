@@ -74,11 +74,7 @@ const Edit = ({ attributes, setAttributes }) => {
 			{loading && <Spinner />}
 
 			{error && (
-				<Placeholder
-					icon={BlockIcon}
-					label={__('Jobber Forms', 'jobber-wp')}
-					isColumnLayout
-				>
+				<Placeholder icon={BlockIcon} label={__('Jobber', 'jobber-wp')} isColumnLayout>
 					<p style={{ marginBottom: '0' }}>
 						{__('The following error was encountered:', 'jobber-wp')}{' '}
 						<span style={{ color: '#b91c1c' }}>
