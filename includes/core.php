@@ -84,12 +84,6 @@ function activate() {
 }
 
 /**
- * Deactivate the plugin
- */
-function deactivate() {
-}
-
-/**
  * Decide if an admin notice needs to render.
  */
 function maybe_render_notices() {
