@@ -32,16 +32,16 @@ Install through the WordPress directory or download, unzip and upload the files 
 
 1. Open the WordPress block editor (Gutenberg).
 2. Click the "+" button to add a new block.
-3. Search for "Jobber Forms" or find it in the "Widgets" category.
-4. Click on the Jobber Forms block to insert it into your page or post.
+3. Search for "Jobber" or find it in the "Widgets" category.
+4. Click on the Jobber block to insert it into your page or post.
 
 ### Customizing the Block
 
-The Jobber Forms block includes a form type selection option:
+The Jobber block includes a form type selection option:
 
 **Form Type Selection**
 
 Choose between "Booking Form" or "Request Form". Each form type serves different purposes:
-   
- - Booking Form: Allows customers to directly book services.
- - Request Form: Enables customers to submit service requests.
+
+* Booking Form: Allows customers to directly book services.
+* Request Form: Enables customers to submit service requests.
