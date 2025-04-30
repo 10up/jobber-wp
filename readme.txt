@@ -1,5 +1,5 @@
 === Jobber ===
-Contributors: Jobber
+Contributors: 10up
 Tags:         jobber, booking, request, form
 Tested up to: 6.7
 Stable tag:   1.0.0
