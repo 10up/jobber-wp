@@ -74,12 +74,6 @@ function activate() {
 }
 
 /**
- * Deactivate the plugin
- */
-function deactivate() {
-}
-
-/**
  * Decide if an admin notice needs to render.
  */
 function maybe_render_notices() {
@@ -109,7 +103,7 @@ function render_activation_notice() {
 				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'assets/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber', 'jobber' ); ?>" style="max-width: 220px" />
 			</div>
 			<div class="jobber-activation-message" style="margin: 10px 0;">
-				<p><?php esc_html_e( 'Thanks for downloading the Jobber Forms plugin.', 'jobber' ); ?></p>
+				<p><?php esc_html_e( 'Thanks for downloading the Jobber plugin.', 'jobber' ); ?></p>
 				<p><?php esc_html_e( 'Connect your site to Jobber to get started.', 'jobber' ); ?></p>
 			</div>
 			<a class="components-button is-primary" href="<?php echo esc_url( admin_url( 'options-general.php?page=jobber_settings' ) ); ?>">

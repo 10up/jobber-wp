@@ -48,8 +48,8 @@ class Settings {
 	 */
 	public function register_menu() {
 		add_options_page(
-			__( 'Jobber Forms', 'jobber' ),
-			__( 'Jobber Forms', 'jobber' ),
+			__( 'Jobber', 'jobber' ),
+			__( 'Jobber', 'jobber' ),
 			'manage_options',
 			self::SETTINGS_KEY,
 			[ $this, 'render_page' ]
@@ -79,7 +79,7 @@ class Settings {
 			<div class="jobber-settings__container" style="max-width: 600px; font-size: 14px; line-height: 1.5;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
 					<p style="font-size: 14px; line-height: 1.7;">
-						<?php esc_html_e( 'The Jobber Forms plugin allows you to easily embed your Booking and Request forms using a new Jobber Forms block. To get started, follow the steps below:', 'jobber' ); ?>
+						<?php esc_html_e( 'The Jobber plugin allows you to easily embed your Booking and Request forms using a new Jobber block. To get started, follow the steps below:', 'jobber' ); ?>
 					</p>
 					<ul style="list-style: decimal;">
 						<li style="margin-left: 2rem;"><?php esc_html_e( 'Click the Connect button below and log in with your Jobber account', 'jobber' ); ?></li>

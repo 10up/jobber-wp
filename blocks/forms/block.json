@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "jobber/forms",
 	"version": "0.1.0",
-	"title": "Jobber Forms",
+	"title": "Jobber",
 	"category": "widgets",
 	"description": "Display a Booking or Request form.",
   "keywords": [ "jobber", "form", "booking", "request" ],
