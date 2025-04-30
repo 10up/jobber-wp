@@ -17,18 +17,16 @@ class Auth {
 	/**
 	 * Jobber Auth Middleware URL.
 	 *
-	 * @todo Replace this with the actual middleware URL when available.
 	 * @var string
 	 */
-	public static $url = 'http://localhost:8000/auth';
+	public static $url = 'https://jobber-prod.10upmanaged.io/auth';
 
 	/**
 	 * Jobber Refresh Middleware URL.
 	 *
-	 * @todo Replace this with the actual middleware URL when available.
 	 * @var string
 	 */
-	public static $refresh_url = 'http://localhost:8000/refresh';
+	public static $refresh_url = 'https://jobber-prod.10upmanaged.io/refresh';
 
 	/**
 	 * Determine if the user is authorized.

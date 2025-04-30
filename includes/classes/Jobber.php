@@ -18,21 +18,21 @@ class Jobber {
 	use Module;
 
 	/**
-	 * API URL
+	 * API URL.
 	 *
 	 * @var string
 	 */
-	protected $api_url = 'http://localhost:8000/jobber';
+	protected $api_url = 'https://jobber-prod.10upmanaged.io/jobber';
 
 	/**
-	 * API Access Token
+	 * API Access Token.
 	 *
 	 * @var string
 	 */
 	private $access_token;
 
 	/**
-	 * Module Constructor
+	 * Module constructor.
 	 */
 	public function __construct() {
 		$this->access_token = Auth::get_token( 'jobber' );
