@@ -25,7 +25,6 @@ function setup() {
 	 */
 	add_action( 'init', __NAMESPACE__ . '\\init', (int) apply_filters( 'jobber_plugin_init_priority', 8 ) );
 
-	add_action( 'init', __NAMESPACE__ . '\\i18n' );
 	add_action( 'admin_notices', __NAMESPACE__ . '\\maybe_render_notices', 0 );
 
 	add_filter( 'script_loader_tag', __NAMESPACE__ . '\\script_loader_tag', 10, 2 );
@@ -38,15 +37,6 @@ function setup() {
 	 * @hook jobber_plugin_loaded
 	 */
 	do_action( 'jobber_plugin_loaded' );
-}
-
-/**
- * Registers the default textdomain.
- */
-function i18n() {
-	$locale = apply_filters( 'plugin_locale', get_locale(), 'jobber' );
-	load_textdomain( 'jobber', WP_LANG_DIR . '/jobber/jobber-' . $locale . '.mo' );
-	load_plugin_textdomain( 'jobber', false, plugin_basename( JOBBER_PLUGIN_PATH ) . '/languages/' );
 }
 
 /**
