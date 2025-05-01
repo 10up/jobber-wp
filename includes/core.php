@@ -106,7 +106,7 @@ function render_activation_notice() {
 				<p><?php esc_html_e( 'Thanks for downloading the Jobber plugin.', 'jobber' ); ?></p>
 				<p><?php esc_html_e( 'Connect your site to Jobber to get started.', 'jobber' ); ?></p>
 			</div>
-			<a class="components-button is-primary" href="<?php echo esc_url( admin_url( 'options-general.php?page=jobber_settings' ) ); ?>">
+			<a class="button button-primary is-primary" href="<?php echo esc_url( admin_url( 'options-general.php?page=jobber_settings' ) ); ?>">
 				<?php esc_html_e( 'Connect now', 'jobber' ); ?>
 			</a>
 		</div>
