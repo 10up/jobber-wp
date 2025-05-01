@@ -6,12 +6,14 @@
 ## Overview
 
 This WordPress plugin connects a users Jobber account to WordPress through the Jobber API.
-Middleware is used to handle oauth2 authentication.
+A separate middleware service is used to handle Oauth2 authentication and proxying API requests.
 
 ## Requirements
 
 * PHP 7.4+
 * [WordPress](http://wordpress.org/) 6.6+
+* [Jobber](https://getjobber.com/) account
+* Your site needs to be publicly accessible on the internet in order for authentication to work.
 
 ## Installation
 
@@ -22,9 +24,9 @@ Install through the WordPress directory or download, unzip and upload the files 
 1. Install the plugin.
 2. Activate in WordPress.
 3. Visit the plugin Settings page.
-4. Click the "Connect to Jobber" button.
-5. Follow the prompts to log in to your Jobber account to grant the plugin access to make API requests.
-6. Once connected, add the Jobber block to your post or page.
+4. Click on the "Connect to Jobber" button.
+5. Follow the prompts to authorize the connection between your WordPress site and your Jobber account. Note your site needs to be publicly accessible for this to work.
+6. Once connected, you will see a confirmation message.
 
 ## Using the Jobber Block
 
@@ -32,7 +34,7 @@ Install through the WordPress directory or download, unzip and upload the files 
 
 1. Open the WordPress block editor (Gutenberg).
 2. Click the "+" button to add a new block.
-3. Search for "Jobber" or find it in the "Widgets" category.
+3. Search for "Jobber".
 4. Click on the Jobber block to insert it into your page or post.
 
 ### Customizing the Block

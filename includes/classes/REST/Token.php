@@ -150,9 +150,6 @@ class Token extends API {
 			wp_send_json_success( [ 'clientToken' => $token ] );
 		}
 
-		// Delete the option if it exists.
-		delete_option( Settings::SETTINGS_KEY );
-
 		$token = $this->generate();
 		$this->save( $token );
 
