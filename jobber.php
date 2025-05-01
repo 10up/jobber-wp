@@ -24,10 +24,25 @@ define( 'JOBBER_PLUGIN_DIST_URL', JOBBER_PLUGIN_URL . 'dist/' );
 define( 'JOBBER_PLUGIN_DIST_PATH', JOBBER_PLUGIN_PATH . 'dist/' );
 define( 'JOBBER_PLUGIN_BASENAME', plugin_basename( __DIR__ . '/jobber.php' ) );
 
-// Require Composer autoloader if it exists.
-if ( file_exists( JOBBER_PLUGIN_PATH . 'vendor/autoload.php' ) ) {
-	require_once JOBBER_PLUGIN_PATH . 'vendor/autoload.php';
+// Show a notice if the autoload file is missing.
+if ( ! is_readable( JOBBER_PLUGIN_PATH . 'vendor/autoload.php' ) ) {
+	add_action(
+		'admin_notices',
+		function () {
+			$message = __( 'Autoload file is missing for the <strong>Jobber</strong> plugin. If you are a user, please contact support. If you are a developer, run <code>composer install</code> within the plugin directory to fix.', 'jobber' );
+			printf(
+				'<div class="notice notice-warning"><p>%1$s</p></div>',
+				wp_kses_post( $message )
+			);
+		}
+	);
+
+	// Exit early to avoid fatal errors.
+	return;
 }
+
+// Require composer autoloader.
+require_once JOBBER_PLUGIN_PATH . 'vendor/autoload.php';
 
 // Include files.
 require_once JOBBER_PLUGIN_INC . '/utility.php';
