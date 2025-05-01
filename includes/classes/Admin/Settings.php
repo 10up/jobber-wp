@@ -48,8 +48,8 @@ class Settings {
 	 */
 	public function register_menu() {
 		add_options_page(
-			__( 'Jobber', 'jobber-wp' ),
-			__( 'Jobber', 'jobber-wp' ),
+			__( 'Jobber', 'jobber' ),
+			__( 'Jobber', 'jobber' ),
 			'manage_options',
 			self::SETTINGS_KEY,
 			[ $this, 'render_page' ]
@@ -71,26 +71,26 @@ class Settings {
 
 		<div class="wrap">
 			<div class="jobber-settings__logo" style="margin: 2rem 0 1rem;">
-				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'dist/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber logo', 'jobber-wp' ); ?>" style="max-width: 220px; margin-left: -10px;" />
+				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'dist/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber logo', 'jobber' ); ?>" style="max-width: 220px; margin-left: -10px;" />
 			</div>
 
-			<h2 class="screen-reader-text"><?php esc_html_e( 'Settings', 'jobber-wp' ); ?></h2>
+			<h2 class="screen-reader-text"><?php esc_html_e( 'Settings', 'jobber' ); ?></h2>
 
 			<div class="jobber-settings__container" style="max-width: 600px; font-size: 14px; line-height: 1.5;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
 					<p style="font-size: 14px; line-height: 1.7;">
-						<?php esc_html_e( 'The Jobber plugin allows you to easily embed your Booking and Request forms using a new Jobber block. To get started, follow the steps below:', 'jobber-wp' ); ?>
+						<?php esc_html_e( 'The Jobber plugin allows you to easily embed your Booking and Request forms using a new Jobber block. To get started, follow the steps below:', 'jobber' ); ?>
 					</p>
 					<ul style="list-style: decimal;">
-						<li style="margin-left: 2rem;"><?php esc_html_e( 'Click the Connect button below and log in with your Jobber account', 'jobber-wp' ); ?></li>
-						<li style="margin-left: 2rem;"><?php esc_html_e( 'Edit the page where you want to embed your form and insert the Jobber block.', 'jobber-wp' ); ?></li>
-						<li style="margin-left: 2rem;"><?php esc_html_e( 'Within the block settings, choose the form type, either Request or Booking.', 'jobber-wp' ); ?></li>
+						<li style="margin-left: 2rem;"><?php esc_html_e( 'Click the Connect button below and log in with your Jobber account', 'jobber' ); ?></li>
+						<li style="margin-left: 2rem;"><?php esc_html_e( 'Edit the page where you want to embed your form and insert the Jobber block.', 'jobber' ); ?></li>
+						<li style="margin-left: 2rem;"><?php esc_html_e( 'Within the block settings, choose the form type, either Request or Booking.', 'jobber' ); ?></li>
 					</ul>
 					<p style="font-size: 14px; line-height: 1.7;">
 						<?php
 						printf(
 							/* translators: %1$s: opening link tag, %2$s: closing link tag */
-							esc_html__( 'If you don\'t have a Jobber account yet, follow %1$sthese%2$s instructions to create that first.', 'jobber-wp' ),
+							esc_html__( 'If you don\'t have a Jobber account yet, follow %1$sthese%2$s instructions to create that first.', 'jobber' ),
 							'<a href="https://help.getjobber.com/hc/en-us/articles/360042653674-First-Steps-Basic-Account-Set-Up" target="_blank" rel="noreferrer noopener">',
 							'</a>'
 						);
@@ -102,27 +102,27 @@ class Settings {
 			<div class="jobber-settings__connection" style="margin-top: 2rem; max-width: 600px; font-size: 14px; line-height: 1.5;">
 				<?php if ( ! Auth::is_authorized() ) : ?>
 					<a href="<?php echo esc_url( $auth_url ); ?>" class="is-primary button button-primary">
-						<?php esc_html_e( 'Connect to Jobber', 'jobber-wp' ); ?>
+						<?php esc_html_e( 'Connect to Jobber', 'jobber' ); ?>
 					</a>
 				<?php else : ?>
 					<p style="font-size: 14px;">
 						<span class="dashicons dashicons-yes-alt" style="color: green;"></span>
-						<?php esc_html_e( 'You\'re connected!', 'jobber-wp' ); ?>
+						<?php esc_html_e( 'You\'re connected!', 'jobber' ); ?>
 					</p>
-					<p style="font-size: 14px; font-weight: 600;"><?php esc_html_e( 'Next steps:', 'jobber-wp' ); ?></p>
+					<p style="font-size: 14px; font-weight: 600;"><?php esc_html_e( 'Next steps:', 'jobber' ); ?></p>
 					<ul style="list-style: decimal;">
-						<li style="margin-left: 2rem;"><?php esc_html_e( 'Edit the page where you want to embed your form and insert the Jobber block.', 'jobber-wp' ); ?></li>
-						<li style="margin-left: 2rem;"><?php esc_html_e( 'Within the block settings, choose the form type, either Request or Booking.', 'jobber-wp' ); ?></li>
+						<li style="margin-left: 2rem;"><?php esc_html_e( 'Edit the page where you want to embed your form and insert the Jobber block.', 'jobber' ); ?></li>
+						<li style="margin-left: 2rem;"><?php esc_html_e( 'Within the block settings, choose the form type, either Request or Booking.', 'jobber' ); ?></li>
 					</ul>
 
 					<p style="font-size: 14px; line-height: 1.7;">
-						<?php esc_html_e( 'If you no longer need to have a form embedded, you can disconnect your account by clicking the button below. Note that any existing forms you have embedded will no longer show.', 'jobber-wp' ); ?>
+						<?php esc_html_e( 'If you no longer need to have a form embedded, you can disconnect your account by clicking the button below. Note that any existing forms you have embedded will no longer show.', 'jobber' ); ?>
 					</p>
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<?php wp_nonce_field( 'jobber_disconnect' ); ?>
 						<input type="hidden" name="action" value="jobber_disconnect">
-						<button type="submit" class="is-secondary is-destructive button" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to disconnect from Jobber? Any forms you have embedded will no longer work.', 'jobber-wp' ); ?>');" style="margin-top: 1rem;">
-							<?php esc_html_e( 'Disconnect', 'jobber-wp' ); ?>
+						<button type="submit" class="is-secondary is-destructive button" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to disconnect from Jobber? Any forms you have embedded will no longer work.', 'jobber' ); ?>');" style="margin-top: 1rem;">
+							<?php esc_html_e( 'Disconnect', 'jobber' ); ?>
 						</button>
 					</form>
 				<?php endif; ?>

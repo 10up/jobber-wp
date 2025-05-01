@@ -108,7 +108,7 @@ class API {
 		if ( empty( $url ) ) {
 			return new \WP_Error(
 				'no_url_found',
-				__( 'No valid form URL found.', 'jobber-wp' ),
+				__( 'No valid form URL found.', 'jobber' ),
 				[ 'status' => 500 ]
 			);
 		}

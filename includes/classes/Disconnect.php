@@ -37,7 +37,7 @@ class Disconnect {
 	 */
 	public function handle_ui_disconnect() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'jobber-wp' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'jobber' ) );
 		}
 
 		check_admin_referer( 'jobber_disconnect' );
