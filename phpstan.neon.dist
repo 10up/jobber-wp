@@ -12,4 +12,4 @@ parameters:
 		# These constants are defined but we'd need to stub them for PHPStan to know.
 		- '#Constant JOBBER_PLUGIN_.+ not found#'
 	WPCompat:
-		requiresAtLeast: '6.5'
+		requiresAtLeast: '6.6'
