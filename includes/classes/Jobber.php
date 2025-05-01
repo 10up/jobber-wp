@@ -74,7 +74,7 @@ class Jobber {
 	 */
 	protected function query( string $form_type = '', bool $force = false ) {
 		if ( empty( $this->access_token ) ) {
-			return new WP_Error( 'jobber_no_access_token', __( 'No token found.', 'jobber-wp' ) );
+			return new WP_Error( 'jobber_no_access_token', __( 'No token found.', 'jobber' ) );
 		}
 
 		$data      = [ 'query' => $form_type ];
@@ -142,7 +142,7 @@ class Jobber {
 		} elseif ( 'request' === $form_type ) {
 			$form_type = 'request';
 		} else {
-			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber-wp' ) );
+			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber' ) );
 		}
 
 		return $this->query( $form_type );
