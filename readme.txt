@@ -26,7 +26,7 @@ Install through the WordPress directory or download, unzip and upload the files 
 
 1. Go to the Jobber settings page in your WordPress admin.
 2. Click on the "Connect to Jobber" button.
-3. Follow the prompts to authorize the connection between your WordPress site and your Jobber account.
+3. Follow the prompts to authorize the connection between your WordPress site and your Jobber account. Note your site needs to be publicly accessible for this to work.
 4. Once connected, you will see a confirmation message.
 
 = Adding the Block =
@@ -71,6 +71,10 @@ To connect your Jobber account to your WordPress site, you only need to click th
 = Does the plugin use any external services? =
 
 We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www.getjobber.com/privacy-policy/)) to get your forms. This connection is faciliated through a middleware service hosted by [10up](https://10up.com/) ([privacy policy](https://10up.com/privacy-policy/)) and located at https://jobber-prod.10upmanaged.io. Authentication is done via OAuth through this service and any Jobber API requests are also filtered through this service.
+
+= Can I test this locally? =
+
+When you connect your site to your Jobber account, the connection is made through a middleware service that will communicate back with your site to validate the request. This request will fail if the middleware can't communicate with your site. If you're testing locally, you can use a service like [ngrok](https://ngrok.com/) to expose your site to the internet.
 
 == Changelog ==
 
