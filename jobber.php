@@ -1,9 +1,10 @@
 <?php
 /**
  * Plugin Name:       Jobber
+ * Plugin URI:        https://github.com/10up/jobber-wp
  * Description:       Add the ability to embed Jobber forms in your WordPress site.
  * Version:           1.0.0
- * Requires at least: 6.5
+ * Requires at least: 6.6
  * Requires PHP:      7.4
  * Author:            10up
  * Author URI:        https://10up.com
@@ -11,9 +12,8 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       jobber
  * Domain Path:       /languages
- * Update URI:        https://github.com/10up/jobber-wp
  *
- * @package           Jobber
+ * @package Jobber
  */
 
 // Useful global constants.
