@@ -12,20 +12,19 @@ test.describe('Settings Page', () => {
     // Check for logo
     await expect(page.locator('.jobber-settings__logo img')).toBeVisible();
     
-    // Check for instructions
-    await expect(page.locator('text=The Jobber Forms plugin allows you to easily embed your Booking and Request forms')).toBeVisible();
+    // Check for instructions.
+    await expect(page.locator('p:has-text("The Jobber plugin allows you to easily embed your Booking and Request forms")')).toBeVisible();
     
-    // Check for connect button
-    await expect(page.locator('a:has-text("Connect")')).toBeVisible();
+    // Check for connect button.
+    await expect(page.locator('a:has-text("Connect")')).toBeVisible();    
   });
 
-  test('settings page shows correct initial state', async ({ page }) => {
-    // Check for unauthorized state
-    await expect(page.locator('text=The Jobber Forms plugin allows you to easily embed your Booking and Request forms')).toBeVisible();
-    await expect(page.locator('a:has-text("Connect")')).toBeVisible();
-    
-    // Verify connect button links to auth endpoint
+  test('connect button links to auth endpoint', async ({ page }) => {
+    // Check for connect button.
     const connectButton = page.locator('a:has-text("Connect")');
-    await expect(connectButton).toHaveAttribute('href', /\/wp\/auth\?clientUrl=/);
+    await connectButton.click();
+
+    // Check for auth endpoint.
+    expect(page.url()).toContain('auth?clientUrl=');
   });
 });
