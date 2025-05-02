@@ -17,15 +17,11 @@ concurrency:
 jobs:
   e2e:
     if: "${{ ( github.event_name == 'pull_request' ) || github.event_name == 'push' }}"
-    name: ${{ matrix.core.name }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        core:
-          - {name: 'WP latest', version: 'latest'}
-          - {name: 'WP minimum', version: 'WordPress/WordPress#6.6'}
-          - {name: 'WP trunk', version: 'WordPress/WordPress#master'}
-
+        type: ['@general', '@forms', '@settings']
+    
     env:
       WP_ADMIN_USERNAME: ${{ secrets.WP_ADMIN_USERNAME }}
       WP_ADMIN_PASSWORD: ${{ secrets.WP_ADMIN_PASSWORD }}
@@ -53,10 +49,7 @@ jobs:
 
       - name: Install playwright
         run: npx playwright install --with-deps chromium
-
-      - name: Set the core version
-        run: ./tests/bin/set-core-version.js ${{ matrix.core.version }}
-
+      
       - name: Setup E2E environment
         run: npm run env:start
 
