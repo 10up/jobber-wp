@@ -1,5 +1,4 @@
 name: Run E2E tests
-
 on:
   push:
     branches:
@@ -32,37 +31,35 @@ jobs:
 
     permissions:
       pull-requests: write
-
     name: E2E tests (${{ matrix.type }})
-    
     steps:
       - uses: actions/checkout@v4
       
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0'
+          php-version: '7.4'
           tools: composer:v2
       
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-      
+
       - name: Install Node dependencies
         run: npm ci && npm run build
-      
+
       - name: Install playwright
         run: npx playwright install --with-deps chromium
       
       - name: Setup E2E environment
         run: npm run env:start
-      
+
       - name: Run E2E tests
-        id: jobber_e2e_tests
+        id: square_e2e_tests
         if: ${{ github.event_name == 'pull_request' && matrix.type != '@general' }}
         run: npm run test:e2e -- --grep ${{ matrix.type }}
-      
+
       - name: Run E2E tests (General)
-        id: jobber_e2e_tests_general
+        id: square_e2e_tests_general
         if: ${{ github.event_name == 'pull_request' && matrix.type == '@general' }}
         run: npm run test:e2e -- --grep-invert "@forms|@settings"
       
@@ -72,17 +69,23 @@ jobs:
         with:
           script: |
             const labelsToRemove = ['status: e2e tests passing', 'status: e2e tests failing'];
+
             const { data } = await github.rest.issues.listLabelsOnIssue({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
             })
+
+            // Return early if there are no labels.
             if ( data.length == 0 ) {
               console.log ( 'Issue has no labels; not attempting to remove any labels' );
               return;
             }
+
+            // Remove each label if it exists.
             for ( const labelName of labelsToRemove ) {
               const labelExists = data.filter( label => label.name === labelName );
+
               if ( labelExists.length > 0 ) {
                 console.log( `Removing label "${labelName}"...` );
                 await github.rest.issues.removeLabel({
@@ -93,7 +96,7 @@ jobs:
                 })
               }
             }
-      
+
       - name: Update Success Label
         if: |
           always() &&
@@ -108,7 +111,7 @@ jobs:
               repo: context.repo.repo,
               labels: ['status: e2e tests passing']
             })
-      
+
       - name: Update Failure Label
         if: |
           always() &&
