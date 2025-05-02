@@ -7,6 +7,8 @@ phpunit.xml
 upgrade
 cache
 playwright-report
+test-results
+state.json
 
 # Project Files
 dist
