@@ -6,19 +6,11 @@ Stable tag:   1.0.0
 License:      GPL-2.0-or-later
 License URI:  https://spdx.org/licenses/GPL-2.0-or-later.html
 
-Add a Jobber form block to your WordPress site to easily collect booking requests and manage appointments.
+Add a Jobber form block to your WordPress site.
 
 == Description ==
 
-The Jobber plugin seamlessly integrates Jobber's booking and request forms into your WordPress site using blocks. This integration allows your customers to easily schedule appointments and submit service requests directly from your website.
-
-**Key Features:**
-
-* Easy-to-use Jobber form block
-* Choose between booking or request forms
-* Seamless integration with your Jobber account
-* Mobile-responsive forms
-* Clean, modern design that works with any theme
+The Jobber plugin allows you to add a Jobber form block to your WordPress site. This block can render either a bookings or request form.
 
 == Account Setup ==
 
@@ -26,17 +18,32 @@ To use the Jobber block, you need to have a Jobber account. If you don't have on
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/jobber` directory, or install the plugin through the WordPress plugins screen directly.
-2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Use the Settings->Jobber screen to configure the plugin.
-4. Add the Jobber block to any page or post where you want to display a form.
+Install through the WordPress directory or download, unzip and upload the files to your `/wp-content/plugins/` directory
 
-== Screenshots ==
+== Using the Jobber Block ==
 
-1. Jobber block in the editor
-2. Booking form example
-3. Request form example
-4. Block settings panel
+= Connect your Jobber Account =
+
+1. Go to the Jobber settings page in your WordPress admin.
+2. Click on the "Connect to Jobber" button.
+3. Follow the prompts to authorize the connection between your WordPress site and your Jobber account. Note your site needs to be publicly accessible for this to work.
+4. Once connected, you will see a confirmation message.
+
+= Adding the Block =
+
+1. Open the WordPress block editor (Gutenberg).
+2. Click the "+" button to add a new block.
+3. Search for "Jobber".
+4. Click on the Jobber block to insert it into your page or post.
+
+= Customizing the Block =
+
+The Jobber block includes a form type selection option:
+
+* Form Type Selection
+  * Choose between "Booking Form" or "Request Form". Each form type serves different purposes:
+    * Booking Form: Allows customers to directly book services.
+    * Request Form: Enables customers to submit service requests.
 
 == Development ==
 
@@ -57,18 +64,6 @@ We also rely on composer for autoloading. To set this up properly:
 
 == Frequently Asked Questions ==
 
-= Do I need a Jobber account to use this plugin? =
-
-Yes, you need an active Jobber account to use this plugin. The forms will connect to your Jobber account to process bookings and requests.
-
-= Can I customize the appearance of the forms? =
-
-The forms are designed to work with any WordPress theme. Basic styling options are available through the block editor.
-
-= Is the plugin GDPR compliant? =
-
-Yes, the plugin handles data in compliance with GDPR requirements. All data is processed according to Jobber's privacy policy.
-
 = Do I need to create a Jobber app? =
 
 To connect your Jobber account to your WordPress site, you only need to click the "Connect to Jobber" button within the Jobber settings and follow the prompts. Behind the scenes this will utilize an existing Jobber app to authenticate your account.
@@ -83,12 +78,7 @@ When you connect your site to your Jobber account, the connection is made throug
 
 == Changelog ==
 
-= 0.1.0 - 2024-03-21 =
-* Initial release
-* Added Jobber forms block
-* Support for booking and request forms
+= 1.0.0 - YYYY-MM-DD =
+* Initial release.
 
-== Upgrade Notice ==
-
-= 0.1.0 =
-Initial release of the Jobber WordPress plugin.
+[View historical changelog details here](https://github.com/10up/jobber-wp/blob/develop/CHANGELOG.md).
