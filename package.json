@@ -30,26 +30,14 @@
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
-    "10up-toolkit": "^6.4.0",
+    "10up-toolkit": "^6.4.1",
     "@10up/babel-preset-default": "^2.1.2",
-    "@cspotcode/source-map-support": "^0.8.1",
-    "@playwright/test": "^1.16.3",
-    "@tsconfig/node10": "^1.0.11",
-    "@tsconfig/node12": "^1.0.11",
-    "@tsconfig/node14": "^1.0.3",
-    "@tsconfig/node16": "^1.0.4",
-    "@types/node": "^20.17.30",
-    "@wordpress/e2e-test-utils": "^10.21.0",
-    "@wordpress/env": "^8.2.0",
-    "arg": "^4.1.3",
-    "create-require": "^1.1.1",
-    "diff": "^4.0.2",
-    "dotenv": "^16.5.0",
     "jest-environment-jsdom": "^29.7.0",
-    "make-error": "^1.3.6",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3",
-    "v8-compile-cache-lib": "^3.0.1"
+    "@wordpress/env": "^10.0.0",
+    "@wordpress/scripts": "^24.6.0",
+    "copy-webpack-plugin": "^12.0.2",
+    "dotenv": "^16.4.5",
+    "node-wp-i18n": "^1.2.7"
   },
   "10up-toolkit": {
     "entry": {
