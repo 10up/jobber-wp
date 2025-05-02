@@ -1,5 +1,5 @@
 {
-  "name": "jobber-wp",
+  "name": "jobber",
   "version": "1.0.0",
   "description": "WordPress plugin for Jobber integration",
   "scripts": {
@@ -17,8 +17,8 @@
     "env:stop": "wp-env stop",
     "env:destroy": "wp-env destroy",
     "clean-dist": "rm -rf ./dist",
-    "archive": "composer archive --file=$npm_package_name --format=zip",
-    "postarchive": "rm -rf ./release && unzip $npm_package_name.zip -d ./release"
+    "archive": "composer archive --file=jobber --format=zip",
+    "postarchive": "rm -rf ./release && unzip jobber.zip -d ./release"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -41,7 +41,6 @@
   },
   "10up-toolkit": {
     "entry": {
-      "admin": "./assets/js/admin/admin.js",
       "jobber-forms": "./blocks/forms"
     }
   }

@@ -4,7 +4,14 @@
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { Button, PanelBody, Placeholder, SelectControl, Spinner } from '@wordpress/components';
+import {
+	Button,
+	Disabled,
+	PanelBody,
+	Placeholder,
+	SelectControl,
+	Spinner,
+} from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 
 /**
@@ -34,7 +41,7 @@ const Edit = ({ attributes, setAttributes }) => {
 			.then((response) => {
 				const url = response?.form?.iframeUrl;
 				if (!url) {
-					throw new Error(__('Form URL not found in API response', 'jobber-wp'));
+					throw new Error(__('Form URL not found in API response', 'jobber'));
 				}
 				setIframeUrl(url);
 				setLoading(false);
@@ -51,13 +58,13 @@ const Edit = ({ attributes, setAttributes }) => {
 	return (
 		<div {...blockProps}>
 			<InspectorControls>
-				<PanelBody title={__('Form Settings', 'jobber-wp')}>
+				<PanelBody title={__('Form Settings', 'jobber')}>
 					<SelectControl
-						label={__('Form Type', 'jobber-wp')}
+						label={__('Form Type', 'jobber')}
 						value={formType}
 						options={[
-							{ label: __('Booking', 'jobber-wp'), value: 'booking' },
-							{ label: __('Request', 'jobber-wp'), value: 'request' },
+							{ label: __('Booking', 'jobber'), value: 'booking' },
+							{ label: __('Request', 'jobber'), value: 'request' },
 						]}
 						onChange={(value) => setAttributes({ formType: value })}
 					/>
@@ -67,21 +74,17 @@ const Edit = ({ attributes, setAttributes }) => {
 			{loading && <Spinner />}
 
 			{error && (
-				<Placeholder
-					icon={BlockIcon}
-					label={__('Jobber Forms', 'jobber-wp')}
-					isColumnLayout
-				>
+				<Placeholder icon={BlockIcon} label={__('Jobber', 'jobber')} isColumnLayout>
 					<p style={{ marginBottom: '0' }}>
-						{__('The following error was encountered:', 'jobber-wp')}{' '}
+						{__('The following error was encountered:', 'jobber')}{' '}
 						<span style={{ color: '#b91c1c' }}>
-							<strong>{__('Error:', 'jobber-wp')}</strong> {error}
+							<strong>{__('Error:', 'jobber')}</strong> {error}
 						</span>
 					</p>
 					<p style={{ marginTop: '0', marginBottom: '0' }}>
 						{__(
 							'Double check the Jobber settings to ensure your account is properly connected.',
-							'jobber-wp',
+							'jobber',
 						)}{' '}
 					</p>
 					<Button
@@ -89,19 +92,23 @@ const Edit = ({ attributes, setAttributes }) => {
 						onClick={() => window.open(settingsUrl, '_blank')}
 						style={{ width: 'fit-content' }}
 					>
-						{__('Go to Jobber Settings', 'jobber-wp')}
+						{__('Go to Jobber Settings', 'jobber')}
 					</Button>
 				</Placeholder>
 			)}
 
 			{!loading && iframeUrl && (
-				<iframe
-					src={iframeUrl}
-					width="100%"
-					height="600"
-					style={{ border: 'none' }}
-					title={__('Jobber Form', 'jobber-wp')}
-				/>
+				<Disabled>
+					<iframe
+						src={iframeUrl}
+						style={{
+							border: '1px dashed #E0E0E0',
+							height: '500px',
+							width: '100%',
+						}}
+						title={__('Jobber Form', 'jobber')}
+					/>
+				</Disabled>
 			)}
 		</div>
 	);

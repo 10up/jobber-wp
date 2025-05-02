@@ -18,32 +18,24 @@ class Jobber {
 	use Module;
 
 	/**
-	 * API URL
+	 * API URL.
 	 *
 	 * @var string
 	 */
-	protected $api_url = 'https://api.getjobber.com/api';
+	protected $api_url = 'https://jobber-prod.10upmanaged.io/jobber';
 
 	/**
-	 * API Access Token
+	 * API Access Token.
 	 *
 	 * @var string
 	 */
 	private $access_token;
 
 	/**
-	 * Refresh Token
-	 *
-	 * @var string
-	 */
-	private $refresh_token;
-
-	/**
-	 * Module Constructor
+	 * Module constructor.
 	 */
 	public function __construct() {
-		$this->access_token  = Auth::get_token( 'access' );
-		$this->refresh_token = Auth::get_token( 'refresh' );
+		$this->access_token = Auth::get_token( 'jobber' );
 	}
 
 	/**
@@ -74,39 +66,57 @@ class Jobber {
 	}
 
 	/**
-	 * Execute a GraphQL Query.
-	 * We must use cURL because wp_remote_post does not work with GraphQL.
+	 * Send a query request to the middleware.
 	 *
-	 * @param string $query GraphQL Query.
+	 * @param string $form_type Form type we want.
+	 * @param bool   $force     Force a new request and bypass cache.
 	 * @return array|WP_Error
 	 */
-	protected function query( string $query ) {
+	protected function query( string $form_type = '', bool $force = false ) {
 		if ( empty( $this->access_token ) ) {
-			return new WP_Error( 'jobber_no_access_token', __( 'No access token found.', 'jobber-wp' ) );
+			return new WP_Error( 'jobber_no_access_token', __( 'No token found.', 'jobber' ) );
 		}
 
-		// GraphQL Query
-		$data = [
-			'query' => $query,
-		];
+		$data      = [ 'query' => $form_type ];
+		$cache_key = 'jobber_query_' . md5( wp_json_encode( $data ) );
+		$response  = get_transient( $cache_key );
 
-		// Request Headers
+		// If we have a cached response and we want to use it, return it.
+		if ( false !== $response && ! $force ) {
+			return $response;
+		}
+
+		// Request headers.
 		$headers = [
-			'Authorization'            => "Bearer {$this->access_token}",
-			'Content-Type'             => 'application/json',
-			'X-JOBBER-GRAPHQL-VERSION' => '2023-08-18',
+			'Content-Type'   => 'application/json',
+			'X-JOBBER-TOKEN' => $this->access_token,
 		];
 
-		// Request Arguments
+		// Request arguments.
 		$args = [
 			'headers' => $headers,
 			'body'    => wp_json_encode( $data ),
 		];
 
-		// Execute the request
+		// Execute the request.
 		$request = wp_remote_post( "{$this->api_url}/graphql", $args );
 		if ( is_wp_error( $request ) ) {
 			return $request;
+		}
+
+		// Check for an expired access token.
+		if ( 401 === wp_remote_retrieve_response_code( $request ) ) {
+			// Attempt to refresh the access token.
+			$refresh_response = Auth::refresh_access_token();
+
+			// If the refresh was successful, try the request again.
+			if ( $refresh_response ) {
+				// Execute the request again.
+				$request = wp_remote_post( "{$this->api_url}/graphql", $args );
+				if ( is_wp_error( $request ) ) {
+					return $request;
+				}
+			}
 		}
 
 		$response = json_decode( wp_remote_retrieve_body( $request ), true );
@@ -114,6 +124,8 @@ class Jobber {
 			$errors = wp_list_pluck( $response['errors'], 'message' );
 			return new WP_Error( 'jobber_graphql_error', implode( ' | ', $errors ) );
 		}
+
+		set_transient( $cache_key, $response, DAY_IN_SECONDS );
 
 		return $response;
 	}
@@ -126,55 +138,13 @@ class Jobber {
 	 */
 	public function get_form( string $form_type = 'request' ) {
 		if ( 'booking' === $form_type ) {
-			$query = '
-				query booking {
-					onlineBookingConfiguration {
-						bookingEmbedScript
-						bookingUrl
-					}
-				}
-			';
+			$form_type = 'booking';
 		} elseif ( 'request' === $form_type ) {
-			$query = '
-				query request {
-					requestSettings {
-						requestEmbedScript
-						requestUrl
-					}
-				}
-			';
+			$form_type = 'request';
 		} else {
-			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber-wp' ) );
+			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber' ) );
 		}
 
-		return $this->query( $query );
-	}
-
-	/**
-	 * Get the clients from Jobber.
-	 *
-	 * @return array|WP_Error
-	 */
-	public function get_clients() {
-		$query = '
-			query {
-				clients {
-					edges {
-						node {
-							id
-							name
-							emails {
-								address
-							}
-							phones {
-								number
-							}
-						}
-					}
-				}
-			}
-		';
-
-		return $this->query( $query );
+		return $this->query( $form_type );
 	}
 }

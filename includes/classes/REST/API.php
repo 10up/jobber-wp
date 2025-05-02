@@ -59,17 +59,6 @@ class API {
 				],
 			]
 		);
-
-		// Get clients.
-		register_rest_route(
-			self::$namespace,
-			'/clients',
-			[
-				'methods'             => 'GET',
-				'callback'            => [ $this, 'get_clients' ],
-				'permission_callback' => [ $this, 'has_permission' ],
-			]
-		);
 	}
 
 	/**
@@ -119,7 +108,7 @@ class API {
 		if ( empty( $url ) ) {
 			return new \WP_Error(
 				'no_url_found',
-				__( 'No valid form URL found.', 'jobber-wp' ),
+				__( 'No valid form URL found.', 'jobber' ),
 				[ 'status' => 500 ]
 			);
 		}
@@ -131,17 +120,5 @@ class API {
 				],
 			]
 		);
-	}
-
-	/**
-	 * Get the clients from Jobber.
-	 *
-	 * @return \WP_REST_Response|\WP_Error
-	 */
-	public function get_clients() {
-		$jobber  = new \Jobber\Jobber();
-		$clients = $jobber->get_clients();
-
-		return rest_ensure_response( $clients );
 	}
 }
