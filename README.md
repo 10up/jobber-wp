@@ -3,6 +3,8 @@
 > [!IMPORTANT]
 > This repository is a work in progress.
 
+[![GPL-2.0-or-later License](https://img.shields.io/github/license/10up/jobber-wp.svg)](https://github.com/10up/jobber-wp/blob/develop/LICENSE.md)
+
 ## Overview
 
 This WordPress plugin connects a users Jobber account to WordPress through the Jobber API.
