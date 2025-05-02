@@ -1,5 +1,5 @@
 {
-  "extends": "@10up/eslint-config/wordpress",
+  "extends": "@wordpress/scripts/config/.eslintrc.json",
   "rules": {},
   "globals": {
     "module": true,
