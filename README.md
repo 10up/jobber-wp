@@ -3,7 +3,11 @@
 > [!IMPORTANT]
 > This repository is a work in progress.
 
-[![GPL-2.0-or-later License](https://img.shields.io/github/license/10up/jobber-wp.svg)](https://github.com/10up/jobber-wp/blob/develop/LICENSE.md)
+[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) ![Required PHP Version](https://img.shields.io/wordpress/plugin/required-php/jobber?label=Requires%20PHP) ![Required WP Version](https://img.shields.io/wordpress/plugin/wp-version/jobber?label=Requires%20WordPress) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/jobber?label=WordPress) [![GPL-2.0-or-later License](https://img.shields.io/github/license/10up/jobber-wp.svg)](https://github.com/10up/jobber-wp/blob/develop/LICENSE.md) [![WordPress Playground Demo](https://img.shields.io/wordpress/plugin/v/jobber?logo=wordpress&logoColor=FFFFFF&label=Playground%20Demo&labelColor=3858E9&color=3858E9)](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/10up/jobber-wp/develop/.wordpress-org/blueprints/blueprint.json)
+
+[![Run E2E tests](https://github.com/10up/jobber-wp/actions/workflows/e2e.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/e2e.yml) [![CodeQL](https://github.com/10up/jobber-wp/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/codeql-analysis.yml) [![WordPress Plugin Checks](https://github.com/10up/jobber-wp/actions/workflows/plugin-check.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/plugin-check.yml) [![Dependency Review](https://github.com/10up/jobber-wp/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/dependency-review.yml)
+
+[![JS Linting](https://github.com/10up/jobber-wp/actions/workflows/eslint.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/eslint.yml) [![PHP Linting](https://github.com/10up/jobber-wp/actions/workflows/phpcs.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/phpcs.yml) [![PHPStan](https://github.com/10up/jobber-wp/actions/workflows/phpstan.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/phpstan.yml) [![PHP Compatibility](https://github.com/10up/jobber-wp/actions/workflows/php-compat.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/php-compat.yml) 
 
 ## Overview
 
@@ -49,3 +53,7 @@ Choose between "Booking Form" or "Request Form". Each form type serves different
 
 * Booking Form: Allows customers to directly book services.
 * Request Form: Enables customers to submit service requests.
+
+## Support Level
+
+**Active:** Jobber and 10up are actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress. Bug reports, feature requests, questions, and pull requests are welcome.
