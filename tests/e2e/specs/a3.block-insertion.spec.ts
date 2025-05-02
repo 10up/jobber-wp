@@ -24,4 +24,4 @@ test.describe('Block Insertion', () => {
     // Check if block is inserted
     await expect(page.locator('.wp-block-jobber-forms')).toBeVisible();
   });
-}); 
+});
