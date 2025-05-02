@@ -45,7 +45,7 @@ jobs:
           node-version-file: '.nvmrc'
 
       - name: Install Node dependencies
-        run: npm ci && npm run build
+        run: npm ci --omit=optional --legacy-peer-deps && npm run build
 
       - name: Install playwright
         run: npx playwright install --with-deps chromium
