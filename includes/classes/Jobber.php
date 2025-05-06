@@ -18,21 +18,21 @@ class Jobber {
 	use Module;
 
 	/**
-	 * API URL
+	 * API URL.
 	 *
 	 * @var string
 	 */
-	protected static $api_url = 'http://localhost:8000';
+	protected static $api_url = 'https://jobber-prod.10upmanaged.io';
 
 	/**
-	 * API Access Token
+	 * API Access Token.
 	 *
 	 * @var string
 	 */
 	private $access_token;
 
 	/**
-	 * Module Constructor
+	 * Module constructor.
 	 */
 	public function __construct() {
 		$this->access_token = Auth::get_token( 'jobber' );
@@ -84,7 +84,7 @@ class Jobber {
 	 */
 	protected function query( string $form_type = '', bool $force = false ) {
 		if ( empty( $this->access_token ) ) {
-			return new WP_Error( 'jobber_no_access_token', __( 'No token found.', 'jobber-wp' ) );
+			return new WP_Error( 'jobber_no_access_token', __( 'No token found.', 'jobber' ) );
 		}
 
 		$data      = [ 'query' => $form_type ];
@@ -120,7 +120,7 @@ class Jobber {
 			// Attempt to refresh the access token.
 			$refresh_response = Auth::refresh_access_token();
 
-			// If the refresh was successful, try the reqeust again.
+			// If the refresh was successful, try the request again.
 			if ( $refresh_response ) {
 				// Execute the request again.
 				$request = wp_remote_post( $endpoint, $args );
@@ -153,7 +153,7 @@ class Jobber {
 		} elseif ( 'request' === $form_type ) {
 			$form_type = 'request';
 		} else {
-			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber-wp' ) );
+			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber' ) );
 		}
 
 		return $this->query( $form_type );

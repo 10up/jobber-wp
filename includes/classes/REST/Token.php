@@ -28,7 +28,7 @@ class Token extends API {
 	 *
 	 * @var string
 	 */
-	protected static $route = '/token';
+	public static $route = '/token';
 
 	/**
 	 * Register needed hooks.
@@ -91,22 +91,6 @@ class Token extends API {
 	}
 
 	/**
-	 * Get the endpoint for token API routes.
-	 *
-	 * @param string $type The type of endpoint to get.
-	 * @return string
-	 */
-	public static function get_endpoint( string $type = 'validate' ): string {
-		$namespace = self::$namespace;
-		return sprintf(
-			'wp-json/%1$s/%2$s/%3$s',
-			$namespace,
-			ltrim( self::$route, '/' ),
-			$type
-		);
-	}
-
-	/**
 	 * Check if the user has permission to access the route.
 	 *
 	 * @param WP_REST_Request $request The REST request object.
@@ -149,9 +133,6 @@ class Token extends API {
 
 			wp_send_json_success( [ 'clientToken' => $token ] );
 		}
-
-		// Delete the option if it exists.
-		delete_option( Settings::SETTINGS_KEY );
 
 		$token = $this->generate();
 		$this->save( $token );

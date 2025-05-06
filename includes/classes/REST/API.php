@@ -24,6 +24,13 @@ class API {
 	public static $namespace = 'jobber/v1';
 
 	/**
+	 * API Route
+	 *
+	 * @var string
+	 */
+	public static $route = '/';
+
+	/**
 	 * Can we register this module?
 	 *
 	 * @return bool
@@ -71,6 +78,22 @@ class API {
 	}
 
 	/**
+	 * Get the endpoint for token API routes.
+	 *
+	 * @param string $type The type of endpoint to get.
+	 * @return string
+	 */
+	public static function get_endpoint( string $type = '' ): string {
+		$namespace = static::$namespace;
+		return sprintf(
+			'wp-json/%1$s/%2$s/%3$s',
+			$namespace,
+			ltrim( static::$route, '/' ),
+			$type
+		);
+	}
+
+	/**
 	 * Get the form from Jobber.
 	 *
 	 * @param \WP_REST_Request $request The REST Request.
@@ -108,7 +131,7 @@ class API {
 		if ( empty( $url ) ) {
 			return new \WP_Error(
 				'no_url_found',
-				__( 'No valid form URL found.', 'jobber-wp' ),
+				__( 'No valid form URL found.', 'jobber' ),
 				[ 'status' => 500 ]
 			);
 		}

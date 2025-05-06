@@ -1,19 +1,18 @@
 <?php
 /**
  * Plugin Name:       Jobber
+ * Plugin URI:        https://github.com/10up/jobber-wp
  * Description:       Add the ability to embed Jobber forms in your WordPress site.
  * Version:           1.0.0
- * Requires at least: 6.5
+ * Requires at least: 6.6
  * Requires PHP:      7.4
  * Author:            10up
  * Author URI:        https://10up.com
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       jobber-wp
- * Domain Path:       /languages
- * Update URI:        https://github.com/10up/jobber-wp
+ * Text Domain:       jobber
  *
- * @package           Jobber
+ * @package Jobber
  */
 
 // Useful global constants.
@@ -25,30 +24,32 @@ define( 'JOBBER_PLUGIN_DIST_URL', JOBBER_PLUGIN_URL . 'dist/' );
 define( 'JOBBER_PLUGIN_DIST_PATH', JOBBER_PLUGIN_PATH . 'dist/' );
 define( 'JOBBER_PLUGIN_BASENAME', plugin_basename( __DIR__ . '/jobber.php' ) );
 
-$is_local_env = in_array( wp_get_environment_type(), [ 'local', 'development' ], true );
-$is_local_url = strpos( home_url(), '.test' ) || strpos( home_url(), '.local' );
-$is_local     = $is_local_env || $is_local_url;
+// Show a notice if the autoload file is missing.
+if ( ! is_readable( JOBBER_PLUGIN_PATH . 'vendor/autoload.php' ) ) {
+	add_action(
+		'admin_notices',
+		function () {
+			$message = __( 'Autoload file is missing for the <strong>Jobber</strong> plugin. If you are a user, please contact support. If you are a developer, run <code>composer install</code> within the plugin directory to fix.', 'jobber' );
+			printf(
+				'<div class="notice notice-warning"><p>%1$s</p></div>',
+				wp_kses_post( $message )
+			);
+		}
+	);
 
-if ( $is_local && file_exists( __DIR__ . '/dist/fast-refresh.php' ) ) {
-	require_once __DIR__ . '/dist/fast-refresh.php';
-
-	if ( function_exists( 'TenUpToolkit\set_dist_url_path' ) ) {
-		TenUpToolkit\set_dist_url_path( basename( __DIR__ ), JOBBER_PLUGIN_DIST_URL, JOBBER_PLUGIN_DIST_PATH );
-	}
+	// Exit early to avoid fatal errors.
+	return;
 }
 
-// Require Composer autoloader if it exists.
-if ( file_exists( JOBBER_PLUGIN_PATH . 'vendor/autoload.php' ) ) {
-	require_once JOBBER_PLUGIN_PATH . 'vendor/autoload.php';
-}
+// Require composer autoloader.
+require_once JOBBER_PLUGIN_PATH . 'vendor/autoload.php';
 
 // Include files.
 require_once JOBBER_PLUGIN_INC . '/utility.php';
 require_once JOBBER_PLUGIN_INC . '/core.php';
 
-// Activation/Deactivation.
+// Activation.
 register_activation_hook( __FILE__, '\Jobber\Core\activate' );
-register_deactivation_hook( __FILE__, '\Jobber\Core\deactivate' );
 
 // Bootstrap.
 Jobber\Core\setup();
