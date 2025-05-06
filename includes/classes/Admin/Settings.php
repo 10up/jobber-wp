@@ -10,6 +10,7 @@ namespace Jobber\Admin;
 use Jobber\Module;
 use Jobber\Auth;
 use Jobber\Jobber;
+use Jobber\REST\API;
 use Jobber\REST\Token;
 
 /**
@@ -63,7 +64,7 @@ class Settings {
 	public function render_page() {
 		$url_args = [
 			'tokenUrl'  => site_url( Token::get_endpoint( 'generate' ) ),
-			'clientUrl' => site_url( Token::get_endpoint() ),
+			'clientUrl' => untrailingslashit( site_url( API::get_endpoint() ) ),
 			'returnUrl' => self::settings_url(),
 			'nonce'     => $this->set_auth_nonce(),
 		];

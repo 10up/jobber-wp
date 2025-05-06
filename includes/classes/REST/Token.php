@@ -186,7 +186,7 @@ class Token extends API {
 	 * @param string $token The token to validate
 	 * @return bool
 	 */
-	protected function validate( string $token ): bool {
+	public function validate( string $token ): bool {
 		if ( empty( $token ) ) {
 			return false;
 		}

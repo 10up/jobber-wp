@@ -8,6 +8,7 @@
 namespace Jobber\REST;
 
 use Jobber\Module;
+use Jobber\Disconnect;
 
 /**
  * Jobber API Base
@@ -28,7 +29,7 @@ class API {
 	 *
 	 * @var string
 	 */
-	public static $route = '/';
+	public static $route = '';
 
 	/**
 	 * Can we register this module?
@@ -66,6 +67,23 @@ class API {
 				],
 			]
 		);
+
+		// Disconnect
+		register_rest_route(
+			self::$namespace,
+			'/disconnect',
+			[
+				'methods'             => 'POST',
+				'callback'            => [ $this, 'handle_disconnect' ],
+				'permission_callback' => '__return_true',
+				'args'                => [
+					Token::$key => [
+						'type'     => 'string',
+						'required' => true,
+					],
+				],
+			]
+		);
 	}
 
 	/**
@@ -91,6 +109,30 @@ class API {
 			ltrim( static::$route, '/' ),
 			$type
 		);
+	}
+
+	/**
+	 * Handle the disconnect request.
+	 *
+	 * @param \WP_REST_Request $request The REST Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function handle_disconnect( \WP_REST_Request $request ) {
+		$client_token = $request->get_param( Token::$key );
+
+		if ( empty( $client_token ) ) {
+			return new \WP_Error( 'no_client_token', __( 'No client token found.', 'jobber' ), [ 'status' => 400 ] );
+		}
+
+		$token = new Token();
+		if ( ! $token->validate( $client_token ) ) {
+			wp_send_json_error( [ 'message' => 'Invalid token' ], 401 );
+		}
+
+		// Disconnect the client.
+		( new Disconnect() )->disconnect_client();
+
+		wp_send_json_success();
 	}
 
 	/**

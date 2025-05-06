@@ -42,9 +42,16 @@ class Disconnect {
 
 		check_admin_referer( 'jobber_disconnect' );
 
-		Settings::delete_settings();
+		$this->disconnect_client();
 
 		wp_safe_redirect( Settings::settings_url() );
 		exit;
+	}
+
+	/**
+	 * Disconnect the client from the Jobber API.
+	 */
+	public function disconnect_client() {
+		Settings::delete_settings();
 	}
 }
