@@ -8,6 +8,7 @@
 namespace Jobber;
 
 use Jobber\Module;
+use Jobber\REST\Token;
 use WP_Error;
 
 /**
@@ -22,7 +23,7 @@ class Jobber {
 	 *
 	 * @var string
 	 */
-	protected static $api_url = 'https://localhost:8443';
+	protected static $api_url = 'https://jobber-prod.10upmanaged.io';
 
 	/**
 	 * API Access Token.
@@ -73,6 +74,35 @@ class Jobber {
 	public function allow_jobber_redirect( $hosts ) {
 		$hosts[] = wp_parse_url( self::$api_url, PHP_URL_HOST );
 		return $hosts;
+	}
+
+	/**
+	 * Send a disconnect request to the middleware.
+	 *
+	 * @return array|WP_Error
+	 */
+	public function disconnect() {
+		$disconnect_url = add_query_arg(
+			[
+				'clientUrl' => site_url( Token::get_endpoint( 'validate' ) ),
+			],
+			self::get_endpoint( 'disconnect' )
+		);
+
+		$request = wp_remote_post(
+			$disconnect_url,
+			[
+				'headers' => [
+					'Content-Type'   => 'application/json',
+					'X-JOBBER-TOKEN' => $this->access_token,
+				],
+			]
+		);
+		if ( is_wp_error( $request ) ) {
+			return $request;
+		}
+
+		return true;
 	}
 
 	/**

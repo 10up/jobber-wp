@@ -7,7 +7,7 @@
 
 namespace Jobber\REST;
 
-use Jobber\Admin\Settings;
+use Jobber\Disconnect;
 use WP_REST_Server;
 use WP_REST_Request;
 
@@ -73,6 +73,7 @@ class Token extends API {
 			]
 		);
 
+		// Disconnect route.
 		register_rest_route(
 			self::$namespace,
 			self::$route . '/validate',
@@ -81,9 +82,13 @@ class Token extends API {
 				'callback'            => [ $this, 'validate_token' ],
 				'permission_callback' => '__return_true',
 				'args'                => [
-					self::$key => [
+					self::$key         => [
 						'type'     => 'string',
 						'required' => true,
+					],
+					Disconnect::ACTION => [
+						'type'     => 'string',
+						'required' => false,
 					],
 				],
 			]
@@ -168,6 +173,14 @@ class Token extends API {
 		if ( $this->validate( $token ) ) {
 			if ( $rtn ) {
 				return true;
+			}
+
+			// If were validating a disconnect request, disconnect the client after a successful validation.
+			// We have to do this here because the disconnect_client() method deletes the token from the database,
+			// and we need to validate the token first.
+			$disconnect = $request->get_param( Disconnect::ACTION );
+			if ( $disconnect && 'true' === $disconnect ) {
+				Disconnect::disconnect_client();
 			}
 
 			wp_send_json_success();

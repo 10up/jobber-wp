@@ -17,6 +17,13 @@ class Disconnect {
 	use Module;
 
 	/**
+	 * Action parameter for the disconnect request.
+	 *
+	 * @var string
+	 */
+	const ACTION = 'jobber_disconnect';
+
+	/**
 	 * Only register if a user has correct capability to disconnect.
 	 *
 	 * @return bool
@@ -40,18 +47,28 @@ class Disconnect {
 			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'jobber' ) );
 		}
 
-		check_admin_referer( 'jobber_disconnect' );
+		check_admin_referer( self::ACTION );
 
-		$this->disconnect_client();
+		// Send disconnect request to the middleware.
+		$disconnect = ( new Jobber() )->disconnect();
+		if ( ! $disconnect || is_wp_error( $disconnect ) ) {
+			wp_die( esc_html__( 'Failed to disconnect from Jobber.', 'jobber' ) );
+		}
 
-		wp_safe_redirect( Settings::settings_url() );
+		// Redirect to the settings page with the disconnected flag.
+		$redirect_url = add_query_arg(
+			[ self::ACTION => 'true' ],
+			Settings::settings_url()
+		);
+		wp_safe_redirect( $redirect_url );
 		exit;
 	}
 
 	/**
 	 * Disconnect the client from the Jobber API.
+	 * Deletes the Jobber settings from the database.
 	 */
-	public function disconnect_client() {
+	public static function disconnect_client() {
 		Settings::delete_settings();
 	}
 }

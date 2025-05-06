@@ -10,6 +10,7 @@ namespace Jobber\Admin;
 use Jobber\Module;
 use Jobber\Auth;
 use Jobber\Jobber;
+use Jobber\Disconnect;
 use Jobber\REST\API;
 use Jobber\REST\Token;
 
@@ -69,7 +70,13 @@ class Settings {
 			'nonce'     => $this->set_auth_nonce(),
 		];
 
-		$auth_url = add_query_arg( $url_args, Jobber::get_endpoint( 'auth' ) );
+		$auth_url      = add_query_arg( $url_args, Jobber::get_endpoint( 'auth' ) );
+		$is_authorized = Auth::is_authorized();
+
+		// If the user has disconnected, set the authorized flag to false.
+		if ( isset( $_GET[ Disconnect::ACTION ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$is_authorized = false;
+		}
 		?>
 
 		<div class="wrap">
@@ -80,7 +87,7 @@ class Settings {
 			<h2 class="screen-reader-text"><?php esc_html_e( 'Settings', 'jobber' ); ?></h2>
 
 			<div class="jobber-settings__container" style="max-width: 600px; font-size: 14px; line-height: 1.5;">
-				<?php if ( ! Auth::is_authorized() ) : ?>
+				<?php if ( ! $is_authorized ) : ?>
 					<p style="font-size: 14px; line-height: 1.7;">
 						<?php esc_html_e( 'The Jobber plugin allows you to easily embed your Booking and Request forms using a new Jobber block. To get started, follow the steps below:', 'jobber' ); ?>
 					</p>
@@ -103,7 +110,7 @@ class Settings {
 			</div>
 
 			<div class="jobber-settings__connection" style="margin-top: 2rem; max-width: 600px; font-size: 14px; line-height: 1.5;">
-				<?php if ( ! Auth::is_authorized() ) : ?>
+				<?php if ( ! $is_authorized ) : ?>
 					<a href="<?php echo esc_url( $auth_url ); ?>" class="is-primary button button-primary">
 						<?php esc_html_e( 'Connect to Jobber', 'jobber' ); ?>
 					</a>
