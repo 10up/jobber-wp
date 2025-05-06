@@ -62,7 +62,8 @@ class Settings {
 	 */
 	public function render_page() {
 		$url_args = [
-			'clientUrl' => site_url( Token::get_endpoint( 'generate' ) ),
+			'tokenUrl'  => site_url( Token::get_endpoint( 'generate' ) ),
+			'clientUrl' => site_url( Token::get_endpoint() ),
 			'returnUrl' => self::settings_url(),
 			'nonce'     => $this->set_auth_nonce(),
 		];

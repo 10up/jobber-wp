@@ -22,7 +22,7 @@ class Jobber {
 	 *
 	 * @var string
 	 */
-	protected static $api_url = 'https://jobber-prod.10upmanaged.io';
+	protected static $api_url = 'https://localhost:8443';
 
 	/**
 	 * API Access Token.

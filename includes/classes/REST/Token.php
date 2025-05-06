@@ -125,13 +125,19 @@ class Token extends API {
 	 * @return mixed
 	 */
 	public function generate_token( WP_REST_Request $request, bool $rtn = false ) {
-		$token = $this->get_token();
+		$token        = $this->get_token();
+		$validate_url = self::get_endpoint( 'validate' );
 		if ( ! empty( $token ) ) {
 			if ( $rtn ) {
 				return $token;
 			}
 
-			wp_send_json_success( [ 'clientToken' => $token ] );
+			wp_send_json_success(
+				[
+					'clientToken' => $token,
+					'validateUrl' => $validate_url,
+				]
+			);
 		}
 
 		$token = $this->generate();
@@ -141,7 +147,12 @@ class Token extends API {
 			return $token;
 		}
 
-		wp_send_json_success( [ 'clientToken' => $token ] );
+		wp_send_json_success(
+			[
+				'clientToken' => $token,
+				'validateUrl' => $validate_url,
+			]
+		);
 	}
 
 	/**
