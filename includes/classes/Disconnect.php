@@ -66,6 +66,7 @@ class Disconnect {
 
 	/**
 	 * Disconnect the client from the Jobber API.
+	 *
 	 * Deletes the Jobber settings from the database.
 	 */
 	public static function disconnect_client() {

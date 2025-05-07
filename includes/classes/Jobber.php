@@ -98,6 +98,7 @@ class Jobber {
 				],
 			]
 		);
+
 		if ( is_wp_error( $request ) ) {
 			return $request;
 		}

@@ -132,6 +132,7 @@ class Token extends API {
 	public function generate_token( WP_REST_Request $request, bool $rtn = false ) {
 		$token        = $this->get_token();
 		$validate_url = self::get_endpoint( 'validate' );
+
 		if ( ! empty( $token ) ) {
 			if ( $rtn ) {
 				return $token;
@@ -175,8 +176,9 @@ class Token extends API {
 				return true;
 			}
 
-			// If were validating a disconnect request, disconnect the client after a successful validation.
-			// We have to do this here because the disconnect_client() method deletes the token from the database,
+			// If we're validating a disconnect request, disconnect the client
+			// after a successful validation. We have to do this here because
+			// the disconnect_client() method deletes the token from the database,
 			// and we need to validate the token first.
 			$disconnect = $request->get_param( Disconnect::ACTION );
 			if ( $disconnect && 'true' === $disconnect ) {

@@ -9,6 +9,7 @@ namespace Jobber\REST;
 
 use Jobber\Module;
 use Jobber\Disconnect;
+use WP_REST_Server;
 
 /**
  * Jobber API Base
@@ -56,7 +57,7 @@ class API {
 			self::$namespace,
 			'/get_form',
 			[
-				'methods'             => 'GET',
+				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => [ $this, 'get_form' ],
 				'permission_callback' => [ $this, 'has_permission' ],
 				'args'                => [
@@ -68,12 +69,12 @@ class API {
 			]
 		);
 
-		// Disconnect
+		// Disconnect.
 		register_rest_route(
 			self::$namespace,
 			'/disconnect',
 			[
-				'methods'             => 'POST',
+				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'handle_disconnect' ],
 				'permission_callback' => '__return_true',
 				'args'                => [
@@ -102,10 +103,9 @@ class API {
 	 * @return string
 	 */
 	public static function get_endpoint( string $type = '' ): string {
-		$namespace = static::$namespace;
 		return sprintf(
 			'wp-json/%1$s/%2$s/%3$s',
-			$namespace,
+			static::$namespace,
 			ltrim( static::$route, '/' ),
 			$type
 		);
