@@ -35,7 +35,7 @@ const Edit = ({ attributes, setAttributes }) => {
 		setError(null);
 
 		apiFetch({
-			path: `jobber/v1/get_form?form_type=${formType}`,
+			path: `jobber/v1/get_form?form_type=${formType}&force=true`,
 			method: 'GET',
 		})
 			.then((response) => {
