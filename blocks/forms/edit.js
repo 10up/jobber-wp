@@ -103,7 +103,7 @@ const Edit = ({ attributes, setAttributes }) => {
 						src={iframeUrl}
 						style={{
 							border: '1px dashed #E0E0E0',
-							height: '500px',
+							height: formType === 'request' ? '1630px' : '600px',
 							width: '100%',
 						}}
 						title={__('Jobber Form', 'jobber')}
