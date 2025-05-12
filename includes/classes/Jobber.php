@@ -134,9 +134,10 @@ class Jobber {
 	 * Get the form from Jobber.
 	 *
 	 * @param string $form_type The type of form to get. Default is 'request'.
+	 * @param bool   $force     Force a new request and bypass cache.
 	 * @return array|WP_Error
 	 */
-	public function get_form( string $form_type = 'request' ) {
+	public function get_form( string $form_type = 'request', bool $force = false ) {
 		if ( 'booking' === $form_type ) {
 			$form_type = 'booking';
 		} elseif ( 'request' === $form_type ) {
@@ -145,6 +146,6 @@ class Jobber {
 			return new WP_Error( 'jobber_invalid_form_type', __( 'Invalid form type.', 'jobber' ) );
 		}
 
-		return $this->query( $form_type );
+		return $this->query( $form_type, $force );
 	}
 }
