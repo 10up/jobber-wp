@@ -56,13 +56,27 @@ class Jobber {
 	}
 
 	/**
+	 * Get the API URL.
+	 *
+	 * @return string
+	 */
+	public static function get_api_url(): string {
+		// Allow for a custom API URL to be set.
+		if ( defined( 'JOBBER_API_URL' ) ) {
+			return \JOBBER_API_URL;
+		}
+
+		return self::$api_url;
+	}
+
+	/**
 	 * Get the endpoint for the Jobber API.
 	 *
 	 * @param string $path The path to the endpoint.
 	 * @return string
 	 */
 	public static function get_endpoint( string $path = 'jobber' ): string {
-		return self::$api_url . "/{$path}";
+		return self::get_api_url() . "/{$path}";
 	}
 
 	/**
@@ -72,7 +86,7 @@ class Jobber {
 	 * @return array
 	 */
 	public function allow_jobber_redirect( $hosts ) {
-		$hosts[] = wp_parse_url( self::$api_url, PHP_URL_HOST );
+		$hosts[] = wp_parse_url( self::get_api_url(), PHP_URL_HOST );
 		return $hosts;
 	}
 
@@ -142,6 +156,7 @@ class Jobber {
 		// Execute the request.
 		$endpoint = self::get_endpoint( 'jobber' );
 		$request  = wp_remote_post( $endpoint, $args );
+
 		if ( is_wp_error( $request ) ) {
 			return $request;
 		}
