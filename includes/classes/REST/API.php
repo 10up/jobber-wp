@@ -65,6 +65,10 @@ class API {
 						'type'     => 'string',
 						'required' => true,
 					],
+					'force'     => [
+						'type'    => 'boolean',
+						'default' => false,
+					],
 				],
 			]
 		);
@@ -143,13 +147,14 @@ class API {
 	 */
 	public function get_form( \WP_REST_Request $request ) {
 		$form_type = $request->get_param( 'form_type' );
+		$force     = (bool) $request->get_param( 'force' );
 
 		if ( empty( $form_type ) ) {
 			$form_type = 'request';
 		}
 
 		$jobber = new \Jobber\Jobber();
-		$form   = $jobber->get_form( $form_type );
+		$form   = $jobber->get_form( $form_type, $force );
 
 		if ( is_wp_error( $form ) ) {
 			return rest_ensure_response( $form );

@@ -35,7 +35,7 @@ const Edit = ({ attributes, setAttributes }) => {
 		setError(null);
 
 		apiFetch({
-			path: `jobber/v1/get_form?form_type=${formType}`,
+			path: `jobber/v1/get_form?form_type=${formType}&force=true`,
 			method: 'GET',
 		})
 			.then((response) => {
@@ -103,7 +103,7 @@ const Edit = ({ attributes, setAttributes }) => {
 						src={iframeUrl}
 						style={{
 							border: '1px dashed #E0E0E0',
-							height: '500px',
+							height: formType === 'request' ? '1630px' : '400px',
 							width: '100%',
 						}}
 						title={__('Jobber Form', 'jobber')}
