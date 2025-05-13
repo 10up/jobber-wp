@@ -154,7 +154,7 @@ class Jobber {
 		];
 
 		// Execute the request.
-		$endpoint = self::get_endpoint( 'jobber' );
+		$endpoint = self::get_endpoint( 'jobber/graphql' );
 		$request  = wp_remote_post( $endpoint, $args );
 
 		if ( is_wp_error( $request ) ) {
