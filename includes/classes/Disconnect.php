@@ -36,7 +36,7 @@ class Disconnect {
 	 * Register needed hooks.
 	 */
 	public function register() {
-		add_action( 'admin_post_jobber_disconnect', [ $this, 'handle_ui_disconnect' ] );
+		add_action( 'admin_post_' . self::ACTION, [ $this, 'handle_ui_disconnect' ] );
 	}
 
 	/**

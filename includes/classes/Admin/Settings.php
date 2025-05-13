@@ -129,8 +129,8 @@ class Settings {
 						<?php esc_html_e( 'If you no longer need to have a form embedded, you can disconnect your account by clicking the button below. Note that any existing forms you have embedded will no longer show.', 'jobber' ); ?>
 					</p>
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-						<?php wp_nonce_field( 'jobber_disconnect' ); ?>
-						<input type="hidden" name="action" value="jobber_disconnect">
+						<?php wp_nonce_field( Disconnect::ACTION ); ?>
+						<input type="hidden" name="action" value="<?php echo esc_attr( Disconnect::ACTION ); ?>">
 						<button type="submit" class="is-secondary is-destructive button" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to disconnect from Jobber? Any forms you have embedded will no longer work.', 'jobber' ); ?>');" style="margin-top: 1rem;">
 							<?php esc_html_e( 'Disconnect', 'jobber' ); ?>
 						</button>
