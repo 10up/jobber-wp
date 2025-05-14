@@ -7,6 +7,10 @@
 
 namespace Jobber;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Get an initialized class by its full class name, including namespace.
  *

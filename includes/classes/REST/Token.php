@@ -7,6 +7,10 @@
 
 namespace Jobber\REST;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 use Jobber\Admin\Settings;
 use WP_REST_Server;
 use WP_REST_Request;
@@ -54,7 +58,7 @@ class Token extends API {
 			$this->validate( $token ) &&
 			! empty( $_GET['tokens'] )
 		) {
-			\Jobber\Admin\Settings::update_settings( [ 'authenticated' => true ] );
+			Settings::update_settings( [ 'authenticated' => true ] );
 		}
 		/* phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended */
 	}
@@ -121,7 +125,7 @@ class Token extends API {
 		}
 
 		// Check the nonce.
-		$settings = \Jobber\Admin\Settings::get_settings();
+		$settings = Settings::get_settings();
 		if ( empty( $settings['nonce'] ) ) {
 			return false;
 		}
@@ -219,7 +223,7 @@ class Token extends API {
 	 * @param string $token The token to save.
 	 */
 	public function save( $token ) {
-		\Jobber\Admin\Settings::update_settings( [ self::$key => $token ] );
+		Settings::update_settings( [ self::$key => $token ] );
 	}
 
 	/**
@@ -228,7 +232,7 @@ class Token extends API {
 	 * @return string
 	 */
 	public static function get_token(): string {
-		$settings = \Jobber\Admin\Settings::get_settings();
+		$settings = Settings::get_settings();
 		if ( empty( $settings[ self::$key ] ) ) {
 			return '';
 		}

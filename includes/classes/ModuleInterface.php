@@ -7,6 +7,10 @@
 
 namespace Jobber;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Interface for the Module trait.
  */

@@ -7,6 +7,10 @@
 
 namespace Jobber;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Module is any feature that conditionally activates based on the current context.
  */

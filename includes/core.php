@@ -7,6 +7,10 @@
 
 namespace Jobber\Core;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 use Jobber\ModuleInitialization;
 
 /**

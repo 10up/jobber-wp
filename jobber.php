@@ -15,6 +15,10 @@
  * @package Jobber
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 // Useful global constants.
 define( 'JOBBER_PLUGIN_VERSION', '1.0.0' );
 define( 'JOBBER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
