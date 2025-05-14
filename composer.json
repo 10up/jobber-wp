@@ -1,12 +1,12 @@
 {
   "name": "10up/jobber",
   "description": "Jobber WordPress Plugin.",
-  "license": "MIT",
+  "license": "GPL-2.0-or-later",
   "type": "wordpress-plugin",
   "authors": [
     {
       "name": "10up",
-      "email": "info@10up.com"
+      "email": "opensource@10up.com"
     }
   ],
   "require": {

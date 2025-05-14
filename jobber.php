@@ -6,10 +6,10 @@
  * Version:           1.0.0
  * Requires at least: 6.6
  * Requires PHP:      7.4
- * Author:            10up
- * Author URI:        https://10up.com
- * License:           GPL v2 or later
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Author:            jobberintegrations
+ * Author URI:        https://www.getjobber.com/
+ * License:           GPL-2.0-or-later
+ * License URI:       https://spdx.org/licenses/GPL-2.0-or-later.html
  * Text Domain:       jobber
  *
  * @package Jobber
