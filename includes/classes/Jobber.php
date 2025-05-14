@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Jobber\Module;
+use Jobber\REST\Token;
 use WP_Error;
 
 /**
@@ -26,7 +27,7 @@ class Jobber {
 	 *
 	 * @var string
 	 */
-	protected $api_url = 'https://jobber-prod.10upmanaged.io/jobber';
+	protected static $api_url = 'https://jobber-prod.10upmanaged.io';
 
 	/**
 	 * API Access Token.
@@ -59,14 +60,68 @@ class Jobber {
 	}
 
 	/**
+	 * Get the API URL.
+	 *
+	 * @return string
+	 */
+	public static function get_api_url(): string {
+		// Allow for a custom API URL to be set.
+		if ( defined( 'JOBBER_API_URL' ) ) {
+			return \JOBBER_API_URL;
+		}
+
+		return self::$api_url;
+	}
+
+	/**
+	 * Get the endpoint for the Jobber API.
+	 *
+	 * @param string $path The path to the endpoint.
+	 * @return string
+	 */
+	public static function get_endpoint( string $path = 'jobber' ): string {
+		return self::get_api_url() . "/{$path}";
+	}
+
+	/**
 	 * Add the middleware URL to the allowed redirect hosts.
 	 *
 	 * @param array $hosts Allowed Redirect Hosts.
 	 * @return array
 	 */
 	public function allow_jobber_redirect( $hosts ) {
-		$hosts[] = wp_parse_url( Auth::$url, PHP_URL_HOST );
+		$hosts[] = wp_parse_url( self::get_api_url(), PHP_URL_HOST );
 		return $hosts;
+	}
+
+	/**
+	 * Send a disconnect request to the middleware.
+	 *
+	 * @return array|WP_Error
+	 */
+	public function disconnect() {
+		$disconnect_url = add_query_arg(
+			[
+				'clientUrl' => site_url( Token::get_endpoint( 'validate' ) ),
+			],
+			self::get_endpoint( 'disconnect' )
+		);
+
+		$request = wp_remote_post(
+			$disconnect_url,
+			[
+				'headers' => [
+					'Content-Type'   => 'application/json',
+					'X-JOBBER-TOKEN' => $this->access_token,
+				],
+			]
+		);
+
+		if ( is_wp_error( $request ) ) {
+			return $request;
+		}
+
+		return true;
 	}
 
 	/**
@@ -103,7 +158,9 @@ class Jobber {
 		];
 
 		// Execute the request.
-		$request = wp_remote_post( "{$this->api_url}/graphql", $args );
+		$endpoint = self::get_endpoint( 'jobber/graphql' );
+		$request  = wp_remote_post( $endpoint, $args );
+
 		if ( is_wp_error( $request ) ) {
 			return $request;
 		}
@@ -116,7 +173,7 @@ class Jobber {
 			// If the refresh was successful, try the request again.
 			if ( $refresh_response ) {
 				// Execute the request again.
-				$request = wp_remote_post( "{$this->api_url}/graphql", $args );
+				$request = wp_remote_post( $endpoint, $args );
 				if ( is_wp_error( $request ) ) {
 					return $request;
 				}

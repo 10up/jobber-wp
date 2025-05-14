@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Jobber\Admin\Settings;
+use Jobber\Disconnect;
 use WP_REST_Server;
 use WP_REST_Request;
 
@@ -32,7 +33,7 @@ class Token extends API {
 	 *
 	 * @var string
 	 */
-	protected static $route = '/token';
+	public static $route = '/token';
 
 	/**
 	 * Register needed hooks.
@@ -77,6 +78,7 @@ class Token extends API {
 			]
 		);
 
+		// Disconnect route.
 		register_rest_route(
 			self::$namespace,
 			self::$route . '/validate',
@@ -85,28 +87,16 @@ class Token extends API {
 				'callback'            => [ $this, 'validate_token' ],
 				'permission_callback' => '__return_true',
 				'args'                => [
-					self::$key => [
+					self::$key         => [
 						'type'     => 'string',
 						'required' => true,
 					],
+					Disconnect::ACTION => [
+						'type'     => 'string',
+						'required' => false,
+					],
 				],
 			]
-		);
-	}
-
-	/**
-	 * Get the endpoint for token API routes.
-	 *
-	 * @param string $type The type of endpoint to get.
-	 * @return string
-	 */
-	public static function get_endpoint( string $type = 'validate' ): string {
-		$namespace = self::$namespace;
-		return sprintf(
-			'wp-json/%1$s/%2$s/%3$s',
-			$namespace,
-			ltrim( self::$route, '/' ),
-			$type
 		);
 	}
 
@@ -145,13 +135,20 @@ class Token extends API {
 	 * @return mixed
 	 */
 	public function generate_token( WP_REST_Request $request, bool $rtn = false ) {
-		$token = $this->get_token();
+		$token        = $this->get_token();
+		$validate_url = self::get_endpoint( 'validate' );
+
 		if ( ! empty( $token ) ) {
 			if ( $rtn ) {
 				return $token;
 			}
 
-			wp_send_json_success( [ 'clientToken' => $token ] );
+			wp_send_json_success(
+				[
+					'clientToken' => $token,
+					'validateUrl' => $validate_url,
+				]
+			);
 		}
 
 		$token = $this->generate();
@@ -161,7 +158,12 @@ class Token extends API {
 			return $token;
 		}
 
-		wp_send_json_success( [ 'clientToken' => $token ] );
+		wp_send_json_success(
+			[
+				'clientToken' => $token,
+				'validateUrl' => $validate_url,
+			]
+		);
 	}
 
 	/**
@@ -177,6 +179,15 @@ class Token extends API {
 		if ( $this->validate( $token ) ) {
 			if ( $rtn ) {
 				return true;
+			}
+
+			// If we're validating a disconnect request, disconnect the client
+			// after a successful validation. We have to do this here because
+			// the disconnect_client() method deletes the token from the database,
+			// and we need to validate the token first.
+			$disconnect = $request->get_param( Disconnect::ACTION );
+			if ( $disconnect && 'true' === $disconnect ) {
+				Disconnect::disconnect_client();
 			}
 
 			wp_send_json_success();
@@ -195,7 +206,7 @@ class Token extends API {
 	 * @param string $token The token to validate
 	 * @return bool
 	 */
-	protected function validate( string $token ): bool {
+	public function validate( string $token ): bool {
 		if ( empty( $token ) ) {
 			return false;
 		}

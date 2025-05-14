@@ -13,6 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use Jobber\Module;
 use Jobber\Auth;
+use Jobber\Jobber;
+use Jobber\Disconnect;
+use Jobber\REST\API;
 use Jobber\REST\Token;
 
 /**
@@ -65,12 +68,19 @@ class Settings {
 	 */
 	public function render_page() {
 		$url_args = [
-			'clientUrl' => site_url( Token::get_endpoint( 'generate' ) ),
+			'tokenUrl'  => site_url( Token::get_endpoint( 'generate' ) ),
+			'clientUrl' => untrailingslashit( site_url( API::get_endpoint() ) ),
 			'returnUrl' => self::settings_url(),
 			'nonce'     => $this->set_auth_nonce(),
 		];
 
-		$auth_url = add_query_arg( $url_args, Auth::$url );
+		$auth_url      = add_query_arg( $url_args, Jobber::get_endpoint( 'auth' ) );
+		$is_authorized = Auth::is_authorized();
+
+		// If the user has disconnected, set the authorized flag to false.
+		if ( isset( $_GET[ Disconnect::ACTION ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$is_authorized = false;
+		}
 		?>
 
 		<div class="wrap">
@@ -81,7 +91,7 @@ class Settings {
 			<h2 class="screen-reader-text"><?php esc_html_e( 'Settings', 'jobber' ); ?></h2>
 
 			<div class="jobber-settings__container" style="max-width: 600px; font-size: 14px; line-height: 1.5;">
-				<?php if ( ! Auth::is_authorized() ) : ?>
+				<?php if ( ! $is_authorized ) : ?>
 					<p style="font-size: 14px; line-height: 1.7;">
 						<?php esc_html_e( 'The Jobber plugin allows you to easily embed your Booking and Request forms using a new Jobber block. To get started, follow the steps below:', 'jobber' ); ?>
 					</p>
@@ -104,7 +114,7 @@ class Settings {
 			</div>
 
 			<div class="jobber-settings__connection" style="margin-top: 2rem; max-width: 600px; font-size: 14px; line-height: 1.5;">
-				<?php if ( ! Auth::is_authorized() ) : ?>
+				<?php if ( ! $is_authorized ) : ?>
 					<a href="<?php echo esc_url( $auth_url ); ?>" class="is-primary button button-primary">
 						<?php esc_html_e( 'Connect to Jobber', 'jobber' ); ?>
 					</a>
@@ -123,8 +133,8 @@ class Settings {
 						<?php esc_html_e( 'If you no longer need to have a form embedded, you can disconnect your account by clicking the button below. Note that any existing forms you have embedded will no longer show.', 'jobber' ); ?>
 					</p>
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-						<?php wp_nonce_field( 'jobber_disconnect' ); ?>
-						<input type="hidden" name="action" value="jobber_disconnect">
+						<?php wp_nonce_field( Disconnect::ACTION ); ?>
+						<input type="hidden" name="action" value="<?php echo esc_attr( Disconnect::ACTION ); ?>">
 						<button type="submit" class="is-secondary is-destructive button" onclick="return confirm('<?php esc_attr_e( 'Are you sure you want to disconnect from Jobber? Any forms you have embedded will no longer work.', 'jobber' ); ?>');" style="margin-top: 1rem;">
 							<?php esc_html_e( 'Disconnect', 'jobber' ); ?>
 						</button>
