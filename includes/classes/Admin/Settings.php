@@ -7,13 +7,13 @@
 
 namespace Jobber\Admin;
 
-use Jobber\Module;
-use Jobber\Auth;
-use Jobber\REST\Token;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+use Jobber\Module;
+use Jobber\Auth;
+use Jobber\REST\Token;
 
 /**
  * Base class for Jobber Configuration settings

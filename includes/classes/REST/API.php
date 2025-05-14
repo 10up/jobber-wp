@@ -7,11 +7,11 @@
 
 namespace Jobber\REST;
 
-use Jobber\Module;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
+
+use Jobber\Module;
 
 /**
  * Jobber API Base
