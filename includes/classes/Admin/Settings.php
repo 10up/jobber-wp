@@ -11,6 +11,10 @@ use Jobber\Module;
 use Jobber\Auth;
 use Jobber\REST\Token;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Base class for Jobber Configuration settings
  */
