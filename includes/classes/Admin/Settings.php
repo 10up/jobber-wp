@@ -7,6 +7,10 @@
 
 namespace Jobber\Admin;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 use Jobber\Module;
 use Jobber\Auth;
 use Jobber\Jobber;

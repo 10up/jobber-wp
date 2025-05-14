@@ -7,6 +7,10 @@
 
 namespace Jobber\Utility;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Get asset info from extracted asset files
  *

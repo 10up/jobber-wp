@@ -7,6 +7,10 @@
 
 namespace Jobber;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 use Jobber\Module;
 use Jobber\REST\Token;
 use WP_Error;

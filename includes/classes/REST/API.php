@@ -7,6 +7,10 @@
 
 namespace Jobber\REST;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 use Jobber\Module;
 use Jobber\Disconnect;
 use WP_REST_Server;
