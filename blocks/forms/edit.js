@@ -41,12 +41,14 @@ const Edit = ({ attributes, setAttributes }) => {
 			.then((response) => {
 				const url = response?.form?.iframeUrl;
 				if (!url) {
+					setIframeUrl('');
 					throw new Error(__('Form URL not found in API response', 'jobber'));
 				}
 				setIframeUrl(url);
 				setLoading(false);
 			})
 			.catch((err) => {
+				setIframeUrl('');
 				setError(err.message);
 				setLoading(false);
 			});
