@@ -96,16 +96,36 @@ class Settings {
 						<?php esc_html_e( 'The Jobber plugin allows you to easily embed your Booking and Request forms using a new Jobber block. To get started, follow the steps below:', 'jobber' ); ?>
 					</p>
 					<ul style="list-style: decimal;">
-						<li style="margin-left: 2rem;"><?php esc_html_e( 'Click the Connect button below and log in with your Jobber account', 'jobber' ); ?></li>
-						<li style="margin-left: 2rem;"><?php esc_html_e( 'Edit the page where you want to embed your form and insert the Jobber block.', 'jobber' ); ?></li>
-						<li style="margin-left: 2rem;"><?php esc_html_e( 'Within the block settings, choose the form type, either Request or Booking.', 'jobber' ); ?></li>
+						<li style="margin-left: 2rem;">
+							<?php
+							printf(
+								/* translators: %1$s: opening strong tag, %2$s: closing strong tag */
+								esc_html__( 'Click the %1$sConnect%2$s button below and log in with your Jobber account', 'jobber' ),
+								'<strong>',
+								'</strong>'
+							);
+							?>
+						</li>
+						<li style="margin-left: 2rem;">
+							<?php esc_html_e( 'Edit the page where you want to embed your form and insert the Jobber block.', 'jobber' ); ?>
+						</li>
+						<li style="margin-left: 2rem;">
+							<?php
+							printf(
+								/* translators: %1$s: opening strong tag, %2$s: closing strong tag */
+								esc_html__( 'Open the %1$sBlock settings%2$s and select the form you want to embed: %1$sRequest%2$s or %1$sBooking%2$s.', 'jobber' ),
+								'<strong>',
+								'</strong>',
+							);
+							?>
+						</li>
 					</ul>
 					<p style="font-size: 14px; line-height: 1.7;">
 						<?php
 						printf(
 							/* translators: %1$s: opening link tag, %2$s: closing link tag */
-							esc_html__( 'If you don\'t have a Jobber account yet, follow %1$sthese%2$s instructions to create that first.', 'jobber' ),
-							'<a href="https://help.getjobber.com/hc/en-us/articles/360042653674-First-Steps-Basic-Account-Set-Up" target="_blank" rel="noreferrer noopener">',
+							esc_html__( 'Not using Jobber yet? Start your 14-day free trial and enjoy 20% off for six months—sign up %1$shere%2$s!', 'jobber' ),
+							'<a href="https://www.getjobber.com/plp/wordpress" target="_blank" rel="noreferrer noopener">',
 							'</a>'
 						);
 						?>
@@ -125,13 +145,35 @@ class Settings {
 					</p>
 					<p style="font-size: 14px; font-weight: 600;"><?php esc_html_e( 'Next steps:', 'jobber' ); ?></p>
 					<ul style="list-style: decimal;">
-						<li style="margin-left: 2rem;"><?php esc_html_e( 'Edit the page where you want to embed your form and insert the Jobber block.', 'jobber' ); ?></li>
-						<li style="margin-left: 2rem;"><?php esc_html_e( 'Within the block settings, choose the form type, either Request or Booking.', 'jobber' ); ?></li>
+						<li style="margin-left: 2rem;">
+							<?php esc_html_e( 'Edit the page where you want to embed your form and insert the Jobber block.', 'jobber' ); ?>
+						</li>
+						<li style="margin-left: 2rem;">
+							<?php
+							printf(
+								/* translators: %1$s: opening strong tag, %2$s: closing strong tag */
+								esc_html__( 'Open the %1$sBlock settings%2$s and select the form you want to embed: %1$sRequest%2$s or %1$sBooking%2$s.', 'jobber' ),
+								'<strong>',
+								'</strong>',
+							);
+							?>
+						</li>
 					</ul>
 
 					<p style="font-size: 14px; line-height: 1.7;">
-						<?php esc_html_e( 'If you no longer need to have a form embedded, you can disconnect your account by clicking the button below. Note that any existing forms you have embedded will no longer show.', 'jobber' ); ?>
+						<?php
+						printf(
+							/* translators: %1$s: opening strong tag, %2$s: closing strong tag */
+							esc_html__( 'To remove your embedded forms, click the %1$sDisconnect%2$s button below.', 'jobber' ),
+							'<strong>',
+							'</strong>',
+						);
+						?>
 					</p>
+					<p style="font-size: 14px; line-height: 1.7;">
+						<?php esc_html_e( 'This action will immediately disconnect your account, and every form you have previously embedded will disappear from your site. You can reconnect your account and re-embed forms at any time if you change your mind.', 'jobber' ); ?>
+					</p>
+
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<?php wp_nonce_field( Disconnect::ACTION ); ?>
 						<input type="hidden" name="action" value="<?php echo esc_attr( Disconnect::ACTION ); ?>">
