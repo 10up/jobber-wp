@@ -59,6 +59,9 @@ class Disconnect {
 			wp_die( esc_html__( 'Failed to disconnect from Jobber.', 'jobber' ) );
 		}
 
+		// Update the authenticated setting.
+		Settings::update_settings( [ 'authenticated' => false ] );
+
 		// Redirect to the settings page with the disconnected flag.
 		$redirect_url = add_query_arg(
 			[ self::ACTION => 'true' ],
