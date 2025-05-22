@@ -124,7 +124,7 @@ class Settings {
 						<?php
 						printf(
 							/* translators: %1$s: opening link tag, %2$s: closing link tag */
-							esc_html__( 'Not using Jobber yet? Start your 14-day free trial and enjoy 20% off for six months—sign up %1$shere%2$s!', 'jobber' ),
+							esc_html__( 'Not using Jobber yet? Start your 14-day free trial and enjoy 20%% off for six months—sign up %1$shere%2$s!', 'jobber' ),
 							'<a href="https://www.getjobber.com/plp/wordpress" target="_blank" rel="noreferrer noopener">',
 							'</a>'
 						);
