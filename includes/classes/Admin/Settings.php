@@ -100,7 +100,7 @@ class Settings {
 							<?php
 							printf(
 								/* translators: %1$s: opening strong tag, %2$s: closing strong tag */
-								esc_html__( 'Click the %1$sConnect%2$s button below and log in with your Jobber account', 'jobber' ),
+								esc_html__( 'Click the %1$sConnect%2$s button below and log in with your Jobber account.', 'jobber' ),
 								'<strong>',
 								'</strong>'
 							);
