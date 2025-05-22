@@ -40,19 +40,26 @@ class Token extends API {
 	 */
 	public function register() {
 		add_action( 'rest_api_init', [ $this, 'register_routes' ] );
-		add_action( 'init', [ $this, 'check_token' ] );
+		add_action( 'admin_init', [ $this, 'check_token' ] );
 	}
 
 	/**
-	 * Check for a valid authentication.
+	 * Check if our authentication request succeeded.
 	 */
 	public function check_token() {
-		/* phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended */
 		if ( ! isset( $_GET[ self::$key ] ) ) {
 			return;
 		}
 
-		// Make sure we have a valid token before saving.
+		// Make sure we have a valid user.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		// Verify the nonce.
+		check_admin_referer( 'jobber', 'nonce' );
+
+		// Ensure we have a valid token before updating the authenticated status.
 		$token = sanitize_text_field( wp_unslash( $_GET[ self::$key ] ) );
 
 		if (
@@ -61,7 +68,6 @@ class Token extends API {
 		) {
 			Settings::update_settings( [ 'authenticated' => true ] );
 		}
-		/* phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.NonceVerification.Recommended */
 	}
 
 	/**
