@@ -55,5 +55,8 @@ require_once JOBBER_PLUGIN_INC . '/core.php';
 // Activation.
 register_activation_hook( __FILE__, '\Jobber\Core\activate' );
 
+// Deactivation.
+register_deactivation_hook( __FILE__, '\Jobber\Core\deactivate' );
+
 // Bootstrap.
 Jobber\Core\setup();

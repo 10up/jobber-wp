@@ -11,6 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+use Jobber\Jobber;
+use Jobber\Admin\Settings;
 use Jobber\ModuleInitialization;
 
 /**
@@ -78,6 +80,25 @@ function activate() {
 }
 
 /**
+ * Deactivate the plugin.
+ */
+function deactivate() {
+	// Delete any transients.
+	delete_transient( 'jobber_activation_notice' );
+	foreach ( [ 'booking', 'request' ] as $form_type ) {
+		$cache_key = 'jobber_query_' . md5( wp_json_encode( [ 'query' => $form_type ] ) );
+		delete_transient( $cache_key );
+	}
+
+	// Send disconnect request to the middleware.
+	$disconnect = ( new Jobber() )->disconnect();
+	if ( ! $disconnect || is_wp_error( $disconnect ) ) {
+		// Update the authenticated setting.
+		Settings::update_settings( [ 'authenticated' => false ] );
+	}
+}
+
+/**
  * Decide if an admin notice needs to render.
  */
 function maybe_render_notices() {
@@ -107,7 +128,7 @@ function render_activation_notice() {
 				<img src="<?php echo esc_url( JOBBER_PLUGIN_URL . 'dist/images/jobber-logo.png' ); ?>" alt="<?php esc_attr_e( 'Jobber', 'jobber' ); ?>" style="max-width: 220px" />
 			</div>
 			<div class="jobber-activation-message" style="margin: 10px 0;">
-				<p><?php esc_html_e( 'Thanks for downloading the Jobber plugin.', 'jobber' ); ?></p>
+				<p><?php esc_html_e( 'Thanks for installing the Jobber plugin.', 'jobber' ); ?></p>
 				<p><?php esc_html_e( 'Connect your site to Jobber to get started.', 'jobber' ); ?></p>
 			</div>
 			<a class="button button-primary is-primary" href="<?php echo esc_url( admin_url( 'options-general.php?page=jobber_settings' ) ); ?>">
