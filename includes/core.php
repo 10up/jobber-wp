@@ -12,6 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use Jobber\Jobber;
+use Jobber\Auth;
 use Jobber\Admin\Settings;
 use Jobber\ModuleInitialization;
 
@@ -90,11 +91,13 @@ function deactivate() {
 		delete_transient( $cache_key );
 	}
 
-	// Send disconnect request to the middleware.
-	$disconnect = ( new Jobber() )->disconnect();
-	if ( ! $disconnect || is_wp_error( $disconnect ) ) {
-		// Update the authenticated setting.
-		Settings::update_settings( [ 'authenticated' => false ] );
+	// Send disconnect request to the middleware if we are authenticated.
+	if ( Auth::is_authorized() ) {
+		$disconnect = ( new Jobber() )->disconnect();
+		if ( ! $disconnect || is_wp_error( $disconnect ) ) {
+			// Update the authenticated setting if the disconnect fails.
+			Settings::update_settings( [ 'authenticated' => false ] );
+		}
 	}
 }
 
