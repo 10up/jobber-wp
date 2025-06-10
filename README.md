@@ -60,6 +60,23 @@ Choose between "Booking Form" or "Request Form". Each form type serves different
 ![The Jobber block in the editor, showing the Request form type.](/.wordpress-org/screenshot-4.png)
 ![The Jobber block in the editor, showing the Booking form type.](/.wordpress-org/screenshot-5.png)
 
+## Development
+
+### Install Dependencies & Build
+
+To build the assets, follow these steps:
+
+* Ensure you have the proper version of Node.js installed.
+* Run `npm install` to install the dependencies.
+* Run `npm run build` to build the asset files.
+
+You can find the source files in the `blocks` directory.
+
+We also rely on composer for autoloading. To set this up properly:
+
+* Ensure you have the latest version of Composer installed.
+* Run `composer install --no-dev -o`.
+
 ## Support Level
 
 **Active:** Jobber and 10up are actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress. Bug reports, feature requests, questions, and pull requests are welcome.

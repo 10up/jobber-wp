@@ -45,23 +45,6 @@ The Jobber block includes a form type selection option:
     * Booking Form: Allows customers to directly book services.
     * Request Form: Enables customers to submit service requests.
 
-== Development ==
-
-= Install Dependencies & Build =
-
-To build the assets, follow these steps:
-
-- Ensure you have the proper version of Node.js installed.
-- Run `npm install` to install the dependencies.
-- Run `npm run build` to build the asset files.
-
-You can find the source files in the `blocks` directory.
-
-We also rely on composer for autoloading. To set this up properly:
-
-- Ensure you have the latest version of Composer installed.
-- Run `composer install --no-dev -o`.
-
 == Frequently Asked Questions ==
 
 = Do I need to create a Jobber app? =
