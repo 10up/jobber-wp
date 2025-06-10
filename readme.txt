@@ -76,6 +76,16 @@ We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www
 
 When you connect your site to your Jobber account, the connection is made through a middleware service that will communicate back with your site to validate the request. This request will fail if the middleware can't communicate with your site. If you're testing locally, you can use a service like [ngrok](https://ngrok.com/) to expose your site to the internet.
 
+== Screenshots ==
+
+1. Admin notice after activating the plugin.
+2. Settings page with connection instructions.
+3. Settings page after successfully connecting to Jobber.
+4. Jobber block rendering a Request form in the editor.
+5. Jobber block rendering a Booking form in the editor.
+6. Displaying a Request form on the front-end.
+7. Displaying a Booking form on the front-end.
+
 == Changelog ==
 
 = 1.0.0 - YYYY-MM-DD =
