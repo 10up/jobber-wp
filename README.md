@@ -7,7 +7,7 @@
 
 [![Run E2E tests](https://github.com/10up/jobber-wp/actions/workflows/e2e.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/e2e.yml) [![CodeQL](https://github.com/10up/jobber-wp/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/codeql-analysis.yml) [![WordPress Plugin Checks](https://github.com/10up/jobber-wp/actions/workflows/plugin-check.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/plugin-check.yml) [![Dependency Review](https://github.com/10up/jobber-wp/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/dependency-review.yml)
 
-[![JS Linting](https://github.com/10up/jobber-wp/actions/workflows/eslint.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/eslint.yml) [![PHP Linting](https://github.com/10up/jobber-wp/actions/workflows/phpcs.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/phpcs.yml) [![PHPStan](https://github.com/10up/jobber-wp/actions/workflows/phpstan.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/phpstan.yml) [![PHP Compatibility](https://github.com/10up/jobber-wp/actions/workflows/php-compat.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/php-compat.yml) 
+[![JS Linting](https://github.com/10up/jobber-wp/actions/workflows/eslint.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/eslint.yml) [![PHP Linting](https://github.com/10up/jobber-wp/actions/workflows/phpcs.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/phpcs.yml) [![PHPStan](https://github.com/10up/jobber-wp/actions/workflows/phpstan.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/phpstan.yml) [![PHP Compatibility](https://github.com/10up/jobber-wp/actions/workflows/php-compat.yml/badge.svg)](https://github.com/10up/jobber-wp/actions/workflows/php-compat.yml)
 
 ## Overview
 
@@ -34,6 +34,9 @@ Install through the WordPress directory or download, unzip and upload the files 
 5. Follow the prompts to authorize the connection between your WordPress site and your Jobber account. Note your site needs to be publicly accessible for this to work.
 6. Once connected, you will see a confirmation message.
 
+![The Jobber settings page with connection instructions.](/.wordpress-org/screenshot-2.png)
+![The Jobber settings page after successfully connecting to Jobber.](/.wordpress-org/screenshot-3.png)
+
 ## Using the Jobber Block
 
 ### Adding the Block
@@ -53,6 +56,9 @@ Choose between "Booking Form" or "Request Form". Each form type serves different
 
 * Booking Form: Allows customers to directly book services.
 * Request Form: Enables customers to submit service requests.
+
+![The Jobber block in the editor, showing the Request form type.](/.wordpress-org/screenshot-4.png)
+![The Jobber block in the editor, showing the Booking form type.](/.wordpress-org/screenshot-5.png)
 
 ## Support Level
 
