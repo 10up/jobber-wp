@@ -86,10 +86,11 @@ function style_url( string $stylesheet, string $context ): string {
  * Get cached data.
  *
  * @param string $key The cache key.
+ * @param string $form_type The form type.
  * @param bool   $force Whether to force a new request and bypass cache.
  * @return mixed The cached data or false if no data is found.
  */
-function get_cached_data( string $key, bool $force = false ) {
+function get_cached_data( string $key, string $form_type = '', bool $force = false ) {
 	// Always return false if we want to force a new request.
 	if ( $force ) {
 		return false;
@@ -103,6 +104,11 @@ function get_cached_data( string $key, bool $force = false ) {
 	} else {
 		// If we don't have a cached response, try to get it from the database.
 		$data = get_option( $key, false );
+
+		// If we have data here but not in cache, rebuild the cache.
+		if ( false !== $data && ! wp_next_scheduled( 'jobber_rebuild_cache', [ $form_type ] ) ) {
+			wp_schedule_single_event( time() + 1, 'jobber_rebuild_cache', [ $form_type ] );
+		}
 
 		return $data;
 	}
