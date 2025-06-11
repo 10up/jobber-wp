@@ -1,11 +1,11 @@
 describe('Block Insertion', () => {
-    beforeEach( () => {
+	beforeEach( () => {
 		cy.login();
 	} );
 
-    it( 'User can insert the block', () => {        
-        // Insert Jobber block.
-        cy.createPost( {
+	it( 'User can insert the block', () => {
+		// Insert Jobber block.
+		cy.createPost( {
 			title: 'Test Jobber Block',
 			content: '',
 			beforeSave: () => {
@@ -16,11 +16,11 @@ describe('Block Insertion', () => {
 					.select( 'booking' );
 			},
 		} ).then( () => {
-            // Save the post.
+			// Save the post.
 			cy.get( '.post-publish-panel__postpublish-buttons a.is-primary' ).click();
 
-            // Check for the iframe container.
-            cy.get( '.jobber-inline-work-request' ).should( 'exist' );
+			// Check for the iframe container.
+			cy.get( '.jobber-inline-work-request' ).should( 'exist' );
 		} );
-    });
-});
+	} );
+} );
