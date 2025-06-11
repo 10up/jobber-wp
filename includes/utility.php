@@ -81,3 +81,31 @@ function style_url( string $stylesheet, string $context ): string {
 
 	return JOBBER_PLUGIN_URL . "dist/css/{$stylesheet}.css";
 }
+
+/**
+ * Get cached data.
+ *
+ * @param string $key The cache key.
+ * @param bool   $force Whether to force a new request and bypass cache.
+ * @return mixed The cached data or false if no data is found.
+ */
+function get_cached_data( string $key, bool $force = false ) {
+	// Always return false if we want to force a new request.
+	if ( $force ) {
+		return false;
+	}
+
+	$data = get_transient( $key );
+
+	// If we have a cached response, return it.
+	if ( false !== $data ) {
+		return $data;
+	} else {
+		// If we don't have a cached response, try to get it from the database.
+		$data = get_option( $key, false );
+
+		return $data;
+	}
+
+	return false;
+}

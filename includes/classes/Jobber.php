@@ -15,6 +15,8 @@ use Jobber\Module;
 use Jobber\REST\Token;
 use WP_Error;
 
+use function Jobber\Utility\get_cached_data;
+
 /**
  * Base class for Jobber API Connection
  */
@@ -138,10 +140,10 @@ class Jobber {
 
 		$data      = [ 'query' => $form_type ];
 		$cache_key = 'jobber_query_' . md5( wp_json_encode( $data ) );
-		$response  = get_transient( $cache_key );
+		$response  = get_cached_data( $cache_key, $force );
 
-		// If we have a cached response and we want to use it, return it.
-		if ( false !== $response && ! $force ) {
+		// If we have a cached response, return it.
+		if ( false !== $response ) {
 			return $response;
 		}
 
