@@ -108,6 +108,11 @@ function get_cached_data( string $key, string $form_type = '', bool $force = fal
 		// If we have data here but not in cache, rebuild the cache.
 		if ( false !== $data && ! wp_next_scheduled( 'jobber_rebuild_cache', [ $form_type ] ) ) {
 			wp_schedule_single_event( time() + 1, 'jobber_rebuild_cache', [ $form_type ] );
+
+			// Update the cache with the current data.
+			// This is to handle a situation where the API is down and
+			// rebuilding the cache won't work, leading to a loop of failed requests.
+			set_cached_data( $key, $data );
 		}
 
 		return $data;
