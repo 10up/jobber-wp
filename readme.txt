@@ -6,58 +6,103 @@ Stable tag:   1.0.0
 License:      GPL-2.0-or-later
 License URI:  https://spdx.org/licenses/GPL-2.0-or-later.html
 
-Add a Jobber form block to your WordPress site.
+Embed Jobber's powerful online booking and request forms directly into your WordPress site.
 
 == Description ==
 
-The Jobber plugin allows you to add a Jobber form block to your WordPress site. This block can render either a bookings or request form.
+Jobber keeps your home service business running, even when you're on the move. From capturing leads to getting paid, it's everything you need to stay organized, close jobs faster, and keep your cash flow strong—all in one place.
 
-== Account Setup ==
+Together Jobber and WordPress help you get discovered, build credibility, and convert more website visitors into paying clients.
 
-To use the Jobber block, you need to have a Jobber account. If you don't have one, you can follow [these steps](https://help.getjobber.com/hc/en-us/articles/360042653674-First-Steps-Basic-Account-Set-Up) to create that.
+**Embed Jobber's powerful online booking and request forms directly into your WordPress site.**
 
-== Installation ==
+With the Jobber WordPress plugin, home service pros can add fully integrated client intake forms in just a few clicks. Choose between Booking or Request modes and turn website visitors into clients fast.
 
-Install through the WordPress directory or download, unzip and upload the files to your `/wp-content/plugins/` directory
+All submissions are automatically synced to Jobber to create clients, requests, and bookings, making it easy for potential customers to get a quote quickly, and book your services with confidence.
 
-== Using the Jobber Block ==
+== Jobber Plugin Benefits ==
 
-= Connect your Jobber Account =
+* Easily add Jobber's online booking or request forms to any page or post—no copy and pasting code.
+* New clients, bookings, and requests are automatically created in Jobber from your WordPress submissions.
+* Maintain a consistent, branded customer experience with embedded forms that match your.
+* Quick and easy setup for WordPress admins—no developer needed.
 
-1. Go to the Jobber settings page in your WordPress admin.
-2. Click on the "Connect to Jobber" button.
-3. Follow the prompts to authorize the connection between your WordPress site and your Jobber account. Note your site needs to be publicly accessible for this to work.
-4. Once connected, you will see a confirmation message.
+== Jobber Features & Benefits ==
 
-= Adding the Block =
+**Get Noticed**
 
-1. Open the WordPress block editor (Gutenberg).
-2. Click the "+" button to add a new block.
-3. Search for "Jobber".
-4. Click on the Jobber block to insert it into your page or post.
+Make your business the first one people find, and the one they trust most. Jobber helps you build visibility, establish credibility, and turn good impressions into booked work.
 
-= Customizing the Block =
+* **Make a great first impression online.** With Jobber and Wordpress, get discovered, build credibility, and convert more website visitors into paying clients.
+* **Build a trusted reputation.** Automatically ask customers for reviews to boost your rating and outshine the competition.
+* **Get repeat business.** Turn happy customers into loyal ones with easy email marketing and referral rewards—your best sources for repeat business.
 
-The Jobber block includes a form type selection option:
+**Win Jobs**
 
-* Form Type Selection
-  * Choose between "Booking Form" or "Request Form". Each form type serves different purposes:
-    * Booking Form: Allows customers to directly book services.
-    * Request Form: Enables customers to submit service requests.
+Turn interest into income quickly and professionally. Jobber makes it easy for potential customers to reach you, get a fast, accurate quote, and book your services with confidence.
+
+* **Never miss a lead.** Step away from your phone without missing new business. Capture client details 24/7—over the phone, by text, or online from your WordPress site or post.
+* **Build your customer base and manage relationships.** Organize all your customer details in one spot, so you can deliver fast, personal service that keeps them coming back.
+* **Send quotes that seal the deal.** Create professional, easy-to-approve quotes that help you stand out and close jobs faster with less back-and-forth.
+
+**Work Smarter**
+
+Spend less time on back-and-forth, and more time delivering the high-quality work that sets you apart. Jobber takes the busywork off your plate by automating tasks, simplifying scheduling, and keeping communication effortless.
+
+* **Stay on top of every job, every time.** Schedule jobs, dispatch crews, and track progress without the chaos—so nothing falls through the cracks, even when plans change.
+* **Keep customers in the loop.** Send instant updates, reminders, and follow-ups that keep customers in the loop without the endless back-and-forth.
+* **Let AI and automation do the heavy lifting.** From filling out job forms to chasing admin tasks, smart tools help you move faster, make fewer mistakes, and focus on real work.
+
+**Boost Profits**
+
+Get paid faster, stay in control, and keep your cash flow strong.
+
+* **Send invoices in seconds.** Create and send professional invoices on the spot so you get paid faster and never miss a billing opportunity.
+* **Get paid faster, every time.** Make it easy for customers to pay you online, in-person or automatically. Enjoy healthier cashflow and peace of mind.
+* **Know your numbers.** Stay on top of your cash flow and business performance with real-time financial insights. Get the visibility you need to make sound decisions and plan for growth with confidence.
+
+== Jobber Plans and Pricing ==
+
+Explore our [pricing page](https://www.getjobber.com/pricing/?utm_source=wordpress&utm_medium=general&utm_campaign=product_partner) for a detailed breakdown of what's included in each plan.
+
+**Exclusive Offer for WordPress Users**
+
+Get 20% off your first 6 months, plus a 14-day free trial. [Claim your offer now](https://getjobber.com/plp/wordpress).
+
+== How to Install the Jobber Plugin ==
+
+1. Upload the plugin files to the `/wp-content/plugins/` directory, or install the plugin through the WordPress plugin screen directly.
+2. Activate the plugin through the 'Plugins' screen in WordPress.
+3. Go to the Jobber settings page in your WordPress dashboard.
+4. Connect your Jobber account to your site.
+5. Insert the Jobber block into any page or post, selecting the form type you want to use: Booking or Request.
+
+== Before You Start ==
+
+Make sure you have:
+
+* An active WordPress site where you are the admin.
+* An active Jobber account with a Core or higher price plan. Don't have a Jobber account? [Sign up](https://getjobber.com/plp/wordpress) to receive 20% off your first 6 months, and a free 14-day trial.
 
 == Frequently Asked Questions ==
 
-= Do I need to create a Jobber app? =
+= Do I need a Jobber account to use this plugin? =
 
-To connect your Jobber account to your WordPress site, you only need to click the "Connect to Jobber" button within the Jobber settings and follow the prompts. Behind the scenes this will utilize an existing Jobber app to authenticate your account.
+Yes. You'll need an active Jobber account to authenticate the plugin and sync form submissions.
+
+Don't have a Jobber account? [Sign up](https://getjobber.com/plp/wordpress) to receive 20% off your first 6 months and a free 14-day trial.
+
+= Can I switch between Booking and Request forms? =
+
+Yes, you can configure the block to display either type and change it anytime.
+
+= Does the plugin match my site’s design? =
+
+Yes, forms are embedded directly into your pages and will adapt to your site’s layout and styling.
 
 = Does the plugin use any external services? =
 
-We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www.getjobber.com/privacy-policy/)) to get your forms. This connection is faciliated through a middleware service hosted by [10up](https://10up.com/) ([privacy policy](https://10up.com/privacy-policy/)) and located at https://jobber-prod.10upmanaged.io. Authentication is done via OAuth through this service and any Jobber API requests are also filtered through this service.
-
-= Can I test this locally? =
-
-When you connect your site to your Jobber account, the connection is made through a middleware service that will communicate back with your site to validate the request. This request will fail if the middleware can't communicate with your site. If you're testing locally, you can use a service like [ngrok](https://ngrok.com/) to expose your site to the internet.
+We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www.getjobber.com/privacy-policy/)) to get your forms. This connection is faciliated through a middleware service hosted by [Fueled](https://fueled.com/) ([privacy policy](https://fueled.com/privacy-policy/)) and located at https://jobber-prod.10upmanaged.io. Authentication is done via OAuth through this service and any Jobber API requests are also filtered through this service.
 
 == Screenshots ==
 
