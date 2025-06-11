@@ -45,23 +45,6 @@ The Jobber block includes a form type selection option:
     * Booking Form: Allows customers to directly book services.
     * Request Form: Enables customers to submit service requests.
 
-== Development ==
-
-= Install Dependencies & Build =
-
-To build the assets, follow these steps:
-
-- Ensure you have the proper version of Node.js installed.
-- Run `npm install` to install the dependencies.
-- Run `npm run build` to build the asset files.
-
-You can find the source files in the `blocks` directory.
-
-We also rely on composer for autoloading. To set this up properly:
-
-- Ensure you have the latest version of Composer installed.
-- Run `composer install --no-dev -o`.
-
 == Frequently Asked Questions ==
 
 = Do I need to create a Jobber app? =
@@ -75,6 +58,16 @@ We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www
 = Can I test this locally? =
 
 When you connect your site to your Jobber account, the connection is made through a middleware service that will communicate back with your site to validate the request. This request will fail if the middleware can't communicate with your site. If you're testing locally, you can use a service like [ngrok](https://ngrok.com/) to expose your site to the internet.
+
+== Screenshots ==
+
+1. Admin notice after activating the plugin.
+2. Settings page with connection instructions.
+3. Settings page after successfully connecting to Jobber.
+4. Jobber block rendering a Request form in the editor.
+5. Jobber block rendering a Booking form in the editor.
+6. Displaying a Request form on the front-end.
+7. Displaying a Booking form on the front-end.
 
 == Changelog ==
 
