@@ -10,19 +10,17 @@ describe('Block Insertion', () => {
 			content: '',
 			beforeSave: () => {
 				cy.insertBlock( 'jobber/forms' );
-				cy.get('select')
-					.find('option[value="booking"]')
-					.parent('select')
-					.select('booking');
+				cy.get( 'select' )
+					.find( 'option[value="booking"]' )
+					.parent( 'select' )
+					.select( 'booking' );
 			},
 		} ).then( () => {
-			// cy.get('.headingTwo').should('have.text', 'New Request');
+            // Save the post.
+			cy.get( '.post-publish-panel__postpublish-buttons a.is-primary' ).click();
 
-			// cy.visit( '/test-jobber-block' );
-            cy.get( '.post-publish-panel__postpublish-buttons a.is-primary' ).click();
-
-            // Check for the heading text
-            cy.get('.headingTwo').should('have.text', 'New Request');
+            // Check for the iframe container.
+            cy.get( '.jobber-inline-work-request' ).should( 'exist' );
 		} );
     });
 });
