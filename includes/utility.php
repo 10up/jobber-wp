@@ -109,3 +109,14 @@ function get_cached_data( string $key, bool $force = false ) {
 
 	return false;
 }
+
+/**
+ * Store cached data.
+ *
+ * @param string $key The cache key.
+ * @param mixed  $data The data to cache.
+ */
+function set_cached_data( string $key, $data ) {
+	set_transient( $key, $data, DAY_IN_SECONDS );
+	update_option( $key, $data );
+}

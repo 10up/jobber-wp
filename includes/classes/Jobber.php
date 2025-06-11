@@ -16,6 +16,7 @@ use Jobber\REST\Token;
 use WP_Error;
 
 use function Jobber\Utility\get_cached_data;
+use function Jobber\Utility\set_cached_data;
 
 /**
  * Base class for Jobber API Connection
@@ -188,7 +189,7 @@ class Jobber {
 			return new WP_Error( 'jobber_graphql_error', implode( ' | ', $errors ) );
 		}
 
-		set_transient( $cache_key, $response, DAY_IN_SECONDS );
+		set_cached_data( $cache_key, $response );
 
 		return $response;
 	}
