@@ -8,14 +8,21 @@
 
 ## Overview
 
-This WordPress plugin connects a users Jobber account to WordPress through the Jobber API.
-A separate middleware service is used to handle Oauth2 authentication and proxying API requests.
+Jobber keeps your home service business running, even when you're on the move. From capturing leads to getting paid, it's everything you need to stay organized, close jobs faster, and keep your cash flow strong—all in one place.
+
+Together Jobber and WordPress help you get discovered, build credibility, and convert more website visitors into paying clients.
+
+**Embed Jobber's powerful online booking and request forms directly into your WordPress site.**
+
+With the Jobber WordPress plugin, home service pros can add fully integrated client intake forms in just a few clicks. Choose between Booking or Request modes and turn website visitors into clients fast.
+
+All submissions are automatically synced to Jobber to create clients, requests, and bookings, making it easy for potential customers to get a quote quickly, and book your services with confidence.
 
 ## Requirements
 
 * PHP 7.4+
 * [WordPress](http://wordpress.org/) 6.6+
-* [Jobber](https://getjobber.com/) account
+* An active Jobber account with a Core or higher price plan. Don't have a Jobber account? [Sign up](https://getjobber.com/plp/wordpress) to receive 20% off your first 6 months, and a free 14-day trial.
 * Your site needs to be publicly accessible on the internet in order for authentication to work.
 
 ## Installation
