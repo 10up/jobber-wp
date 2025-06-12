@@ -7,7 +7,7 @@ describe( 'Can connect to Jobber via OAuth', () => {
         // Visit the settings page.
         cy.visit( '/wp-admin/options-general.php?page=jobber_settings' );
 
-        // Visit.the settings page with sepcial param to update the Auth settings/
+        // Visit the settings page with special param to update the Auth settings.
         cy.visit('/wp-admin/options-general.php?page=jobber_settings&e2e_set_jobber_auth=1');
 
         // Re-visit the settings page.
