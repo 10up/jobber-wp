@@ -15,6 +15,9 @@ use Jobber\Module;
 use Jobber\REST\Token;
 use WP_Error;
 
+use function Jobber\Utility\get_cached_data;
+use function Jobber\Utility\set_cached_data;
+
 /**
  * Base class for Jobber API Connection
  */
@@ -56,6 +59,7 @@ class Jobber {
 	 * Register needed hooks.
 	 */
 	public function register() {
+		add_action( 'jobber_rebuild_cache', [ $this, 'rebuild_cache' ] );
 		add_filter( 'allowed_redirect_hosts', [ $this, 'allow_jobber_redirect' ] );
 	}
 
@@ -81,6 +85,15 @@ class Jobber {
 	 */
 	public static function get_endpoint( string $path = 'jobber' ): string {
 		return self::get_api_url() . "/{$path}";
+	}
+
+	/**
+	 * Rebuild the cache.
+	 *
+	 * @param string $form_type The form type.
+	 */
+	public function rebuild_cache( string $form_type = '' ) {
+		$this->get_form( $form_type, true );
 	}
 
 	/**
@@ -138,10 +151,10 @@ class Jobber {
 
 		$data      = [ 'query' => $form_type ];
 		$cache_key = 'jobber_query_' . md5( wp_json_encode( $data ) );
-		$response  = get_transient( $cache_key );
+		$response  = get_cached_data( $cache_key, $form_type, $force );
 
-		// If we have a cached response and we want to use it, return it.
-		if ( false !== $response && ! $force ) {
+		// If we have a cached response, return it.
+		if ( false !== $response ) {
 			return $response;
 		}
 
@@ -186,7 +199,7 @@ class Jobber {
 			return new WP_Error( 'jobber_graphql_error', implode( ' | ', $errors ) );
 		}
 
-		set_transient( $cache_key, $response, DAY_IN_SECONDS );
+		set_cached_data( $cache_key, $response );
 
 		return $response;
 	}
