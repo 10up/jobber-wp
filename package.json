@@ -16,14 +16,27 @@
     "lint-style": "10up-toolkit lint-style",
     "clean-dist": "rm -rf ./dist",
     "archive": "composer archive --file=jobber --format=zip",
-    "postarchive": "rm -rf ./release && unzip jobber.zip -d ./release"
+    "postarchive": "rm -rf ./release && unzip jobber.zip -d ./release",
+    "env": "wp-env",
+    "env:start": "wp-env start",
+    "env:stop": "wp-env stop",
+    "env:destroy": "wp-env destroy",
+    "cypress:open": "cypress open --config-file tests/cypress/config.config.js",
+    "cypress:run": "cypress run --browser chrome --config-file tests/cypress/config.config.js"
   },
   "engines": {
     "node": ">=20.0.0"
   },
   "devDependencies": {
     "@10up/babel-preset-default": "^2.1.2",
-    "10up-toolkit": "^6.4.1"
+    "@10up/cypress-wp-utils": "^0.5.0",
+    "@wordpress/env": "^10.20.0",
+    "10up-toolkit": "^6.4.1",
+    "cypress": "^14.4.1",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-mochawesome-reporter": "^3.8.2",
+    "cypress-plugin-tab": "^1.0.5",
+    "jest-environment-jsdom": "^29.7.0"
   },
   "dependencies": {
     "@wordpress/icons": "^10.25.0",
