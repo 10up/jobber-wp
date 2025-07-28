@@ -106,9 +106,9 @@ We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www
 
 == Screenshots ==
 
-1. Displaying a Request form.
-2. Displaying a Request form Submission detail.
-3. Displaying a Jobber Block in the blocks list.
+1. Turn more website visitors into paying clients fast.
+2. Easily add your forms with the Jobber plugin - it only takes a few clicks.
+3. Submissions are automatically created as new clients, bookings and requests so you can respond to leads faster, and win more jobs.
 
 == Changelog ==
 
