@@ -104,6 +104,12 @@ Yes, forms are embedded directly into your pages and will adapt to your site’s
 
 We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www.getjobber.com/privacy-policy/)) to get your forms. This connection is faciliated through a middleware service hosted by [Fueled](https://fueled.com/) ([privacy policy](https://fueled.com/privacy-policy/)) and located at https://jobber-prod.10upmanaged.io. Authentication is done via OAuth through this service and any Jobber API requests are also filtered through this service.
 
+== Screenshots ==
+
+1. Displaying a Request form.
+2. Displaying a Request form Submission detail.
+3. Displaying a Jobber Block in the blocks list.
+
 == Changelog ==
 
 = 1.0.0 - 2025-06-12 =
