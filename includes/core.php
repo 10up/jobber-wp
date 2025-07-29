@@ -141,7 +141,6 @@ function render_activation_notice() {
 	</div>
 
 	<?php
-	delete_transient( 'jobber_activation_notice' );
 }
 
 /**

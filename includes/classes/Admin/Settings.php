@@ -77,6 +77,11 @@ class Settings {
 		$auth_url      = add_query_arg( $url_args, Jobber::get_endpoint( 'auth' ) );
 		$is_authorized = Auth::is_authorized();
 
+		// Clear Banner notice, if user is authorized
+		if ( $is_authorized ) {
+			delete_transient( 'jobber_activation_notice' );
+		}
+
 		// If the user has disconnected, set the authorized flag to false.
 		if ( isset( $_GET[ Disconnect::ACTION ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$is_authorized = false;
