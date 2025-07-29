@@ -106,13 +106,9 @@ We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www
 
 == Screenshots ==
 
-1. Admin notice after activating the plugin.
-2. Settings page with connection instructions.
-3. Settings page after successfully connecting to Jobber.
-4. Jobber block rendering a Request form in the editor.
-5. Jobber block rendering a Booking form in the editor.
-6. Displaying a Request form on the front-end.
-7. Displaying a Booking form on the front-end.
+1. Turn more website visitors into paying clients fast.
+2. Easily add your forms with the Jobber plugin - it only takes a few clicks.
+3. Submissions are automatically created as new clients, bookings and requests so you can respond to leads faster, and win more jobs.
 
 == Changelog ==
 
