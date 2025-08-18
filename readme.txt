@@ -106,9 +106,9 @@ We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www
 
 == Screenshots ==
 
-1. Turn more website visitors into paying clients fast.
+1. Turn more website visitors into paying clients fast. Embed your Jobber online booking and request forms directly into your WordPress site.
 2. Easily add your forms with the Jobber plugin - it only takes a few clicks.
-3. Submissions are automatically created as new clients, bookings and requests so you can respond to leads faster, and win more jobs.
+3. Submissions are automatically created as new clients, bookings, and requests so you can respond to leads faster, and win more jobs.
 
 == Changelog ==
 
