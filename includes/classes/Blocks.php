@@ -55,6 +55,13 @@ class Blocks {
 	 * @return string
 	 */
 	public function render_block( array $attributes ): string {
+		$form_id = ! empty( $attributes['formId'] ) ? sanitize_text_field( $attributes['formId'] ) : '';
+
+		// A saved form id means this block uses the account's form list.
+		if ( '' !== $form_id ) {
+			return $this->render_selected_form( $form_id );
+		}
+
 		$form_type = ! empty( $attributes['formType'] ) ? sanitize_text_field( $attributes['formType'] ) : 'request';
 
 		$jobber   = new \Jobber\Jobber();
@@ -90,6 +97,78 @@ class Blocks {
 			return '';
 		}
 
+		return $this->wrap_embed_script( $embed_script );
+	}
+
+	/**
+	 * Render a specific form chosen from the account's form list.
+	 *
+	 * Prefers the embed script when the API provides one, because it carries Jobber's own
+	 * styling and height handling. Falls back to an iframe built from the form URL, which
+	 * is all the forms collection is documented to return.
+	 *
+	 * @param string $form_id The saved form identifier.
+	 * @return string
+	 */
+	protected function render_selected_form( string $form_id ): string {
+		$form = ( new \Jobber\Jobber() )->get_form_by_id( $form_id );
+
+		// Return nothing on failure, since the visitor cannot act on the error.
+		// See https://github.com/10up/jobber-wp/issues/10#issue-2993579619.
+		if ( is_wp_error( $form ) ) {
+			return '';
+		}
+
+		if ( ! empty( $form['embedScript'] ) ) {
+			return $this->wrap_embed_script( $form['embedScript'] );
+		}
+
+		if ( empty( $form['url'] ) ) {
+			return '';
+		}
+
+		return sprintf(
+			'<div class="jobber-embed-block"><iframe src="%1$s" title="%2$s" style="width:100%%;height:%3$dpx;border:0;" loading="lazy"></iframe></div>',
+			esc_url( $form['url'] ),
+			esc_attr( $form['name'] ),
+			(int) self::get_form_height( $form['bookingType'] )
+		);
+	}
+
+	/**
+	 * Get a sensible iframe height for a form.
+	 *
+	 * Booking forms are short, request forms are long. The exact set of bookingType
+	 * values is not documented yet, so anything unrecognized gets the taller height
+	 * rather than risking a cut off form.
+	 *
+	 * @param string $booking_type The form's bookingType value.
+	 * @return int Height in pixels.
+	 */
+	public static function get_form_height( string $booking_type ): int {
+		$height = 'booking' === strtolower( $booking_type ) ? 400 : 1630;
+
+		/**
+		 * Filters the iframe height used when rendering a Jobber form.
+		 *
+		 * @since x.x.x
+		 * @hook jobber_form_height
+		 *
+		 * @param int    $height       Height in pixels.
+		 * @param string $booking_type The form's bookingType value.
+		 *
+		 * @return int Filtered height.
+		 */
+		return (int) apply_filters( 'jobber_form_height', $height, $booking_type );
+	}
+
+	/**
+	 * Wrap an embed script in the block container, allowing only Jobber's own markup.
+	 *
+	 * @param string $embed_script Raw embed markup from the API.
+	 * @return string
+	 */
+	protected function wrap_embed_script( string $embed_script ): string {
 		return sprintf(
 			'<div class="jobber-embed-block">%s</div>',
 			wp_kses(
