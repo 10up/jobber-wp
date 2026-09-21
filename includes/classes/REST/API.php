@@ -65,11 +65,32 @@ class API {
 				'callback'            => [ $this, 'get_form' ],
 				'permission_callback' => [ $this, 'has_permission' ],
 				'args'                => [
+					'form_id'   => [
+						'type'     => 'string',
+						'required' => false,
+					],
 					'form_type' => [
 						'type'     => 'string',
-						'required' => true,
+						'required' => false,
 					],
 					'force'     => [
+						'type'    => 'boolean',
+						'default' => false,
+					],
+				],
+			]
+		);
+
+		// Get every enabled form on the connected account.
+		register_rest_route(
+			self::$namespace,
+			'/get_forms',
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => [ $this, 'get_forms' ],
+				'permission_callback' => [ $this, 'has_permission' ],
+				'args'                => [
+					'force' => [
 						'type'    => 'boolean',
 						'default' => false,
 					],
@@ -144,14 +165,64 @@ class API {
 	}
 
 	/**
+	 * Get every enabled form on the connected Jobber account.
+	 *
+	 * @param \WP_REST_Request $request The REST Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function get_forms( \WP_REST_Request $request ) {
+		$force = (bool) $request->get_param( 'force' );
+
+		$forms = ( new \Jobber\Jobber() )->get_forms( $force );
+
+		if ( is_wp_error( $forms ) ) {
+			return rest_ensure_response( $forms );
+		}
+
+		$prepared = [];
+
+		foreach ( $forms as $form ) {
+			$prepared[] = [
+				'id'          => $form['id'],
+				'name'        => $form['name'],
+				'url'         => esc_url_raw( $form['url'] ),
+				'bookingType' => $form['bookingType'],
+				'isDefault'   => $form['isDefault'],
+			];
+		}
+
+		return rest_ensure_response( [ 'forms' => $prepared ] );
+	}
+
+	/**
 	 * Get the form from Jobber.
 	 *
 	 * @param \WP_REST_Request $request The REST Request.
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function get_form( \WP_REST_Request $request ) {
+		$form_id   = (string) $request->get_param( 'form_id' );
 		$form_type = $request->get_param( 'form_type' );
 		$force     = (bool) $request->get_param( 'force' );
+
+		// A form id means the caller wants a specific form from the account's form list.
+		if ( '' !== $form_id ) {
+			$form = ( new \Jobber\Jobber() )->get_form_by_id( $form_id, $force );
+
+			if ( is_wp_error( $form ) ) {
+				return rest_ensure_response( $form );
+			}
+
+			return rest_ensure_response(
+				[
+					'form' => [
+						'iframeUrl'   => esc_url_raw( $form['url'] ),
+						'name'        => $form['name'],
+						'bookingType' => $form['bookingType'],
+					],
+				]
+			);
+		}
 
 		if ( empty( $form_type ) ) {
 			$form_type = 'request';
