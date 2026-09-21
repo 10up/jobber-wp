@@ -12,6 +12,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Option name holding the index of every cache key this plugin has written.
+ *
+ * @var string
+ */
+const CACHE_INDEX_OPTION = 'jobber_query_cache_keys';
+
+/**
  * Get asset info from extracted asset files
  *
  * @param string $slug Asset slug as defined in build/webpack configuration
@@ -124,10 +131,75 @@ function get_cached_data( string $key, string $form_type = '', bool $force = fal
 /**
  * Store cached data.
  *
+ * Data is written to both a transient and an option. The option acts as a fallback
+ * when the transient expires or is evicted, so the cache key is also recorded in an
+ * index to make cleanup possible later.
+ *
  * @param string $key The cache key.
  * @param mixed  $data The data to cache.
  */
 function set_cached_data( string $key, $data ) {
 	set_transient( $key, $data, DAY_IN_SECONDS );
 	update_option( $key, $data );
+	register_cache_key( $key );
+}
+
+/**
+ * Record a cache key in the index of known cache keys.
+ *
+ * Cache keys are derived from the request body, so they cannot be reconstructed
+ * without knowing every request that was ever made. The index is what allows
+ * deactivation to clean up after itself.
+ *
+ * @param string $key The cache key.
+ */
+function register_cache_key( string $key ) {
+	$keys = get_cache_keys();
+
+	if ( in_array( $key, $keys, true ) ) {
+		return;
+	}
+
+	$keys[] = $key;
+	update_option( CACHE_INDEX_OPTION, $keys );
+}
+
+/**
+ * Get every known cache key.
+ *
+ * @return array<string>
+ */
+function get_cache_keys(): array {
+	$keys = get_option( CACHE_INDEX_OPTION, [] );
+
+	return is_array( $keys ) ? $keys : [];
+}
+
+/**
+ * Delete a single cached entry, both the transient and the option fallback.
+ *
+ * @param string $key The cache key.
+ */
+function delete_cached_data( string $key ) {
+	delete_transient( $key );
+	delete_option( $key );
+}
+
+/**
+ * Delete every cached entry and the index itself.
+ *
+ * Also clears the two keys used before the index existed, so sites upgrading from
+ * an earlier version do not leave options behind.
+ */
+function delete_all_cached_data() {
+	foreach ( get_cache_keys() as $key ) {
+		delete_cached_data( $key );
+	}
+
+	// Legacy keys, from before the cache index was introduced.
+	foreach ( [ 'booking', 'request' ] as $form_type ) {
+		delete_cached_data( 'jobber_query_' . md5( wp_json_encode( [ 'query' => $form_type ] ) ) );
+	}
+
+	delete_option( CACHE_INDEX_OPTION );
 }
