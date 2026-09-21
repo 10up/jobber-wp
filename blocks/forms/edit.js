@@ -55,8 +55,10 @@ const Edit = ({ attributes, setAttributes }) => {
 				setForms(list);
 				setLoading(false);
 
-				// Nothing saved yet, so start from the account's default form.
-				if (!formId && list.length) {
+				// Only a genuinely new block auto-selects. A legacy block carries a
+				// formType and no formId, and must keep rendering what it saved until
+				// an author re-picks, so it is left untouched here.
+				if (!formId && !formType && list.length) {
 					const preferred = list.find((form) => form.isDefault) ?? list[0];
 					setAttributes({
 						formId: preferred.id,
