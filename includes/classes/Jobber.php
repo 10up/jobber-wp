@@ -33,6 +33,13 @@ class Jobber {
 	protected static $api_url = 'https://jobber-prod.10upmanaged.io';
 
 	/**
+	 * Query keyword used to ask the middleware for the full list of forms.
+	 *
+	 * @var string
+	 */
+	const FORMS_QUERY = 'forms';
+
+	/**
 	 * API Access Token.
 	 *
 	 * @var string
@@ -145,6 +152,27 @@ class Jobber {
 	 * @return array|WP_Error
 	 */
 	protected function query( string $form_type = '', bool $force = false ) {
+		/**
+		 * Short circuits a query to the middleware.
+		 *
+		 * Returning anything other than false skips the HTTP request entirely. Intended for
+		 * local development, fixtures and end to end tests, where a live Jobber account is
+		 * not available.
+		 *
+		 * @since x.x.x
+		 * @hook jobber_pre_query
+		 *
+		 * @param false|array<string, mixed> $response  Short circuited response. Default false.
+		 * @param string                     $form_type The query being run.
+		 *
+		 * @return false|array<string, mixed> Filtered response.
+		 */
+		$pre = apply_filters( 'jobber_pre_query', false, $form_type );
+
+		if ( false !== $pre ) {
+			return $pre;
+		}
+
 		if ( empty( $this->access_token ) ) {
 			return new WP_Error( 'jobber_no_access_token', __( 'No token found.', 'jobber' ) );
 		}
@@ -221,5 +249,97 @@ class Jobber {
 		}
 
 		return $this->query( $form_type, $force );
+	}
+
+	/**
+	 * Get every enabled form on the connected Jobber account.
+	 *
+	 * An account can have any number of forms, so this replaces the previous
+	 * fixed choice between a booking form and a request form. Filtering to
+	 * enabled forms happens at the query level, on the middleware.
+	 *
+	 * @param bool $force Force a new request and bypass cache.
+	 * @return array<int, array<string, mixed>>|WP_Error List of normalized forms, or an error.
+	 */
+	public function get_forms( bool $force = false ) {
+		$response = $this->query( self::FORMS_QUERY, $force );
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		return self::normalize_forms( $response );
+	}
+
+	/**
+	 * Get a single form by its identifier.
+	 *
+	 * @param string $form_id The form identifier, as returned by get_forms().
+	 * @param bool   $force   Force a new request and bypass cache.
+	 * @return array<string, mixed>|WP_Error The form, or an error when it cannot be found.
+	 */
+	public function get_form_by_id( string $form_id, bool $force = false ) {
+		$forms = $this->get_forms( $force );
+
+		if ( is_wp_error( $forms ) ) {
+			return $forms;
+		}
+
+		foreach ( $forms as $form ) {
+			if ( (string) $form['id'] === $form_id ) {
+				return $form;
+			}
+		}
+
+		return new WP_Error(
+			'jobber_form_not_found',
+			__( 'The selected form is no longer available on this Jobber account.', 'jobber' ),
+			[ 'status' => 404 ]
+		);
+	}
+
+	/**
+	 * Normalize a forms response into a predictable shape.
+	 *
+	 * Jobber returns `requestSettingsCollection.nodes`. Each node is expected to carry
+	 * `name`, `requestUrl`, `bookingType`, `default` and `enabled`. An `id` is used when
+	 * present, and `requestUrl` stands in as the identifier when it is not, because the
+	 * block has to persist something stable and a form's name can be edited by the user.
+	 *
+	 * @param array<string, mixed> $response Raw decoded response.
+	 * @return array<int, array<string, mixed>>
+	 */
+	public static function normalize_forms( array $response ): array {
+		$nodes = $response['data']['requestSettingsCollection']['nodes'] ?? [];
+
+		if ( ! is_array( $nodes ) ) {
+			return [];
+		}
+
+		$forms = [];
+
+		foreach ( $nodes as $node ) {
+			if ( ! is_array( $node ) ) {
+				continue;
+			}
+
+			$url = (string) ( $node['requestUrl'] ?? '' );
+
+			// Without a URL there is nothing to embed, so the entry is unusable.
+			if ( '' === $url ) {
+				continue;
+			}
+
+			$forms[] = [
+				'id'          => (string) ( $node['id'] ?? $url ),
+				'name'        => (string) ( $node['name'] ?? __( 'Untitled form', 'jobber' ) ),
+				'url'         => $url,
+				'bookingType' => (string) ( $node['bookingType'] ?? '' ),
+				'isDefault'   => ! empty( $node['default'] ),
+				'embedScript' => (string) ( $node['requestEmbedScript'] ?? $node['embedScript'] ?? '' ),
+			];
+		}
+
+		return $forms;
 	}
 }
