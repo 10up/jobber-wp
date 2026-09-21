@@ -5,16 +5,32 @@
 	"version": "0.1.0",
 	"title": "Jobber",
 	"category": "widgets",
-	"description": "Display a Booking or Request form.",
-  "keywords": [ "jobber", "form", "booking", "request" ],
+	"description": "Display a form from your Jobber account.",
+	"keywords": [
+		"jobber",
+		"form",
+		"booking",
+		"request"
+	],
 	"example": {},
 	"supports": {
 		"html": false
 	},
 	"attributes": {
-		"formType": {
+		"formId": {
 			"type": "string",
-			"default": "request"
+			"default": ""
+		},
+		"formName": {
+			"type": "string",
+			"default": ""
+		},
+		"bookingType": {
+			"type": "string",
+			"default": ""
+		},
+		"formType": {
+			"type": "string"
 		}
 	},
 	"textdomain": "jobber",

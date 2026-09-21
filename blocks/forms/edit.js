@@ -2,11 +2,12 @@
  * WordPress dependencies
  */
 import { useEffect, useState } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import {
 	Button,
 	Disabled,
+	Notice,
 	PanelBody,
 	Placeholder,
 	SelectControl,
@@ -19,63 +20,96 @@ import apiFetch from '@wordpress/api-fetch';
  */
 import { BlockIcon } from './icon';
 
+/**
+ * Get the preview height for a form.
+ *
+ * Booking forms are short, request forms are long. The full set of bookingType values
+ * is not documented yet, so anything unrecognised gets the taller height rather than
+ * risking a cut off form. Mirrors Blocks::get_form_height() on the PHP side.
+ *
+ * @param {string} bookingType The form's bookingType value.
+ * @returns {number} Height in pixels.
+ */
+const getFormHeight = (bookingType) =>
+	String(bookingType).toLowerCase() === 'booking' ? 400 : 1630;
+
 const Edit = ({ attributes, setAttributes }) => {
-	const { formType } = attributes;
-	const [iframeUrl, setIframeUrl] = useState('');
-	const [loading, setLoading] = useState(false);
+	const { formId, formName, bookingType, formType } = attributes;
+	const [forms, setForms] = useState([]);
+	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		if (!formType) {
-			setIframeUrl('');
-			return;
-		}
+		let cancelled = false;
 
 		setLoading(true);
 		setError(null);
 
-		apiFetch({
-			path: `jobber/v1/get_form?form_type=${formType}&force=true`,
-			method: 'GET',
-		})
+		apiFetch({ path: 'jobber/v1/get_forms', method: 'GET' })
 			.then((response) => {
-				const url = response?.form?.iframeUrl;
-				if (!url) {
-					setIframeUrl('');
-					throw new Error(__('Form URL not found in API response', 'jobber'));
+				if (cancelled) {
+					return;
 				}
-				setIframeUrl(url);
+
+				const list = response?.forms ?? [];
+				setForms(list);
 				setLoading(false);
+
+				// Nothing saved yet, so start from the account's default form.
+				if (!formId && list.length) {
+					const preferred = list.find((form) => form.isDefault) ?? list[0];
+					setAttributes({
+						formId: preferred.id,
+						formName: preferred.name,
+						bookingType: preferred.bookingType,
+					});
+				}
 			})
 			.catch((err) => {
-				setIframeUrl('');
+				if (cancelled) {
+					return;
+				}
 				setError(err.message);
 				setLoading(false);
 			});
-	}, [formType]);
+
+		return () => {
+			cancelled = true;
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const blockProps = useBlockProps();
 	const settingsUrl = `${window.location.origin}/wp-admin/options-general.php?page=jobber_settings`;
 
-	return (
-		<div {...blockProps}>
-			<InspectorControls>
-				<PanelBody title={__('Form Settings', 'jobber')}>
-					<SelectControl
-						label={__('Form Type', 'jobber')}
-						value={formType}
-						options={[
-							{ label: __('Booking', 'jobber'), value: 'booking' },
-							{ label: __('Request', 'jobber'), value: 'request' },
-						]}
-						onChange={(value) => setAttributes({ formType: value })}
-					/>
-				</PanelBody>
-			</InspectorControls>
+	const selected = forms.find((form) => form.id === formId);
+	const previewUrl = selected?.url ?? '';
+	// A legacy block saved a form type rather than a specific form, so it needs re-picking.
+	const needsMigration = !formId && !!formType;
 
-			{loading && <Spinner />}
+	const onSelectForm = (value) => {
+		const form = forms.find((item) => item.id === value);
 
-			{error && (
+		setAttributes({
+			formId: value,
+			formName: form?.name ?? '',
+			bookingType: form?.bookingType ?? '',
+		});
+	};
+
+	if (loading) {
+		return (
+			<div {...blockProps}>
+				<Placeholder icon={BlockIcon} label={__('Jobber', 'jobber')}>
+					<Spinner />
+				</Placeholder>
+			</div>
+		);
+	}
+
+	if (error) {
+		return (
+			<div {...blockProps}>
 				<Placeholder icon={BlockIcon} label={__('Jobber', 'jobber')} isColumnLayout>
 					<p style={{ marginBottom: '0' }}>
 						{__('The following error was encountered:', 'jobber')}{' '}
@@ -87,7 +121,7 @@ const Edit = ({ attributes, setAttributes }) => {
 						{__(
 							'Double check the Jobber settings to ensure your account is properly connected.',
 							'jobber',
-						)}{' '}
+						)}
 					</p>
 					<Button
 						variant="secondary"
@@ -97,18 +131,78 @@ const Edit = ({ attributes, setAttributes }) => {
 						{__('Go to Jobber Settings', 'jobber')}
 					</Button>
 				</Placeholder>
+			</div>
+		);
+	}
+
+	if (!forms.length) {
+		return (
+			<div {...blockProps}>
+				<Placeholder icon={BlockIcon} label={__('Jobber', 'jobber')} isColumnLayout>
+					<p style={{ marginBottom: '0' }}>
+						{__(
+							'No enabled forms were found on your Jobber account. Create or enable a form in Jobber, then reload this page.',
+							'jobber',
+						)}
+					</p>
+				</Placeholder>
+			</div>
+		);
+	}
+
+	return (
+		<div {...blockProps}>
+			<InspectorControls>
+				<PanelBody title={__('Form Settings', 'jobber')}>
+					<SelectControl
+						label={__('Form', 'jobber')}
+						value={formId}
+						options={[
+							...(formId
+								? []
+								: [{ label: __('Select a form', 'jobber'), value: '' }]),
+							...forms.map((form) => ({
+								label: form.isDefault
+									? sprintf(
+											/* translators: %s: form name. */
+											__('%s (default)', 'jobber'),
+											form.name,
+										)
+									: form.name,
+								value: form.id,
+							})),
+						]}
+						onChange={onSelectForm}
+						__nextHasNoMarginBottom
+					/>
+				</PanelBody>
+			</InspectorControls>
+
+			{needsMigration && (
+				<Notice status="warning" isDismissible={false}>
+					{__(
+						'Jobber no longer separates booking and request forms. Choose which form this block should display.',
+						'jobber',
+					)}
+				</Notice>
 			)}
 
-			{!loading && iframeUrl && (
+			{!previewUrl && !needsMigration && (
+				<Notice status="warning" isDismissible={false}>
+					{__('The selected form is no longer available. Choose another form.', 'jobber')}
+				</Notice>
+			)}
+
+			{previewUrl && (
 				<Disabled>
 					<iframe
-						src={iframeUrl}
+						src={previewUrl}
 						style={{
 							border: '1px dashed #E0E0E0',
-							height: formType === 'request' ? '1630px' : '400px',
+							height: `${getFormHeight(bookingType)}px`,
 							width: '100%',
 						}}
-						title={__('Jobber Form', 'jobber')}
+						title={formName || __('Jobber Form', 'jobber')}
 					/>
 				</Disabled>
 			)}
