@@ -301,10 +301,16 @@ class Jobber {
 	/**
 	 * Normalize a forms response into a predictable shape.
 	 *
-	 * Jobber returns `requestSettingsCollection.nodes`. Each node is expected to carry
-	 * `name`, `requestUrl`, `bookingType`, `default` and `enabled`. An `id` is used when
-	 * present, and `requestUrl` stands in as the identifier when it is not, because the
-	 * block has to persist something stable and a form's name can be edited by the user.
+	 * Jobber returns `requestSettingsCollection.nodes`. Each node carries `id`, `name`,
+	 * `requestUrl`, `embeddedRequestUrl`, `requestEmbedScript`, `bookingType` (the
+	 * BookingType enum: NONE, JOB or ASSESSMENT), `default` and `enabled`, all confirmed
+	 * against the live schema.
+	 *
+	 * `embeddedRequestUrl` is preferred for the iframe because it is the embed-specific
+	 * URL; `requestUrl` is the public page and only stands in when the former is absent.
+	 * An `id` is used when present, and the URL stands in as the identifier when it is
+	 * not, because the block has to persist something stable and a form's name can be
+	 * edited by the user.
 	 *
 	 * @param array<string, mixed> $response Raw decoded response.
 	 * @return array<int, array<string, mixed>>
@@ -323,7 +329,7 @@ class Jobber {
 				continue;
 			}
 
-			$url = (string) ( $node['requestUrl'] ?? '' );
+			$url = (string) ( $node['embeddedRequestUrl'] ?? $node['requestUrl'] ?? '' );
 
 			// Without a URL there is nothing to embed, so the entry is unusable.
 			if ( '' === $url ) {
