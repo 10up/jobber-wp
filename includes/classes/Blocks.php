@@ -138,15 +138,18 @@ class Blocks {
 	/**
 	 * Get a sensible iframe height for a form.
 	 *
-	 * Booking forms are short, request forms are long. The exact set of bookingType
-	 * values is not documented yet, so anything unrecognized gets the taller height
-	 * rather than risking a cut off form.
+	 * Jobber's BookingType enum is NONE, JOB or ASSESSMENT. NONE creates a request only,
+	 * so it renders the long work request form. JOB and ASSESSMENT both create a booking
+	 * and show the shorter scheduler, which is what the API's own `bookingEnabled` filter
+	 * means by "bookable". An unrecognised value gets the taller height rather than
+	 * risking a cut off form.
 	 *
 	 * @param string $booking_type The form's bookingType value.
 	 * @return int Height in pixels.
 	 */
 	public static function get_form_height( string $booking_type ): int {
-		$height = 'booking' === strtolower( $booking_type ) ? 400 : 1630;
+		$bookable = array( 'JOB', 'ASSESSMENT' );
+		$height   = in_array( strtoupper( $booking_type ), $bookable, true ) ? 400 : 1630;
 
 		/**
 		 * Filters the iframe height used when rendering a Jobber form.

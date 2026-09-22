@@ -23,15 +23,18 @@ import { BlockIcon } from './icon';
 /**
  * Get the preview height for a form.
  *
- * Booking forms are short, request forms are long. The full set of bookingType values
- * is not documented yet, so anything unrecognised gets the taller height rather than
- * risking a cut off form. Mirrors Blocks::get_form_height() on the PHP side.
+ * Jobber's BookingType enum is NONE, JOB or ASSESSMENT. NONE creates a request only, so it
+ * renders the long work request form. JOB and ASSESSMENT both create a booking and show the
+ * shorter scheduler. An unrecognised value gets the taller height rather than risking a cut
+ * off form. Mirrors Blocks::get_form_height() on the PHP side.
  *
  * @param {string} bookingType The form's bookingType value.
  * @returns {number} Height in pixels.
  */
+const BOOKABLE_TYPES = ['JOB', 'ASSESSMENT'];
+
 const getFormHeight = (bookingType) =>
-	String(bookingType).toLowerCase() === 'booking' ? 400 : 1630;
+	BOOKABLE_TYPES.includes(String(bookingType).toUpperCase()) ? 400 : 1630;
 
 const Edit = ({ attributes, setAttributes }) => {
 	const { formId, formName, bookingType, formType } = attributes;
