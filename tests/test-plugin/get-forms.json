@@ -1,5 +1,5 @@
 {
-  "_comment": "Matches the middleware's GET /jobber/forms response (10up/jobber-node#58). Field names, the bookingType enum (NONE|JOB|ASSESSMENT) and the flat shape are taken from that PR's tests. Names, IDs and URLs are placeholder content.",
+  "_comment": "Matches the middleware's GET /jobber/forms response (10up/jobber-node#58), confirmed against real Jobber data. URL patterns follow clienthub.getjobber.com/hubs/<hub>/public/requests/<id>/{new,embedded_new}. IDs, names and hub are placeholder content.",
   "forms": [
     {
       "id": "Z2lkOi8vSm9iYmVyL1JlcXVlc3RTZXR0aW5ncy8x",
@@ -7,8 +7,8 @@
       "default": true,
       "bookingType": "NONE",
       "embedScript": "<div id=\"bee31d50-4b36-4f6a-bb19-ad65ccb11b97\"></div><link rel=\"stylesheet\" href=\"https://d3ey4dbjkt2f6s.cloudfront.net/assets/external/work_request_embed.css\" media=\"screen\" /><script src=\"https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/work_request_embed_snippet.js\" clienthub_id=\"bee31d50-4b36-4f6a-bb19-ad65ccb11b97\" form_url=\"https://clienthub.getjobber.com/client_hubs/bee31d50-4b36-4f6a-bb19-ad65ccb11b97/public/work_request/embedded_work_request_form\"></script>",
-      "url": "https://clienthub.getjobber.com/client_hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/work_request/new",
-      "embedUrl": "https://clienthub.getjobber.com/client_hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/work_request/embedded_work_request_form"
+      "url": "https://clienthub.getjobber.com/hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/requests/5190841/new",
+      "embedUrl": "https://clienthub.getjobber.com/hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/requests/5190841/embedded_new"
     },
     {
       "id": "Z2lkOi8vSm9iYmVyL1JlcXVlc3RTZXR0aW5ncy8y",
@@ -16,8 +16,8 @@
       "default": false,
       "bookingType": "JOB",
       "embedScript": "<div id=\"jobber-booking-container-6211a2a0-9672-43c9-a4c9-0722a251dfbd\" class=\"booking-container\"></div><script src=\"https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/booking_embed_snippet.js\" vendor_id=\"6211a2a0-9672-43c9-a4c9-0722a251dfbd\" form_url=\"https://clienthub.getjobber.com/booking/6211a2a0-9672-43c9-a4c9-0722a251dfbd/embedded\"></script>",
-      "url": "https://clienthub.getjobber.com/booking/6211a2a0-9672-43c9-a4c9-0722a251dfbd",
-      "embedUrl": "https://clienthub.getjobber.com/booking/6211a2a0-9672-43c9-a4c9-0722a251dfbd/embedded"
+      "url": "https://clienthub.getjobber.com/hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/requests/5190842/new",
+      "embedUrl": "https://clienthub.getjobber.com/hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/requests/5190842/embedded_new"
     },
     {
       "id": "Z2lkOi8vSm9iYmVyL1JlcXVlc3RTZXR0aW5ncy8z",
@@ -25,8 +25,8 @@
       "default": false,
       "bookingType": "ASSESSMENT",
       "embedScript": "",
-      "url": "https://clienthub.getjobber.com/booking/cef430bc-f679-4071-8069-3fe2b8c469e6",
-      "embedUrl": "https://clienthub.getjobber.com/booking/cef430bc-f679-4071-8069-3fe2b8c469e6/embedded"
+      "url": "https://clienthub.getjobber.com/hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/requests/5190843/new",
+      "embedUrl": "https://clienthub.getjobber.com/hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/requests/5190843/embedded_new"
     }
   ],
   "totalCount": 3
