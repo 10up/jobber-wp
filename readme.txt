@@ -16,7 +16,7 @@ Together Jobber and WordPress help you get discovered, build credibility, and co
 
 **Embed Jobber's powerful online booking and request forms directly into your WordPress site.**
 
-With the Jobber WordPress plugin, home service pros can add fully integrated client intake forms in just a few clicks. Choose between Booking or Request modes and turn website visitors into clients fast.
+With the Jobber WordPress plugin, home service pros can add fully integrated client intake forms in just a few clicks. Pick any form from your Jobber account and turn website visitors into clients fast.
 
 All submissions are automatically synced to Jobber to create clients, requests, and bookings, making it easy for potential customers to get a quote quickly, and book your services with confidence.
 
@@ -75,7 +75,7 @@ Get 20% off your first 6 months, plus a 14-day free trial. [Claim your offer now
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Go to the Jobber settings page in your WordPress dashboard.
 4. Connect your Jobber account to your site.
-5. Insert the Jobber block into any page or post, selecting the form type you want to use: Booking or Request.
+5. Insert the Jobber block into any page or post and choose which of your Jobber forms to display.
 
 == Before You Start ==
 
@@ -92,9 +92,11 @@ Yes. You'll need an active Jobber account to authenticate the plugin and sync fo
 
 Don't have a Jobber account? [Sign up](https://getjobber.com/plp/wordpress) to receive 20% off your first 6 months and a free 14-day trial.
 
-= Can I switch between Booking and Request forms? =
+= Can I choose which form to display? =
 
-Yes, you can configure the block to display either type and change it anytime.
+Yes. The block lists every enabled form on your connected Jobber account, with your account default preselected, and you can change it at any time.
+
+If you added the block before this was possible, it keeps showing the form it was already set to until you pick one.
 
 = Does the plugin match my site’s design? =
 
@@ -111,6 +113,11 @@ We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www
 3. Submissions are automatically created as new clients, bookings, and requests so you can respond to leads faster, and win more jobs.
 
 == Changelog ==
+
+= Unreleased =
+
+* **Added:** Choose any form from your connected Jobber account, instead of only a Booking or Request form.
+* **Changed:** Blocks added before this update keep displaying the form they were set to, and prompt you to choose one when edited.
 
 = 1.0.0 - 2025-06-12 =
 
