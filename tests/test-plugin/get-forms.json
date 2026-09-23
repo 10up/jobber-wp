@@ -1,49 +1,33 @@
 {
-  "_comment": "Field names and the bookingType enum (NONE|JOB|ASSESSMENT) are verified against Jobber's live GraphQL schema via introspection. Names, URLs and IDs are placeholder content, since form data requires an authenticated account.",
-  "data": {
-    "requestSettingsCollection": {
-      "totalCount": 3,
-      "pageInfo": {
-        "hasNextPage": false,
-        "hasPreviousPage": false,
-        "endCursor": "Mw",
-        "startCursor": "MQ"
-      },
-      "nodes": [
-        {
-          "id": "Z2lkOi8vSm9iYmVyL1JlcXVlc3RTZXR0aW5nLzE",
-          "name": "Work Request Form",
-          "description": "Tell us what you need and we'll get back to you.",
-          "requestUrl": "https://clienthub.getjobber.com/client_hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/work_request/new",
-          "embeddedRequestUrl": "https://clienthub.getjobber.com/client_hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/work_request/embedded_work_request_form",
-          "requestEmbedScript": "<div id=\"bee31d50-4b36-4f6a-bb19-ad65ccb11b97\"></div><link rel=\"stylesheet\" href=\"https://d3ey4dbjkt2f6s.cloudfront.net/assets/external/work_request_embed.css\" media=\"screen\" /><script src=\"https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/work_request_embed_snippet.js\" clienthub_id=\"bee31d50-4b36-4f6a-bb19-ad65ccb11b97\" form_url=\"https://clienthub.getjobber.com/client_hubs/bee31d50-4b36-4f6a-bb19-ad65ccb11b97/public/work_request/embedded_work_request_form\"></script>",
-          "bookingType": "NONE",
-          "default": true,
-          "enabled": true
-        },
-        {
-          "id": "Z2lkOi8vSm9iYmVyL1JlcXVlc3RTZXR0aW5nLzI",
-          "name": "Online Booking",
-          "description": "Pick a time that suits you.",
-          "requestUrl": "https://clienthub.getjobber.com/booking/6211a2a0-9672-43c9-a4c9-0722a251dfbd",
-          "embeddedRequestUrl": "https://clienthub.getjobber.com/booking/6211a2a0-9672-43c9-a4c9-0722a251dfbd/embedded",
-          "requestEmbedScript": "<div id=\"jobber-booking-container-6211a2a0-9672-43c9-a4c9-0722a251dfbd\" class=\"booking-container\"></div><script src=\"https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/booking_embed_snippet.js\" vendor_id=\"6211a2a0-9672-43c9-a4c9-0722a251dfbd\" form_url=\"https://clienthub.getjobber.com/booking/6211a2a0-9672-43c9-a4c9-0722a251dfbd/embedded\"></script>",
-          "bookingType": "JOB",
-          "default": false,
-          "enabled": true
-        },
-        {
-          "id": "Z2lkOi8vSm9iYmVyL1JlcXVlc3RTZXR0aW5nLzM",
-          "name": "Spring Tune Up",
-          "description": "Seasonal maintenance visit.",
-          "requestUrl": "https://clienthub.getjobber.com/booking/cef430bc-f679-4071-8069-3fe2b8c469e6",
-          "embeddedRequestUrl": "https://clienthub.getjobber.com/booking/cef430bc-f679-4071-8069-3fe2b8c469e6/embedded",
-          "requestEmbedScript": "",
-          "bookingType": "ASSESSMENT",
-          "default": false,
-          "enabled": true
-        }
-      ]
+  "_comment": "Matches the middleware's GET /jobber/forms response (10up/jobber-node#58). Field names, the bookingType enum (NONE|JOB|ASSESSMENT) and the flat shape are taken from that PR's tests. Names, IDs and URLs are placeholder content.",
+  "forms": [
+    {
+      "id": "Z2lkOi8vSm9iYmVyL1JlcXVlc3RTZXR0aW5ncy8x",
+      "name": "Work Request Form",
+      "default": true,
+      "bookingType": "NONE",
+      "embedScript": "<div id=\"bee31d50-4b36-4f6a-bb19-ad65ccb11b97\"></div><link rel=\"stylesheet\" href=\"https://d3ey4dbjkt2f6s.cloudfront.net/assets/external/work_request_embed.css\" media=\"screen\" /><script src=\"https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/work_request_embed_snippet.js\" clienthub_id=\"bee31d50-4b36-4f6a-bb19-ad65ccb11b97\" form_url=\"https://clienthub.getjobber.com/client_hubs/bee31d50-4b36-4f6a-bb19-ad65ccb11b97/public/work_request/embedded_work_request_form\"></script>",
+      "url": "https://clienthub.getjobber.com/client_hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/work_request/new",
+      "embedUrl": "https://clienthub.getjobber.com/client_hubs/f4fa6376-5f60-418d-af02-95a2c1287bbb/public/work_request/embedded_work_request_form"
+    },
+    {
+      "id": "Z2lkOi8vSm9iYmVyL1JlcXVlc3RTZXR0aW5ncy8y",
+      "name": "Online Booking",
+      "default": false,
+      "bookingType": "JOB",
+      "embedScript": "<div id=\"jobber-booking-container-6211a2a0-9672-43c9-a4c9-0722a251dfbd\" class=\"booking-container\"></div><script src=\"https://d3ey4dbjkt2f6s.cloudfront.net/assets/static_link/booking_embed_snippet.js\" vendor_id=\"6211a2a0-9672-43c9-a4c9-0722a251dfbd\" form_url=\"https://clienthub.getjobber.com/booking/6211a2a0-9672-43c9-a4c9-0722a251dfbd/embedded\"></script>",
+      "url": "https://clienthub.getjobber.com/booking/6211a2a0-9672-43c9-a4c9-0722a251dfbd",
+      "embedUrl": "https://clienthub.getjobber.com/booking/6211a2a0-9672-43c9-a4c9-0722a251dfbd/embedded"
+    },
+    {
+      "id": "Z2lkOi8vSm9iYmVyL1JlcXVlc3RTZXR0aW5ncy8z",
+      "name": "Spring Tune Up",
+      "default": false,
+      "bookingType": "ASSESSMENT",
+      "embedScript": "",
+      "url": "https://clienthub.getjobber.com/booking/cef430bc-f679-4071-8069-3fe2b8c469e6",
+      "embedUrl": "https://clienthub.getjobber.com/booking/cef430bc-f679-4071-8069-3fe2b8c469e6/embedded"
     }
-  }
+  ],
+  "totalCount": 3
 }

@@ -100,6 +100,12 @@ class Jobber {
 	 * @param string $form_type The form type.
 	 */
 	public function rebuild_cache( string $form_type = '' ) {
+		// The form list is its own endpoint, so it cannot go through get_form().
+		if ( self::FORMS_QUERY === $form_type ) {
+			$this->get_forms( true );
+			return;
+		}
+
 		$this->get_form( $form_type, true );
 	}
 
@@ -262,13 +268,82 @@ class Jobber {
 	 * @return array<int, array<string, mixed>>|WP_Error List of normalized forms, or an error.
 	 */
 	public function get_forms( bool $force = false ) {
-		$response = $this->query( self::FORMS_QUERY, $force );
+		$response = $this->request_forms( $force );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
 
 		return self::normalize_forms( $response );
+	}
+
+	/**
+	 * Fetch the account's form list from the middleware.
+	 *
+	 * Unlike the legacy form lookup, which POSTs a query keyword to `/jobber/graphql`, the
+	 * form list is its own `GET /jobber/forms` route. The middleware filters to enabled
+	 * forms and walks Jobber's pagination server side, so this is a single request that
+	 * returns the whole list.
+	 *
+	 * @param bool $force Force a new request and bypass cache.
+	 * @return array<string, mixed>|WP_Error
+	 */
+	protected function request_forms( bool $force = false ) {
+		/** This filter is documented in includes/classes/Jobber.php */
+		$pre = apply_filters( 'jobber_pre_query', false, self::FORMS_QUERY );
+
+		if ( false !== $pre ) {
+			return $pre;
+		}
+
+		if ( empty( $this->access_token ) ) {
+			return new WP_Error( 'jobber_no_access_token', __( 'No token found.', 'jobber' ) );
+		}
+
+		$cache_key = 'jobber_query_' . md5( self::FORMS_QUERY );
+		$cached    = get_cached_data( $cache_key, self::FORMS_QUERY, $force );
+
+		if ( false !== $cached ) {
+			return $cached;
+		}
+
+		$endpoint = self::get_endpoint( 'jobber/forms' );
+		$args     = [
+			'headers' => [
+				'Content-Type'   => 'application/json',
+				'X-JOBBER-TOKEN' => $this->access_token,
+			],
+		];
+
+		$request = wp_remote_get( $endpoint, $args );
+
+		if ( is_wp_error( $request ) ) {
+			return $request;
+		}
+
+		// Retry once with a refreshed token, matching the legacy query path.
+		if ( 401 === wp_remote_retrieve_response_code( $request ) && Auth::refresh_access_token() ) {
+			$request = wp_remote_get( $endpoint, $args );
+
+			if ( is_wp_error( $request ) ) {
+				return $request;
+			}
+		}
+
+		$response = json_decode( wp_remote_retrieve_body( $request ), true );
+
+		if ( ! is_array( $response ) ) {
+			return new WP_Error( 'jobber_invalid_response', __( 'Unexpected response from the Jobber service.', 'jobber' ) );
+		}
+
+		// The middleware reports GraphQL and permission failures as { error }, e.g. a 502.
+		if ( isset( $response['error'] ) ) {
+			return new WP_Error( 'jobber_forms_error', (string) $response['error'] );
+		}
+
+		set_cached_data( $cache_key, $response );
+
+		return $response;
 	}
 
 	/**
@@ -301,48 +376,61 @@ class Jobber {
 	/**
 	 * Normalize a forms response into a predictable shape.
 	 *
-	 * Jobber returns `requestSettingsCollection.nodes`. Each node carries `id`, `name`,
-	 * `requestUrl`, `embeddedRequestUrl`, `requestEmbedScript`, `bookingType` (the
-	 * BookingType enum: NONE, JOB or ASSESSMENT), `default` and `enabled`, all confirmed
-	 * against the live schema.
+	 * The middleware's `GET /jobber/forms` returns a flat list, already filtered to enabled
+	 * forms and already paged through server side:
 	 *
-	 * `embeddedRequestUrl` is preferred for the iframe because it is the embed-specific
-	 * URL; `requestUrl` is the public page and only stands in when the former is absent.
-	 * An `id` is used when present, and the URL stands in as the identifier when it is
-	 * not, because the block has to persist something stable and a form's name can be
-	 * edited by the user.
+	 *     { "forms": [ { id, name, default, bookingType, embedScript, url, embedUrl } ],
+	 *       "totalCount": 2 }
+	 *
+	 * `bookingType` is Jobber's BookingType enum: NONE, JOB or ASSESSMENT. Nullable fields
+	 * arrive as empty strings rather than null.
+	 *
+	 * `embedUrl` is Jobber's embed-specific URL and is preferred for the iframe; `url` is
+	 * the public page and only stands in when the former is absent. The `id` is used as the
+	 * identifier, falling back to the URL, because the block has to persist something stable
+	 * and a form's name can be edited by the user.
 	 *
 	 * @param array<string, mixed> $response Raw decoded response.
 	 * @return array<int, array<string, mixed>>
 	 */
 	public static function normalize_forms( array $response ): array {
-		$nodes = $response['data']['requestSettingsCollection']['nodes'] ?? [];
+		$items = $response['forms'] ?? [];
 
-		if ( ! is_array( $nodes ) ) {
+		if ( ! is_array( $items ) ) {
 			return [];
 		}
 
 		$forms = [];
 
-		foreach ( $nodes as $node ) {
-			if ( ! is_array( $node ) ) {
+		foreach ( $items as $item ) {
+			if ( ! is_array( $item ) ) {
 				continue;
 			}
 
-			$url = (string) ( $node['embeddedRequestUrl'] ?? $node['requestUrl'] ?? '' );
+			$url = (string) ( $item['embedUrl'] ?? '' );
+
+			if ( '' === $url ) {
+				$url = (string) ( $item['url'] ?? '' );
+			}
 
 			// Without a URL there is nothing to embed, so the entry is unusable.
 			if ( '' === $url ) {
 				continue;
 			}
 
+			$name = (string) ( $item['name'] ?? '' );
+
+			if ( '' === $name ) {
+				$name = __( 'Untitled form', 'jobber' );
+			}
+
 			$forms[] = [
-				'id'          => (string) ( $node['id'] ?? $url ),
-				'name'        => (string) ( $node['name'] ?? __( 'Untitled form', 'jobber' ) ),
+				'id'          => (string) ( $item['id'] ?? $url ),
+				'name'        => $name,
 				'url'         => $url,
-				'bookingType' => (string) ( $node['bookingType'] ?? '' ),
-				'isDefault'   => ! empty( $node['default'] ),
-				'embedScript' => (string) ( $node['requestEmbedScript'] ?? $node['embedScript'] ?? '' ),
+				'bookingType' => (string) ( $item['bookingType'] ?? '' ),
+				'isDefault'   => ! empty( $item['default'] ),
+				'embedScript' => (string) ( $item['embedScript'] ?? '' ),
 			];
 		}
 
