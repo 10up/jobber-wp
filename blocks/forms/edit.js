@@ -161,9 +161,11 @@ const Edit = ({ attributes, setAttributes }) => {
 				<PanelBody title={__('Form Settings', 'jobber')}>
 					<SelectControl
 						label={__('Form', 'jobber')}
-						value={formId}
+						value={selected ? formId : ''}
 						options={[
-							...(formId
+							// Also shown when the saved form no longer exists, so the dropdown never
+							// appears to have a form selected that it does not.
+							...(selected
 								? []
 								: [{ label: __('Select a form', 'jobber'), value: '' }]),
 							...forms.map((form) => ({
