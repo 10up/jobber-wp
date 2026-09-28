@@ -93,7 +93,7 @@ class Settings {
 			<div class="jobber-settings__container" style="max-width: 600px; font-size: 14px; line-height: 1.5;">
 				<?php if ( ! $is_authorized ) : ?>
 					<p style="font-size: 14px; line-height: 1.7;">
-						<?php esc_html_e( 'The Jobber plugin allows you to easily embed your Booking and Request forms using a new Jobber block. To get started, follow the steps below:', 'jobber' ); ?>
+						<?php esc_html_e( 'The Jobber plugin allows you to easily embed any of your Jobber forms using the Jobber block. To get started, follow the steps below:', 'jobber' ); ?>
 					</p>
 					<ul style="list-style: decimal;">
 						<li style="margin-left: 2rem;">
@@ -113,7 +113,7 @@ class Settings {
 							<?php
 							printf(
 								/* translators: %1$s: opening strong tag, %2$s: closing strong tag */
-								esc_html__( 'Open the %1$sBlock settings%2$s and select the form you want to embed: %1$sRequest%2$s or %1$sBooking%2$s.', 'jobber' ),
+								esc_html__( 'Open the %1$sBlock settings%2$s and choose which of your Jobber forms to embed.', 'jobber' ),
 								'<strong>',
 								'</strong>',
 							);
@@ -152,7 +152,7 @@ class Settings {
 							<?php
 							printf(
 								/* translators: %1$s: opening strong tag, %2$s: closing strong tag */
-								esc_html__( 'Open the %1$sBlock settings%2$s and select the form you want to embed: %1$sRequest%2$s or %1$sBooking%2$s.', 'jobber' ),
+								esc_html__( 'Open the %1$sBlock settings%2$s and choose which of your Jobber forms to embed.', 'jobber' ),
 								'<strong>',
 								'</strong>',
 							);
