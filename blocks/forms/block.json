@@ -30,7 +30,8 @@
 			"default": ""
 		},
 		"formType": {
-			"type": "string"
+			"type": "string",
+			"default": "request"
 		}
 	},
 	"textdomain": "jobber",

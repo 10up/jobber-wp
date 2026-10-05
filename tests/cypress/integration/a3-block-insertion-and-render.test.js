@@ -84,6 +84,15 @@ describe( 'Blocks saved before the form picker existed', () => {
 				'post_status'  => 'publish',
 			) );`,
 		);
+
+		// A legacy request block has no attributes at all, since "request" was the default.
+		cy.wpCliEval(
+			`wp_insert_post( array(
+				'post_title'   => 'Legacy Jobber Request Block',
+				'post_content' => '<!-- wp:jobber/forms /-->',
+				'post_status'  => 'publish',
+			) );`,
+		);
 	} );
 
 	beforeEach( () => {
@@ -91,21 +100,23 @@ describe( 'Blocks saved before the form picker existed', () => {
 		connectJobber();
 	} );
 
-	it( 'Asks the author to re-pick instead of silently changing the block', () => {
-		cy.visit( '/wp-admin/edit.php' );
-		cy.contains( 'a.row-title', 'Legacy Jobber Block' ).click();
-		cy.closeWelcomeGuide();
+	[ 'Legacy Jobber Block', 'Legacy Jobber Request Block' ].forEach( ( title ) => {
+		it( `Asks the author to re-pick instead of silently changing the block: ${ title }`, () => {
+			cy.visit( '/wp-admin/edit.php' );
+			cy.contains( 'a.row-title', new RegExp( `^${ title }$` ) ).click();
+			cy.closeWelcomeGuide();
 
-		// The block explains why it needs attention.
-		cy.getBlockEditor()
-			.find( '.components-notice__content' )
-			.should( 'contain', 'no longer separates booking and request forms' );
+			// The block explains why it needs attention.
+			cy.getBlockEditor()
+				.find( '.components-notice__content' )
+				.should( 'contain', 'no longer separates booking and request forms' );
 
-		// Select the block so the inspector shows its settings.
-		cy.getBlockEditor().find( '[data-type="jobber/forms"]' ).first().click();
+			// Select the block so the inspector shows its settings.
+			cy.getBlockEditor().find( '[data-type="jobber/forms"]' ).first().click();
 
-		// Nothing was chosen on the author's behalf.
-		cy.get( PICKER ).find( 'option:selected' ).should( 'contain', 'Select a form' );
+			// Nothing was chosen on the author's behalf.
+			cy.get( PICKER ).find( 'option:selected' ).should( 'contain', 'Select a form' );
+		} );
 	} );
 
 	it( 'Keeps rendering the saved form on the front end', () => {

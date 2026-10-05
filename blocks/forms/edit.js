@@ -58,15 +58,17 @@ const Edit = ({ attributes, setAttributes }) => {
 				setForms(list);
 				setLoading(false);
 
-				// Only a genuinely new block auto-selects. A legacy block carries a
-				// formType and no formId, and must keep rendering what it saved until
-				// an author re-picks, so it is left untouched here.
+				// Only a genuinely new block auto-selects. New blocks are inserted with an
+				// empty formType (see index.js), while a legacy block resolves to a formType,
+				// either saved or the "request" default, and must keep rendering what it
+				// saved until an author re-picks, so it is left untouched here.
 				if (!formId && !formType && list.length) {
 					const preferred = list.find((form) => form.isDefault) ?? list[0];
 					setAttributes({
 						formId: preferred.id,
 						formName: preferred.name,
 						bookingType: preferred.bookingType,
+						formType: undefined,
 					});
 				}
 			})
@@ -99,6 +101,8 @@ const Edit = ({ attributes, setAttributes }) => {
 			formId: value,
 			formName: form?.name ?? '',
 			bookingType: form?.bookingType ?? '',
+			// Back to the default, so a picked form does not also save a form type.
+			formType: undefined,
 		});
 	};
 
