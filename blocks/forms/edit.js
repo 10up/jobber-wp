@@ -48,7 +48,9 @@ const Edit = ({ attributes, setAttributes }) => {
 		setLoading(true);
 		setError(null);
 
-		apiFetch({ path: 'jobber/v1/get_forms', method: 'GET' })
+		// Always fetch the live list in the editor, as the form type picker did, so forms
+		// added or removed in Jobber show up straight away and the cache is refreshed too.
+		apiFetch({ path: 'jobber/v1/get_forms?force=true', method: 'GET' })
 			.then((response) => {
 				if (cancelled) {
 					return;
