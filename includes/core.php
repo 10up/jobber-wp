@@ -16,6 +16,8 @@ use Jobber\Auth;
 use Jobber\Admin\Settings;
 use Jobber\ModuleInitialization;
 
+use function Jobber\Utility\delete_all_cached_data;
+
 /**
  * Default setup routine
  */
@@ -86,10 +88,9 @@ function activate() {
 function deactivate() {
 	// Delete any transients.
 	delete_transient( 'jobber_activation_notice' );
-	foreach ( [ 'booking', 'request' ] as $form_type ) {
-		$cache_key = 'jobber_query_' . md5( wp_json_encode( [ 'query' => $form_type ] ) );
-		delete_transient( $cache_key );
-	}
+
+	// Clear every cached query, including the option fallbacks that set_cached_data() writes.
+	delete_all_cached_data();
 
 	// Send disconnect request to the middleware if we are authenticated.
 	if ( Auth::is_authorized() ) {

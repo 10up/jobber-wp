@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+### Added
+
+- Choose any form from the connected Jobber account, rather than only a booking or a request form. The block lists every enabled form, labels the account default and preselects it.
+- New `jobber_pre_query` filter to short circuit middleware requests, so the form flow can be driven from fixtures in local development and end to end tests.
+- New `jobber_form_height` filter to override the height used when a form is rendered in an iframe.
+
+### Changed
+
+- Blocks saved before this update keep rendering the form they were set to, and show a notice in the editor asking for a form to be chosen. Nothing is changed on their behalf.
+- Form height now follows Jobber's `bookingType` (`NONE`, `JOB` or `ASSESSMENT`) instead of the old booking/request pair.
+- Cached middleware responses are recorded in an index so deactivation can remove all of them, including the options left behind by earlier versions.
+
 ## [1.0.0] - 2025-06-12
 
 Initial release of the Jobber plugin. 🎉
