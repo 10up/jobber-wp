@@ -172,6 +172,8 @@ class Blocks {
 	 * @return string
 	 */
 	protected function wrap_embed_script( string $embed_script ): string {
+		$this->enqueue_resize_script();
+
 		return sprintf(
 			'<div class="jobber-embed-block">%s</div>',
 			wp_kses(
@@ -195,5 +197,56 @@ class Blocks {
 				]
 			)
 		);
+	}
+
+	/**
+	 * Resize each embedded form to its own height.
+	 *
+	 * Jobber's embed script resizes the first `iframe.jobber-work-request` on the page
+	 * whenever any form reports its height, so with several forms on one page only the
+	 * first one grows and the rest stay cut off. This matches each height message to the
+	 * iframe that sent it instead, and stops Jobber's handler from resizing the wrong one.
+	 * Other messages, such as closing the dialog, still reach Jobber's handler.
+	 */
+	protected function enqueue_resize_script() {
+		if ( wp_script_is( 'jobber-embed-resize', 'enqueued' ) ) {
+			return;
+		}
+
+		wp_register_script( 'jobber-embed-resize', false, [], JOBBER_PLUGIN_VERSION, true );
+		wp_add_inline_script(
+			'jobber-embed-resize',
+			'( function () {
+				var heights = new Map();
+
+				window.addEventListener( "message", function ( event ) {
+					var data = event[ event.message ? "message" : "data" ];
+
+					if ( "string" !== typeof data || ! /^\d+(\.\d+)?px$/.test( data ) ) {
+						return;
+					}
+
+					var frames = document.querySelectorAll( "iframe.jobber-work-request" );
+					var source = Array.prototype.find.call( frames, function ( frame ) {
+						return frame.contentWindow === event.source;
+					} );
+
+					if ( ! source ) {
+						return;
+					}
+
+					heights.set( source, data );
+
+					// Reapply every known height, in case Jobber\'s handler already ran.
+					heights.forEach( function ( height, frame ) {
+						frame.style.height = height;
+						frame.parentElement.style.height = height;
+					} );
+
+					event.stopImmediatePropagation();
+				} );
+			} )();'
+		);
+		wp_enqueue_script( 'jobber-embed-resize' );
 	}
 }
