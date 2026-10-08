@@ -19,8 +19,13 @@ describe('Block Insertion', () => {
 			// Save the post.
 			cy.get( '.post-publish-panel__postpublish-buttons a.is-primary' ).click();
 
-			// Check for the iframe container.
-			cy.get( '.jobber-inline-work-request' ).should( 'exist' );
+			// Check the plugin rendered the form's embed markup. The visible form itself is
+			// built later by Jobber's external script, which is outside the plugin's control.
+			cy.get( '.jobber-embed-block' )
+				.should( 'exist' )
+				.find( 'script[clienthub_id]' )
+				.should( 'have.attr', 'form_url' )
+				.and( 'contain', 'clienthub.getjobber.com' );
 		} );
 	} );
 } );
