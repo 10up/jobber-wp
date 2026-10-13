@@ -85,6 +85,8 @@ const Edit = ({ attributes, setAttributes }) => {
 		return () => {
 			cancelled = true;
 		};
+		// Fetch once on mount. The attributes are only read for the initial default, and
+		// re-running on every change would refetch the list each time a form is picked.
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

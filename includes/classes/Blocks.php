@@ -220,6 +220,7 @@ class Blocks {
 				var heights = new Map();
 
 				window.addEventListener( "message", function ( event ) {
+					// Mirrors how the Jobber snippet reads the message; in modern browsers this is event.data.
 					var data = event[ event.message ? "message" : "data" ];
 
 					if ( "string" !== typeof data || ! /^\d+(\.\d+)?px$/.test( data ) ) {

@@ -321,7 +321,9 @@ class Jobber {
 			return $request;
 		}
 
-		// Retry once with a refreshed token, matching the legacy query path.
+		// Retry once with a refreshed token, matching the legacy query path. The header is the
+		// site's client token, which does not change: the refresh renews the Jobber token the
+		// middleware stores against it, so the same headers are correct for the retry.
 		if ( 401 === wp_remote_retrieve_response_code( $request ) && Auth::refresh_access_token() ) {
 			$request = wp_remote_get( $endpoint, $args );
 

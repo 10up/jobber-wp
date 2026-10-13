@@ -35,7 +35,9 @@ registerBlockType(metadata.name, {
 	/**
 	 * Legacy request blocks were saved without attributes, because "request" was the
 	 * formType default. Inserting new blocks with an empty formType is what tells the
-	 * two apart, so only new blocks preselect the account's default form.
+	 * two apart, so only new blocks preselect the account's default form. The marker is
+	 * the empty string, not the block.json default, because a legacy block with no saved
+	 * attributes also resolves to "request".
 	 */
 	variations: [
 		{

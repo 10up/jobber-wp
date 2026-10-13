@@ -65,13 +65,9 @@ class API {
 				'callback'            => [ $this, 'get_form' ],
 				'permission_callback' => [ $this, 'has_permission' ],
 				'args'                => [
-					'form_id'   => [
-						'type'     => 'string',
-						'required' => false,
-					],
 					'form_type' => [
 						'type'     => 'string',
-						'required' => false,
+						'required' => true,
 					],
 					'force'     => [
 						'type'    => 'boolean',
@@ -119,10 +115,12 @@ class API {
 	/**
 	 * Check if the user has permission to access the route.
 	 *
+	 * Only the block editor calls these routes, so they need the same capability as editing a post.
+	 *
 	 * @return bool
 	 */
 	public function has_permission(): bool {
-		return is_user_logged_in();
+		return current_user_can( 'edit_posts' );
 	}
 
 	/**
@@ -201,28 +199,8 @@ class API {
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function get_form( \WP_REST_Request $request ) {
-		$form_id   = (string) $request->get_param( 'form_id' );
 		$form_type = $request->get_param( 'form_type' );
 		$force     = (bool) $request->get_param( 'force' );
-
-		// A form id means the caller wants a specific form from the account's form list.
-		if ( '' !== $form_id ) {
-			$form = ( new \Jobber\Jobber() )->get_form_by_id( $form_id, $force );
-
-			if ( is_wp_error( $form ) ) {
-				return rest_ensure_response( $form );
-			}
-
-			return rest_ensure_response(
-				[
-					'form' => [
-						'iframeUrl'   => esc_url_raw( $form['url'] ),
-						'name'        => $form['name'],
-						'bookingType' => $form['bookingType'],
-					],
-				]
-			);
-		}
 
 		if ( empty( $form_type ) ) {
 			$form_type = 'request';
