@@ -18,3 +18,11 @@ import 'cypress-plugin-tab';
 
 // Import commands.js using ES2015 syntax:
 import './commands';
+
+// WordPress 7.x admin uses View Transitions, and navigating away mid transition rejects with
+// "Transition was aborted". That comes from core rather than the plugin, so it should not fail tests.
+Cypress.on( 'uncaught:exception', ( err ) => {
+	if ( err.message.includes( 'Transition was aborted' ) ) {
+		return false;
+	}
+} );
