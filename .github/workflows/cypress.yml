@@ -33,9 +33,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Composer (optional)
-      run: composer update -W
-      continue-on-error: true
+    - name: Composer
+      run: composer install
 
     - name: Build (optional)
       run: npm run build
