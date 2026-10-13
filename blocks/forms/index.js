@@ -41,7 +41,7 @@ registerBlockType(metadata.name, {
 	 */
 	variations: [
 		{
-			name: 'jobber-form',
+			name: 'forms',
 			title: metadata.title,
 			description: metadata.description,
 			icon: BlockIcon,
