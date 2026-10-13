@@ -38,7 +38,10 @@ describe( 'Block Insertion', () => {
 					.should( 'contain', DEFAULT_FORM );
 			},
 		} ).then( () => {
-			cy.get( '.post-publish-panel__postpublish-buttons a.is-primary' ).click();
+			// The View Post link can open a new tab, which Cypress cannot follow, so visit its URL.
+			cy.get( '.post-publish-panel__postpublish-buttons a.is-primary' )
+				.invoke( 'attr', 'href' )
+				.then( ( href ) => cy.visit( href ) );
 
 			// The chosen form renders on the front end.
 			cy.get( '.jobber-embed-block' ).should( 'exist' );
@@ -68,7 +71,10 @@ describe( 'Block Insertion', () => {
 					.should( 'contain', OTHER_FORM );
 			},
 		} ).then( () => {
-			cy.get( '.post-publish-panel__postpublish-buttons a.is-primary' ).click();
+			// The View Post link can open a new tab, which Cypress cannot follow, so visit its URL.
+			cy.get( '.post-publish-panel__postpublish-buttons a.is-primary' )
+				.invoke( 'attr', 'href' )
+				.then( ( href ) => cy.visit( href ) );
 			cy.get( '.jobber-embed-block' ).should( 'exist' );
 		} );
 	} );
