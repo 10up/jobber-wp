@@ -194,11 +194,22 @@ const Edit = ({ attributes, setAttributes }) => {
 			</InspectorControls>
 
 			{needsMigration && (
-				<Notice status="warning" isDismissible={false}>
-					{__(
-						'Jobber no longer separates booking and request forms. Choose which form this block should display.',
-						'jobber',
-					)}
+				<Notice status="info" isDismissible={false}>
+					<p>
+						{__(
+							'This block was set up with an older version of the Jobber plugin. The form still works on your site.',
+							'jobber',
+						)}
+					</p>
+					<p>
+						{__(
+							'Forms are now listed by the names they have in Jobber, and you can build your own. Find and create forms in Jobber under Settings, Requests and Bookings, then select one from the Form list.',
+							'jobber',
+						)}
+					</p>
+					<p>
+						{__('If you do nothing, this block keeps showing the same form.', 'jobber')}
+					</p>
 				</Notice>
 			)}
 

@@ -115,7 +115,7 @@ describe( 'Blocks saved before the form picker existed', () => {
 			// The block explains why it needs attention.
 			cy.getBlockEditor()
 				.find( '.components-notice__content' )
-				.should( 'contain', 'no longer separates booking and request forms' );
+				.should( 'contain', 'set up with an older version of the Jobber plugin' );
 
 			// Select the block so the inspector shows its settings.
 			cy.getBlockEditor().find( '[data-type="jobber/forms"]' ).first().click();
