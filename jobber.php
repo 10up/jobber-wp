@@ -4,7 +4,7 @@
  * Plugin URI:        https://github.com/10up/jobber-wp
  * Description:       Add the ability to embed Jobber forms in your WordPress site.
  * Version:           1.0.0
- * Requires at least: 6.6
+ * Requires at least: 6.9
  * Requires PHP:      7.4
  * Author:            jobberintegrations
  * Author URI:        https://www.getjobber.com/
