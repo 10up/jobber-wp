@@ -111,7 +111,14 @@ class Blocks {
 	 * @return string
 	 */
 	protected function render_selected_form( string $form_id ): string {
-		$form = ( new \Jobber\Jobber() )->get_form_by_id( $form_id );
+		$jobber = new \Jobber\Jobber();
+		$form   = $jobber->get_form_by_id( $form_id );
+
+		// The saved form was turned off or deleted in Jobber, so show the account default
+		// rather than leaving a gap on the page.
+		if ( is_wp_error( $form ) && 'jobber_form_not_found' === $form->get_error_code() ) {
+			$form = $this->get_default_form( $jobber );
+		}
 
 		// Return nothing on failure, since the visitor cannot act on the error.
 		// See https://github.com/10up/jobber-wp/issues/10#issue-2993579619.
@@ -133,6 +140,28 @@ class Blocks {
 			esc_attr( $form['name'] ),
 			(int) self::get_form_height( $form['bookingType'] )
 		);
+	}
+
+	/**
+	 * Get the account's default form.
+	 *
+	 * @param \Jobber\Jobber $jobber The Jobber API instance.
+	 * @return array<string, mixed>|\WP_Error The default form, or an error when there is none.
+	 */
+	protected function get_default_form( \Jobber\Jobber $jobber ) {
+		$forms = $jobber->get_forms();
+
+		if ( is_wp_error( $forms ) ) {
+			return $forms;
+		}
+
+		foreach ( $forms as $form ) {
+			if ( ! empty( $form['isDefault'] ) ) {
+				return $form;
+			}
+		}
+
+		return new \WP_Error( 'jobber_no_default_form', __( 'No default form found.', 'jobber' ) );
 	}
 
 	/**
