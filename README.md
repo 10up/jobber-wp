@@ -21,7 +21,7 @@ All submissions are automatically synced to Jobber to create clients, requests, 
 ## Requirements
 
 * PHP 7.4+
-* [WordPress](http://wordpress.org/) 6.6+
+* [WordPress](http://wordpress.org/) 6.9+
 * An active Jobber account with a Core or higher price plan. Don't have a Jobber account? [Sign up](https://getjobber.com/plp/wordpress) to receive 20% off your first 6 months, and a free 14-day trial.
 * Your site needs to be publicly accessible on the internet in order for authentication to work.
 
