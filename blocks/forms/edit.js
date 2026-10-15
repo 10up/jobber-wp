@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import {
@@ -35,6 +35,13 @@ const BOOKABLE_TYPES = ['JOB', 'ASSESSMENT'];
 
 const getFormHeight = (bookingType) =>
 	BOOKABLE_TYPES.includes(String(bookingType).toUpperCase()) ? 400 : 1630;
+
+/**
+ * Jobber's form page reports its height to its parent window as a string such as "842px".
+ * Heights below the minimum are sent while the form is still loading, so they are ignored.
+ */
+const HEIGHT_MESSAGE = /^\d+(\.\d+)?px$/;
+const MIN_MEASURED_HEIGHT = 100;
 
 const Edit = ({ attributes, setAttributes }) => {
 	const { formId, formName, bookingType, formType } = attributes;
@@ -97,6 +104,40 @@ const Edit = ({ attributes, setAttributes }) => {
 	const previewUrl = selected?.url ?? '';
 	// A legacy block saved a form type rather than a specific form, so it needs re-picking.
 	const needsMigration = !formId && !!formType;
+
+	// Size the preview to the form's real height, which Jobber's form page reports through
+	// postMessage. The fixed height by booking type is only used until that arrives.
+	const previewRef = useRef(null);
+	const [previewHeight, setPreviewHeight] = useState(null);
+
+	useEffect(() => {
+		setPreviewHeight(null);
+
+		const frame = previewRef.current;
+		if (!frame) {
+			return undefined;
+		}
+
+		// The editor canvas may itself be an iframe, so listen on the window that holds the preview.
+		const view = frame.ownerDocument.defaultView;
+		const onMessage = (event) => {
+			if (event.source !== frame.contentWindow) {
+				return;
+			}
+
+			if (typeof event.data !== 'string' || !HEIGHT_MESSAGE.test(event.data)) {
+				return;
+			}
+
+			const height = parseFloat(event.data);
+			if (height >= MIN_MEASURED_HEIGHT) {
+				setPreviewHeight(height);
+			}
+		};
+
+		view.addEventListener('message', onMessage);
+		return () => view.removeEventListener('message', onMessage);
+	}, [previewUrl]);
 
 	const onSelectForm = (value) => {
 		const form = forms.find((item) => item.id === value);
@@ -215,17 +256,26 @@ const Edit = ({ attributes, setAttributes }) => {
 
 			{!previewUrl && !needsMigration && (
 				<Notice status="warning" isDismissible={false}>
-					{__('The selected form is no longer available. Choose another form.', 'jobber')}
+					{forms.some((form) => form.isDefault)
+						? __(
+								'The selected form is no longer available, so visitors see your default form. Choose another form.',
+								'jobber',
+							)
+						: __(
+								'The selected form is no longer available. Choose another form.',
+								'jobber',
+							)}
 				</Notice>
 			)}
 
 			{previewUrl && (
 				<Disabled>
 					<iframe
+						ref={previewRef}
 						src={previewUrl}
 						style={{
 							border: '1px dashed #E0E0E0',
-							height: `${getFormHeight(bookingType)}px`,
+							height: `${previewHeight ?? getFormHeight(bookingType)}px`,
 							width: '100%',
 						}}
 						title={formName || __('Jobber Form', 'jobber')}
