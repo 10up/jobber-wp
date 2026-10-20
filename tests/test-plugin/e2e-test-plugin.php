@@ -17,7 +17,10 @@ add_filter( 'pre_http_request', 'jobber_test_mock_http_requests', 10, 3 );
 function jobber_test_mock_http_requests( $preempt, $parsed_args, $url ) {
 	$response = '';
 
-	if ( strpos( $url, 'jobber-prod.10upmanaged.io/jobber/graphql' ) !== false ) {
+	// The form list is its own endpoint, so match it before the legacy graphql route.
+	if ( strpos( $url, 'jobber-prod.10upmanaged.io/jobber/forms' ) !== false ) {
+		$response = file_get_contents( __DIR__ . '/get-forms.json' );
+	} elseif ( strpos( $url, 'jobber-prod.10upmanaged.io/jobber/graphql' ) !== false ) {
 		$response = file_get_contents( __DIR__ . '/get-form.json' );
 	}
 

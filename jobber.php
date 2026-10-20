@@ -3,7 +3,7 @@
  * Plugin Name:       Jobber
  * Plugin URI:        https://github.com/10up/jobber-wp
  * Description:       Add the ability to embed Jobber forms in your WordPress site.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires at least: 6.9
  * Requires PHP:      7.4
  * Author:            jobberintegrations
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Useful global constants.
-define( 'JOBBER_PLUGIN_VERSION', '1.0.0' );
+define( 'JOBBER_PLUGIN_VERSION', '1.1.0' );
 define( 'JOBBER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'JOBBER_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'JOBBER_PLUGIN_INC', JOBBER_PLUGIN_PATH . 'includes/' );
