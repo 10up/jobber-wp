@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ### Developer
 
+- Add end to end tests with Cypress (props [@faisal-alvi](https://github.com/faisal-alvi), [@dkotter](https://github.com/dkotter) via [#58](https://github.com/10up/jobber-wp/pull/58)).
 - Fix the E2E and Plugin Check workflows (props [@faisal-alvi](https://github.com/faisal-alvi), [@joemcgill](https://github.com/joemcgill) via [#73](https://github.com/10up/jobber-wp/pull/73)).
 
 ## [1.0.0] - 2025-06-12

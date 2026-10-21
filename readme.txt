@@ -124,6 +124,7 @@ We connect to [Jobber](https://www.getjobber.com/) ([privacy policy](https://www
 * **Changed:** Bump WordPress minimum supported version to 6.9 (props [@faisal-alvi](https://github.com/faisal-alvi), [@joemcgill](https://github.com/joemcgill), [@qasumitbagthariya](https://github.com/qasumitbagthariya) via [#74](https://github.com/10up/jobber-wp/pull/74)).
 * **Fixed:** Several Jobber forms on one page now each resize to their own height (props [@faisal-alvi](https://github.com/faisal-alvi), [@joemcgill](https://github.com/joemcgill), [@nicholasio](https://github.com/nicholasio), [@qasumitbagthariya](https://github.com/qasumitbagthariya) via [#72](https://github.com/10up/jobber-wp/pull/72)).
 * **Fixed:** Deactivating the plugin now removes all cached form data, including data left by earlier versions (props [@faisal-alvi](https://github.com/faisal-alvi), [@joemcgill](https://github.com/joemcgill), [@nicholasio](https://github.com/nicholasio), [@qasumitbagthariya](https://github.com/qasumitbagthariya) via [#72](https://github.com/10up/jobber-wp/pull/72)).
+* **Developer:** Add end to end tests with Cypress (props [@faisal-alvi](https://github.com/faisal-alvi), [@dkotter](https://github.com/dkotter) via [#58](https://github.com/10up/jobber-wp/pull/58)).
 * **Developer:** Fix the E2E and Plugin Check workflows (props [@faisal-alvi](https://github.com/faisal-alvi), [@joemcgill](https://github.com/joemcgill) via [#73](https://github.com/10up/jobber-wp/pull/73)).
 
 = 1.0.0 - 2025-06-12 =
