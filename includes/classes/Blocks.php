@@ -183,7 +183,7 @@ class Blocks {
 		/**
 		 * Filters the iframe height used when rendering a Jobber form.
 		 *
-		 * @since x.x.x
+		 * @since 1.1.0
 		 * @hook jobber_form_height
 		 *
 		 * @param int    $height       Height in pixels.

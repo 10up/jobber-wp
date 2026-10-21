@@ -165,7 +165,7 @@ class Jobber {
 		 * local development, fixtures and end to end tests, where a live Jobber account is
 		 * not available.
 		 *
-		 * @since x.x.x
+		 * @since 1.1.0
 		 * @hook jobber_pre_query
 		 *
 		 * @param false|array<string, mixed> $response  Short circuited response. Default false.
