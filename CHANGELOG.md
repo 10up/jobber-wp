@@ -9,8 +9,8 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 
 - Choose any form from your connected Jobber account in the Jobber block, instead of only a Booking or Request form. Every enabled form is listed by name, with the account default labelled and preselected (props [@faisal-alvi](https://github.com/faisal-alvi), [@joemcgill](https://github.com/joemcgill), [@nicholasio](https://github.com/nicholasio), [@qasumitbagthariya](https://github.com/qasumitbagthariya) via [#72](https://github.com/10up/jobber-wp/pull/72)).
-- `jobber_pre_query` filter to short circuit middleware requests, for local development and end to end tests (props [@faisal-alvi](https://github.com/faisal-alvi), [@joemcgill](https://github.com/joemcgill), [@nicholasio](https://github.com/nicholasio), [@qasumitbagthariya](https://github.com/qasumitbagthariya) via [#72](https://github.com/10up/jobber-wp/pull/72)).
-- `jobber_form_height` filter to change the height used when a form renders in an iframe (props [@faisal-alvi](https://github.com/faisal-alvi), [@joemcgill](https://github.com/joemcgill), [@nicholasio](https://github.com/nicholasio), [@qasumitbagthariya](https://github.com/qasumitbagthariya) via [#72](https://github.com/10up/jobber-wp/pull/72)).
+- Add `jobber_pre_query` filter to short circuit middleware requests, for local development and end to end tests (props [@faisal-alvi](https://github.com/faisal-alvi), [@joemcgill](https://github.com/joemcgill), [@nicholasio](https://github.com/nicholasio), [@qasumitbagthariya](https://github.com/qasumitbagthariya) via [#72](https://github.com/10up/jobber-wp/pull/72)).
+- Add `jobber_form_height` filter to change the height used when a form renders in an iframe (props [@faisal-alvi](https://github.com/faisal-alvi), [@joemcgill](https://github.com/joemcgill), [@nicholasio](https://github.com/nicholasio), [@qasumitbagthariya](https://github.com/qasumitbagthariya) via [#72](https://github.com/10up/jobber-wp/pull/72)).
 
 ### Changed
 
