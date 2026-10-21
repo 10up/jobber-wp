@@ -4,6 +4,7 @@
 /.wordpress-org
 /assets
 /node_modules
+/tests
 
 # Files to ignore
 /.*

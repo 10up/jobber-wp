@@ -14,14 +14,14 @@ Together Jobber and WordPress help you get discovered, build credibility, and co
 
 **Embed Jobber's powerful online booking and request forms directly into your WordPress site.**
 
-With the Jobber WordPress plugin, home service pros can add fully integrated client intake forms in just a few clicks. Choose between Booking or Request modes and turn website visitors into clients fast.
+With the Jobber WordPress plugin, home service pros can add fully integrated client intake forms in just a few clicks. Pick any form from your Jobber account and turn website visitors into clients fast.
 
 All submissions are automatically synced to Jobber to create clients, requests, and bookings, making it easy for potential customers to get a quote quickly, and book your services with confidence.
 
 ## Requirements
 
 * PHP 7.4+
-* [WordPress](http://wordpress.org/) 6.6+
+* [WordPress](http://wordpress.org/) 6.9+
 * An active Jobber account with a Core or higher price plan. Don't have a Jobber account? [Sign up](https://getjobber.com/plp/wordpress) to receive 20% off your first 6 months, and a free 14-day trial.
 * Your site needs to be publicly accessible on the internet in order for authentication to work.
 
@@ -52,17 +52,13 @@ Install through the WordPress directory or download, unzip and upload the files 
 
 ### Customizing the Block
 
-The Jobber block includes a form type selection option:
+The Jobber block includes a form selection option:
 
-**Form Type Selection**
+**Form Selection**
 
-Choose between "Booking Form" or "Request Form". Each form type serves different purposes:
+Choose any enabled form from your connected Jobber account in the **Form** list in the block settings. Your account's default form is labelled and selected when you add a new block. Forms are created and managed in Jobber under Settings, Requests and Bookings.
 
-* Booking Form: Allows customers to directly book services.
-* Request Form: Enables customers to submit service requests.
-
-![The Jobber block in the editor, showing the Request form type.](/.wordpress-org/screenshot-4.png)
-![The Jobber block in the editor, showing the Booking form type.](/.wordpress-org/screenshot-5.png)
+Blocks added with an earlier version of the plugin keep showing the same form until you choose one from the list.
 
 ## Development
 

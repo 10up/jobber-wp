@@ -77,6 +77,23 @@ class API {
 			]
 		);
 
+		// Get every enabled form on the connected account.
+		register_rest_route(
+			self::$namespace,
+			'/get_forms',
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => [ $this, 'get_forms' ],
+				'permission_callback' => [ $this, 'has_permission' ],
+				'args'                => [
+					'force' => [
+						'type'    => 'boolean',
+						'default' => false,
+					],
+				],
+			]
+		);
+
 		// Disconnect.
 		register_rest_route(
 			self::$namespace,
@@ -98,10 +115,12 @@ class API {
 	/**
 	 * Check if the user has permission to access the route.
 	 *
+	 * Only the block editor calls these routes, so they need the same capability as editing a post.
+	 *
 	 * @return bool
 	 */
 	public function has_permission(): bool {
-		return is_user_logged_in();
+		return current_user_can( 'edit_posts' );
 	}
 
 	/**
@@ -141,6 +160,36 @@ class API {
 		( new Disconnect() )->disconnect_client();
 
 		wp_send_json_success();
+	}
+
+	/**
+	 * Get every enabled form on the connected Jobber account.
+	 *
+	 * @param \WP_REST_Request $request The REST Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function get_forms( \WP_REST_Request $request ) {
+		$force = (bool) $request->get_param( 'force' );
+
+		$forms = ( new \Jobber\Jobber() )->get_forms( $force );
+
+		if ( is_wp_error( $forms ) ) {
+			return rest_ensure_response( $forms );
+		}
+
+		$prepared = [];
+
+		foreach ( $forms as $form ) {
+			$prepared[] = [
+				'id'          => $form['id'],
+				'name'        => $form['name'],
+				'url'         => esc_url_raw( $form['url'] ),
+				'bookingType' => $form['bookingType'],
+				'isDefault'   => $form['isDefault'],
+			];
+		}
+
+		return rest_ensure_response( [ 'forms' => $prepared ] );
 	}
 
 	/**
